@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+
+# Local class artifacts not part of the research repository.
+Bao_cao_tuan_Nhom_11_LLM_Agent_Security.docx
+build_weekly_report.py
