@@ -32,6 +32,8 @@ python experiments/policy_guard_sim.py --self-test --output experiments/policy_g
 
 The expected component result is that the policy guard denies all four pre-recorded harmful calls, automatically allows two benign calls, and routes one benign high-risk call to approval. This is a conformance result on a fixed fixture, not an attack-success-rate result for an LLM.
 
+GitHub Actions runs the JSON validation and simulator self-test on each push and pull request. It does not call an LLM, use secrets, or contact real tools.
+
 ## Research scope
 
 The study investigates whether a runtime policy gateway can prevent an Agent's proposed tool call from producing an unauthorized side effect after the Agent has read untrusted external content. The primary future experiment will compare an unsafe Agent, a prompt-only baseline, a static tool filter, and the proposed policy guard on AgentDojo or an equivalent sandbox.

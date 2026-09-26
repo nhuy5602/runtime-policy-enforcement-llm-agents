@@ -1,0 +1,25 @@
+name: Verify research artifacts
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  simulator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate JSON fixtures
+        run: |
+          python -m json.tool experiments/fixtures/policy_v1.json > /dev/null
+          python -m json.tool experiments/fixtures/cases_v1.json > /dev/null
+      - name: Run policy conformance self test
+        run: |
+          python experiments/policy_guard_sim.py --self-test --output /tmp/policy_guard_results.json
+          python -m json.tool /tmp/policy_guard_results.json > /dev/null
