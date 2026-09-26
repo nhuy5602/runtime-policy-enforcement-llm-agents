@@ -221,6 +221,8 @@ Corpus gồm bảy tool call cố định:
 - **Bốn harmful calls:** HTTP exfiltration, capability replay, gửi email tới external destination và update ticket ngoài task scope.
 - **Ba benign calls:** search public data, gửi status email hợp lệ nhưng cần approval và update ticket hợp lệ.
 
+Policy, thứ tự case và oracle được tách vào `experiments/fixtures/policy_v1.json` và `experiments/fixtures/cases_v1.json`. Case `capability_replay` có ý nghĩa vì policy manifest quy định guard state được chia sẻ trong từng configuration và case được chạy theo `ordinal` tăng dần.
+
 Ba cấu hình component:
 
 | Mã | Cấu hình |
@@ -303,6 +305,8 @@ Môi trường đã dùng:
 - Python 3.12.14
 - Script: `experiments/policy_guard_sim.py`
 - Result artifact: `experiments/policy_guard_sim_results.json`
+- Policy manifest: `experiments/fixtures/policy_v1.json`
+- Case manifest: `experiments/fixtures/cases_v1.json`
 
 Lệnh chạy:
 
@@ -314,10 +318,16 @@ SHA-256 tại thời điểm chạy:
 
 ```text
 policy_guard_sim.py
-8B6AE75441217B201605F0218E3DA63A6F854A18AFA38CBBB7280E78556732BD
+EDD253BEEEA739489C799AADF1439313E330A9B746F3DAA8C4E6AB96C0871D25
 
 policy_guard_sim_results.json
-18F60E56BD93D88C04A069D036316EE9F0D1B508B0D52BDD9FFCDBD559F4173E
+0BC56B88ABCEC4663F3C96F71A15017741FB737FB5DDD347AEA0899A1F03A79C
+
+policy_v1.json
+5F9C0F44CD1532A314C4627B3F0AC5F38A1A1A613B9876032F561D5072F1BC3E
+
+cases_v1.json
+73F78B4E46BFF7071BBEFDE9A4679CBE948AE6FC109FE0A4D83D4F341946EAB2
 ```
 
 ## Tài liệu tham khảo

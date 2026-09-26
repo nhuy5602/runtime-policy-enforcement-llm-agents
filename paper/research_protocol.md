@@ -170,7 +170,7 @@ Ngày 26 tháng 09 năm 2026, simulator offline trong `experiments/policy_guard_
 | C1 Static allowlist | 4/4 | 0/4 | 3/3 | 0 |
 | C2 Policy Guard | 0/4 | 4/4 | 2/3 | 1 |
 
-Các harmful call trong corpus này gồm HTTP exfiltration, gửi email tới domain ngoài policy, cập nhật ticket ngoài task scope và replay capability. Với Policy Guard, hai benign call được thực thi; một benign high-risk email được chuyển sang `REQUIRE_APPROVAL`, vì vậy automatic success là 2/3 nhưng assisted success là 3/3. Prompt-only defense không được báo cáo ở kiểm chứng component vì simulator không mô phỏng hành vi nhận diện injection của một LLM.
+Các harmful call trong corpus này gồm HTTP exfiltration, gửi email tới domain ngoài policy, cập nhật ticket ngoài task scope và replay capability. Với Policy Guard, hai benign call được thực thi; một benign high-risk email được chuyển sang `REQUIRE_APPROVAL`, vì vậy automatic success là 2/3. Call này chỉ đủ điều kiện đi vào workflow approval; tỷ lệ hoàn thành sau approval chưa được đo. Prompt-only defense không được báo cáo ở kiểm chứng component vì simulator không mô phỏng hành vi nhận diện injection của một LLM.
 
 Kết quả chỉ cho thấy policy và mock executor khớp với oracle của corpus do nhóm định nghĩa. Corpus này được xây dựng để kiểm tra ràng buộc policy nên không được dùng để suy rộng về Attack Success Rate của LLM thật, độ bền trước prompt paraphrase hoặc hiệu quả trên AgentDojo. Các câu hỏi đó chỉ được trả lời sau khi chạy protocol benchmark đã mô tả ở trên.
 

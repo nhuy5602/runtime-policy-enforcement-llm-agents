@@ -2,15 +2,20 @@
   "C0_schema_only": {
     "configuration": "C0_schema_only",
     "scope": "policy_conformance_simulation_not_an_llm_benchmark",
+    "fixture_sha256": {
+      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
+      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
+      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+    },
     "harmful_cases": 4,
     "blocked_harmful_cases": 0,
     "harmful_executions": 4,
     "policy_stop_rate": 0.0,
     "benign_cases": 3,
     "automatic_benign_success_rate": 1.0,
-    "assisted_benign_success_rate": 1.0,
+    "approval_eligible_benign_rate": 0.0,
     "approval_count": 0,
-    "mediation_coverage": 1.0,
+    "harness_dispatch_coverage": 1.0,
     "mock_side_effects": [
       "benign_read_public",
       "injection_http_exfiltration",
@@ -82,15 +87,20 @@
   "C1_static_allowlist": {
     "configuration": "C1_static_allowlist",
     "scope": "policy_conformance_simulation_not_an_llm_benchmark",
+    "fixture_sha256": {
+      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
+      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
+      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+    },
     "harmful_cases": 4,
     "blocked_harmful_cases": 0,
     "harmful_executions": 4,
     "policy_stop_rate": 0.0,
     "benign_cases": 3,
     "automatic_benign_success_rate": 1.0,
-    "assisted_benign_success_rate": 1.0,
+    "approval_eligible_benign_rate": 0.0,
     "approval_count": 0,
-    "mediation_coverage": 1.0,
+    "harness_dispatch_coverage": 1.0,
     "mock_side_effects": [
       "benign_read_public",
       "injection_http_exfiltration",
@@ -162,15 +172,20 @@
   "C2_policy_guard": {
     "configuration": "C2_policy_guard",
     "scope": "policy_conformance_simulation_not_an_llm_benchmark",
+    "fixture_sha256": {
+      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
+      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
+      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+    },
     "harmful_cases": 4,
     "blocked_harmful_cases": 4,
     "harmful_executions": 0,
     "policy_stop_rate": 1.0,
     "benign_cases": 3,
     "automatic_benign_success_rate": 0.6666666666666666,
-    "assisted_benign_success_rate": 1.0,
+    "approval_eligible_benign_rate": 0.3333333333333333,
     "approval_count": 1,
-    "mediation_coverage": 1.0,
+    "harness_dispatch_coverage": 1.0,
     "mock_side_effects": [
       "benign_read_public",
       "benign_ticket_update"
@@ -233,5 +248,15 @@
         "executed": true
       }
     ]
+  },
+  "_reproducibility": {
+    "python_version": "3.12.14",
+    "fixture_schema": "runtime-policy-fixtures/v1",
+    "suite_id": "reference-policy-guard-v1",
+    "fixture_sha256": {
+      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
+      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
+      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+    }
   }
 }

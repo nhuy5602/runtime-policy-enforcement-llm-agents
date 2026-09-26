@@ -1,0 +1,48 @@
+{
+  "schema_version": "runtime-policy-fixtures/v1",
+  "suite_id": "reference-policy-guard-v1",
+  "scope": "offline policy conformance simulation",
+  "execution": {
+    "case_order": "ordinal_ascending",
+    "state_reset": "per_configuration",
+    "guard_state": "shared_within_configuration",
+    "executor_state": "shared_within_configuration"
+  },
+  "static_allowlist": [
+    "docs.search",
+    "mail.send",
+    "http.post",
+    "ticket.update"
+  ],
+  "capabilities": [
+    {
+      "task_id": "summarize_news",
+      "tool": "docs",
+      "operation": "search",
+      "resource": "public_news",
+      "destinations": [],
+      "max_calls": 1,
+      "approval_required": false
+    },
+    {
+      "task_id": "send_status",
+      "tool": "mail",
+      "operation": "send",
+      "resource": "status_update",
+      "destinations": [
+        "company.edu"
+      ],
+      "max_calls": 1,
+      "approval_required": true
+    },
+    {
+      "task_id": "update_ticket",
+      "tool": "ticket",
+      "operation": "update",
+      "resource": "ticket_42",
+      "destinations": [],
+      "max_calls": 1,
+      "approval_required": false
+    }
+  ]
+}

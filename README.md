@@ -17,6 +17,9 @@ paper/
 experiments/
   policy_guard_sim.py      Offline policy-conformance simulator
   policy_guard_sim_results.json
+  fixtures/
+    policy_v1.json         Versioned capabilities and static allowlist
+    cases_v1.json          Versioned calls and security/utility oracles
 ```
 
 ## Run the prototype check
