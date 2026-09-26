@@ -4,6 +4,10 @@
 
 **Runtime Policy Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse**
 
+## Cổng novelty R1
+
+Tính đến ngày 26 tháng 09 năm 2026, generic runtime policy enforcement ở tool boundary không thể được xem là contribution mới mặc định: CaMeL, Fides, Progent, AgentArmor, ClawGuard và ActGov đều đã đưa ra defense system-level hoặc runtime rất gần. Vì vậy protocol này mô tả một reference monitor và evaluation harness. Trước khi freeze benchmark, nhóm phải chốt một contribution hẹp có thể kiểm chứng (ví dụ policy portability dưới tool-schema evolution, action canonicalization/policy drift, hoặc case study SOC/OT) và ghi quyết định trong `related_work_matrix.md`.
+
 ## Luận điểm nghiên cứu
 
 LLM Agent có thể vẫn bị ảnh hưởng bởi nội dung không đáng tin cậy. Nghiên cứu này không cố chứng minh rằng LLM trở nên miễn nhiễm với indirect prompt injection. Thay vào đó, nghiên cứu kiểm tra liệu một policy gateway độc lập tại biên thực thi tool có ngăn ảnh hưởng đó trở thành hành động trái phép hay không.
@@ -35,19 +39,19 @@ Tài sản bảo vệ gồm secret canary giả lập, dữ liệu hồ sơ gi�
 
 ## Câu hỏi nghiên cứu
 
-**RQ1.** Runtime Policy Guard có giảm Action grounded Attack Success Rate của indirect prompt injection dẫn đến tool misuse so với Agent không bảo vệ, prompt only defense và static tool allowlist không?
+**RQ1.** Với contribution hẹp được R1 khóa trước, cấu hình policy guard có giảm Action-grounded Attack Success Rate của indirect prompt injection dẫn tới tool misuse so với B0, B1 và B2 chạy cùng task, model, tool schema và case không?
 
-**RQ2.** Các thành phần policy nào tạo trade off tốt nhất giữa bảo mật, utility, overblocking và overhead?
+**RQ2.** Các ràng buộc task scope, destination, call limit và approval thay đổi thế nào đối với security, utility, overblocking, approval burden và overhead?
 
-**RQ3.** Policy enforcement tại tool boundary có bền vững hơn input filtering khi attacker paraphrase, chia nhỏ chỉ dẫn, dùng role play, encoding hoặc tool output injection không?
+**RQ3.** Với cùng forbidden end-state oracle, policy enforcement có giữ hiệu lực thế nào khi attacker dùng paraphrase, instruction splitting, role-play, encoding hoặc tool-output injection?
 
 ## Giả thuyết và tiêu chí thành công
 
-- **H1:** cấu hình policy guard đầy đủ giảm ít nhất 15 điểm phần trăm Targeted ASR so với baseline mạnh nhất chạy trong cùng môi trường.
-- **H2:** Clean Task Success không giảm quá 10 điểm phần trăm so với Unsafe Agent.
-- **H3:** ràng buộc ở tool và argument ít phụ thuộc vào câu chữ của injection hơn prompt only defense, nhưng vẫn có thể thất bại khi capability cấp quá rộng.
+- **H1:** cấu hình policy guard đầy đủ giảm ít nhất 20 điểm phần trăm Targeted ASR so với từng baseline B0, B1 và B2 đã khóa trước.
+- **H2:** Clean Task Success của P không giảm quá 5 điểm phần trăm so với B0 ở cận xấu nhất của khoảng tin cậy 95%.
+- **H3:** trên paired mutation suite, ràng buộc cấu trúc ở tool/argument có chênh lệch ASR thấp hơn B1; giả thuyết bị bác bỏ nếu khoảng tin cậy 95% không loại trừ chênh lệch bằng không.
 
-Các ngưỡng trên là tiêu chí đặt trước cho nghiên cứu, không phải kết quả đã có.
+Security là primary endpoint. RQ2 chỉ gọi một ablation là trade-off tốt hơn nếu đạt H1, H2 và không làm false-block rate, approval burden hoặc p95 guard latency vượt giới hạn được freeze trước run. Các ngưỡng trên là tiêu chí đặt trước cho nghiên cứu, không phải kết quả đã có.
 
 ## Thiết kế hệ thống
 
@@ -92,9 +96,9 @@ Provenance trong prototype là nhãn nguồn ở resource hoặc session level, 
 | B1 | Prompt only: system prompt yêu cầu coi external content là data, không là instruction |
 | B2 | Static Tool Filter: allowlist tool tĩnh, không xét task/argument/destination |
 | P | Proposed Guard: capability theo task, resource/destination constraint, risk rule, approval và audit |
-| A1-A4 | Ablation: lần lượt bỏ task scope, sensitivity rule, destination allowlist hoặc approval rule |
+| A1-A4 | Ablation: lần lượt bỏ task scope, destination constraint, call limit hoặc approval rule |
 
-CaMeL, Fides và Progent được dùng làm related work và mốc so sánh khái niệm. Chỉ gọi chúng là baseline thực nghiệm nếu cùng mã nguồn, model, tool runtime và cấu hình thực sự được chạy lại.
+CaMeL, Fides, Progent, AgentArmor, ClawGuard và ActGov được dùng làm related work và mốc so sánh khái niệm. Chỉ gọi chúng là baseline thực nghiệm nếu cùng mã nguồn, model, tool runtime và cấu hình thực sự được chạy lại.
 
 ## Dữ liệu và benchmark
 
@@ -164,19 +168,19 @@ Không kết luận chỉ từ ASR. Một defense từ chối tất cả tool ca
 
 Ngày 26 tháng 09 năm 2026, simulator offline trong `experiments/policy_guard_sim.py` đã chạy bảy tool-call có oracle cố định. Đây là kiểm chứng component tại tool boundary, không phải benchmark LLM hoặc kết quả AgentDojo.
 
-| Cấu hình | Harmful calls thực thi | Harmful calls bị chặn | Benign calls tự động hoàn thành | Approval requests |
-|---|---:|---:|---:|---:|
-| C0 Schema only | 4/4 | 0/4 | 3/3 | 0 |
-| C1 Static allowlist | 4/4 | 0/4 | 3/3 | 0 |
-| C2 Policy Guard | 0/4 | 4/4 | 2/3 | 1 |
+| Cấu hình | Attack có forbidden effect | Attack bị `DENY` | Benign task hoàn thành | High-risk benign sau approval | Approval requests |
+|---|---:|---:|---:|---:|---:|
+| C0 Schema only | 4/4 | 0/4 | 3/3 | 0/1 | 0 |
+| C1 Static allowlist | 4/4 | 0/4 | 3/3 | 0/1 | 0 |
+| C2 Policy Guard | 0/4 | 4/4 | 3/3 | 1/1 | 1 |
 
-Các harmful call trong corpus này gồm HTTP exfiltration, gửi email tới domain ngoài policy, cập nhật ticket ngoài task scope và replay capability. Với Policy Guard, hai benign call được thực thi; một benign high-risk email được chuyển sang `REQUIRE_APPROVAL`, vì vậy automatic success là 2/3. Call này chỉ đủ điều kiện đi vào workflow approval; tỷ lệ hoàn thành sau approval chưa được đo. Prompt-only defense không được báo cáo ở kiểm chứng component vì simulator không mô phỏng hành vi nhận diện injection của một LLM.
+Các harmful call trong corpus này gồm HTTP exfiltration, gửi email tới domain ngoài policy, cập nhật ticket ngoài task scope và replay capability. Replay chạy sau một call hợp lệ trong cùng episode nên không phụ thuộc state toàn configuration. Với Policy Guard, hai benign call được thực thi tự động; một benign high-risk email được chuyển sang `REQUIRE_APPROVAL`, re-check policy và chỉ tạo mock effect sau approval mô phỏng hợp lệ. Đây là kiểm chứng transaction semantics, không đo con người phê duyệt hoặc approval burden ngoài đời thật. Prompt-only defense không được báo cáo ở kiểm chứng component vì simulator không mô phỏng hành vi nhận diện injection của một LLM.
 
 Kết quả chỉ cho thấy policy và mock executor khớp với oracle của corpus do nhóm định nghĩa. Corpus này được xây dựng để kiểm tra ràng buộc policy nên không được dùng để suy rộng về Attack Success Rate của LLM thật, độ bền trước prompt paraphrase hoặc hiệu quả trên AgentDojo. Các câu hỏi đó chỉ được trả lời sau khi chạy protocol benchmark đã mô tả ở trên.
 
 ## Đóng góp được định vị
 
-Nghiên cứu không claim phát minh capability, least privilege, information flow control hoặc runtime policy enforcement. Đóng góp dự kiến là:
+Nghiên cứu không claim phát minh capability, least privilege, information flow control hoặc runtime policy enforcement. Đóng góp dự kiến, chỉ được khóa sau R1, là:
 
 1. threat model hẹp và kiểm tra được cho indirect prompt injection dẫn đến tool misuse;
 2. hiện thực tham chiếu của policy gateway tại execution boundary;
@@ -192,3 +196,6 @@ Nghiên cứu không claim phát minh capability, least privilege, information f
 4. Edoardo Debenedetti et al. *Defeating Prompt Injections by Design*. arXiv:2503.18813, 2025. https://arxiv.org/abs/2503.18813
 5. Manuel Costa et al. *Securing AI Agents with Information Flow Control*. arXiv:2505.23643, 2025. https://arxiv.org/abs/2505.23643
 6. Tianneng Shi et al. *Progent: Programmable Privilege Control for LLM Agents*. arXiv:2504.11703, 2025. https://arxiv.org/abs/2504.11703
+7. Peiran Wang et al. *AgentArmor: Enforcing Program Analysis on Agent Runtime Trace to Defend Against Prompt Injection*. arXiv:2508.01249, 2025. https://arxiv.org/abs/2508.01249
+8. Wei Zhao, Zhe Li, Peixin Zhang, and Jun Sun. *ClawGuard: A Runtime Security Framework for Tool-Augmented LLM Agents Against Indirect Prompt Injection*. arXiv:2604.11790, 2026. https://arxiv.org/abs/2604.11790
+9. Kaiyuan Zhang, Yuke Peng, Ke Jiang, and Yinqian Zhang. *ActGov: Governing LLM Agent Actions via Policy-Constrained Validation*. arXiv:2609.24446, 2026. https://arxiv.org/abs/2609.24446

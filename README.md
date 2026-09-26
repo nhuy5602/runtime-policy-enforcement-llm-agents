@@ -4,9 +4,11 @@ Research repository for the paper **Runtime Policy Enforcement for LLM Agents Ag
 
 This repository is for building the final scientific paper and its reproducible research artifacts. It intentionally excludes weekly class reports and unrelated course files.
 
+The execution, review, and test gates for a Q2-ready manuscript are defined in [ROADMAP.md](ROADMAP.md).
+
 ## Current status
 
-The manuscript is a research proposal plus a preliminary component-level validation. The current simulator verifies policy enforcement at a mock tool boundary; it is **not** an LLM benchmark and does not establish resistance to prompt injection in a real Agent.
+The manuscript is a research proposal plus a preliminary component-level validation. The current simulator verifies policy enforcement at a mock tool boundary; it is **not** an LLM benchmark and does not establish resistance to prompt injection in a real Agent. A generic runtime tool guard is treated as a reference implementation, not the paper's novelty; E1 in the roadmap must select a narrower, defensible contribution before the benchmark phase.
 
 ## Repository layout
 
@@ -14,6 +16,7 @@ The manuscript is a research proposal plus a preliminary component-level validat
 paper/
   manuscript.md            Scientific report draft
   research_protocol.md     Threat model, RQs, protocol, and planned evaluation
+  related_work_matrix.md   R1 novelty and overlap gate
 experiments/
   policy_guard_sim.py      Offline policy-conformance simulator
   policy_guard_sim_results.json
@@ -30,7 +33,7 @@ The current prototype has no third-party Python dependencies.
 python experiments/policy_guard_sim.py --self-test --output experiments/policy_guard_sim_results.json
 ```
 
-The expected component result is that the policy guard denies all four pre-recorded harmful calls, automatically allows two benign calls, and routes one benign high-risk call to approval. This is a conformance result on a fixed fixture, not an attack-success-rate result for an LLM.
+The expected component result is that the policy guard prevents all four fixed forbidden effects, automatically completes two benign calls, and completes one benign high-risk call only after a simulated approval. The mock comparison configurations complete that high-risk call without approval. This is a conformance result on a fixed fixture, not an attack-success-rate result for an LLM.
 
 GitHub Actions runs the JSON validation and simulator self-test on each push and pull request. It does not call an LLM, use secrets, or contact real tools.
 
@@ -43,5 +46,5 @@ The study does not claim a new capability system, information-flow-control mecha
 ## Next research steps
 
 1. Version the case manifest, policy manifest, and scoring oracle separately from the simulator.
-2. Add session binding, expiry, argument-level constraints, state-diff logging, and a bypass-resistance integration test.
+2. Choose and justify a narrow contribution after the literature/novelty gate; then add session binding, expiry, argument-level constraints, state-diff logging, and a bypass-resistance integration test.
 3. Run the preregistered AgentDojo evaluation with a real LLM Agent and report paired outcomes, confidence intervals, latency, and failure cases.

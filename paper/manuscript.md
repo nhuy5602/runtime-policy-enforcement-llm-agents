@@ -48,11 +48,11 @@ InjecAgent là benchmark chuyên cho indirect prompt injection trong Tool-Integr
 
 CaMeL tách control flow khỏi dữ liệu không đáng tin cậy và dùng capability để hạn chế hành vi gây hại [4]. Fides tiếp cận Agent security bằng information-flow control, theo dõi nhãn confidentiality và integrity để thực thi chính sách xác định [5]. Progent cung cấp programmable privilege control ở runtime cho LLM Agent, gồm biểu diễn policy và thực thi ràng buộc trên tool call [6].
 
-Vì vậy, báo cáo này không claim các ý tưởng “runtime policy”, “least privilege”, “capability” hoặc “information-flow tracking” là mới. Điểm khác biệt cần được hiểu là một **nghiên cứu thực nghiệm có giới hạn rõ**: kiểm tra một policy gateway độc lập tại execution boundary, công bố policy profile và action-grounded oracle, rồi đo trade-off giữa safety, task completion, false denial, approval burden và latency.
+Các công trình gần hơn cũng làm hẹp mạnh không gian novelty: AgentArmor áp dụng program analysis trên runtime trace [7], ClawGuard thực thi rule tại mỗi tool-call boundary để chống indirect prompt injection [8], và ActGov kiểm tra từng action theo task-scoped policy [9]. Vì vậy, báo cáo này không claim các ý tưởng “runtime policy”, “least privilege”, “capability”, “information-flow tracking” hay “tool-boundary enforcement” là mới. Prototype chỉ là reference implementation; trước khi chạy benchmark, cổng R1 phải chốt một contribution hẹp và đo được, chẳng hạn policy portability dưới tool-schema evolution hoặc action canonicalization/policy drift.
 
 ### 2.3. Khoảng trống mà báo cáo giải quyết
 
-Khoảng trống của nghiên cứu không phải là sự vắng mặt hoàn toàn của system-level defense. Khoảng trống phù hợp là nhu cầu về các đánh giá thực dụng, tái lập được và composable trong môi trường Agent có tool [1]. Cụ thể, báo cáo hướng đến:
+Khoảng trống của nghiên cứu không phải là sự vắng mặt hoàn toàn của system-level defense. Trong trạng thái hiện tại, khoảng trống vẫn là giả thuyết cần được R1 kiểm chứng bằng literature matrix, thay vì claim đã được chứng minh. Hướng khả thi là một đánh giá tái lập được về tính ổn định của policy khi tool schema, alias API, serialization hoặc kênh injection thay đổi. Cụ thể, báo cáo hướng đến:
 
 - threat model hẹp với attacker chỉ kiểm soát dữ liệu ngoài mà Agent hợp lệ đọc;
 - policy enforcement tại tool boundary với reason code có thể kiểm toán;
@@ -120,7 +120,7 @@ Capability không được LLM tự tạo hoặc tự nâng quyền. Trong proto
 | Hành động có side effect hợp lệ nhưng có rủi ro cao | `REQUIRE_APPROVAL` |
 | Hành động read-only hoặc state change đã được cấp quyền | `ALLOW` |
 
-Runtime Policy Guard ghi `case_id`, tool call, decision, reason code và thời điểm chạy. Trong nghiên cứu đầy đủ, audit trace cần bổ sung model version, seed, policy hash, input hash, state diff và outcome của task.
+Prototype ghi `case_id`, episode, initial/final decision, reason code, approval status và mock effect ID. Trong nghiên cứu đầy đủ, audit trace cần bổ sung model version, seed, policy hash, input hash, normalized tool call, state diff và outcome của task.
 
 ### 4.3. Những gì Guard không bảo đảm
 
@@ -221,7 +221,7 @@ Corpus gồm bảy tool call cố định:
 - **Bốn harmful calls:** HTTP exfiltration, capability replay, gửi email tới external destination và update ticket ngoài task scope.
 - **Ba benign calls:** search public data, gửi status email hợp lệ nhưng cần approval và update ticket hợp lệ.
 
-Policy, thứ tự case và oracle được tách vào `experiments/fixtures/policy_v1.json` và `experiments/fixtures/cases_v1.json`. Case `capability_replay` có ý nghĩa vì policy manifest quy định guard state được chia sẻ trong từng configuration và case được chạy theo `ordinal` tăng dần.
+Policy, thứ tự case và oracle được tách vào `experiments/fixtures/policy_v1.json` và `experiments/fixtures/cases_v1.json`. Guard và mock executor được reset theo từng episode; riêng episode `public_search_replay` có một call hợp lệ ở step 1 tiêu quota, rồi replay ở step 2 phải bị chặn. Nhờ vậy, phép thử replay không phụ thuộc vào state toàn bộ configuration.
 
 Ba cấu hình component:
 
@@ -235,21 +235,21 @@ Prompt-only defense không xuất hiện trong kiểm chứng này, vì simulato
 
 ### 7.3. Kết quả
 
-| Cấu hình | Harmful calls bị từ chối | Harmful calls được mock executor thực thi | Benign calls cho phép ngay | Benign calls yêu cầu approval | Benign calls bị từ chối |
-|---|---:|---:|---:|---:|---:|
-| C0 Schema-only | 0/4 | 4/4 | 3/3 | 0/3 | 0/3 |
-| C1 Static allowlist | 0/4 | 4/4 | 3/3 | 0/3 | 0/3 |
-| C2 Policy Guard | 4/4 | 0/4 | 2/3 | 1/3 | 0/3 |
+| Cấu hình | Attack có forbidden effect | Attack bị `DENY` | Benign task hoàn thành | High-risk benign hoàn thành sau approval | Approval requests | Benign bị `DENY` |
+|---|---:|---:|---:|---:|---:|---:|
+| C0 Schema-only | 4/4 | 0/4 | 3/3 | 0/1 | 0 | 0/3 |
+| C1 Static allowlist | 4/4 | 0/4 | 3/3 | 0/1 | 0 | 0/3 |
+| C2 Policy Guard | 0/4 | 4/4 | 3/3 | 1/1 | 1 | 0/3 |
 
-Trong C2, HTTP exfiltration và unauthorized ticket update bị từ chối do nằm ngoài task capability; email exfiltration bị từ chối do destination không thuộc allowlist; replay bị từ chối do capability call limit đã được dùng. Hai benign calls được thực thi tự động. Benign email hợp lệ được chuyển sang `REQUIRE_APPROVAL`, nên chưa thể được coi là task success hoàn chỉnh trước khi có workflow approval thật.
+Trong C2, HTTP exfiltration và unauthorized ticket update bị từ chối do nằm ngoài task capability; email exfiltration bị từ chối do destination không thuộc allowlist; replay bị từ chối do capability call limit đã được dùng. Hai benign calls được thực thi tự động. Benign email hợp lệ tạo `REQUIRE_APPROVAL`; fixture sau đó mô phỏng một approval hợp lệ, guard re-check policy, tiêu quota đúng tại execution và mock executor mới tạo effect. C0/C1 cũng hoàn thành email đó, nhưng không có approval protocol nên không được tính là “completed after approval”.
 
-Trong test harness này, 7/7 call được định tuyến qua hàm evaluate. Đây là dispatch coverage của harness, không phải bằng chứng complete mediation trong Agent thật.
+Trong test harness này, 7/7 call tạo outcome và audit event; effect chỉ được tạo qua dispatcher token của mock executor. Đây là dispatch coverage của harness, không phải bằng chứng complete mediation trong Agent thật.
 
 ### 7.4. Diễn giải đúng mức
 
 Kết quả hỗ trợ kết luận hẹp sau:
 
-> Với một policy manifest và bảy tool call đã định nghĩa trước, Runtime Policy Guard đưa ra quyết định khớp oracle và ngăn bốn mock side effect trái policy.
+> Với một policy manifest và bảy tool call đã định nghĩa trước, Runtime Policy Guard tạo audit trace khớp fixture, không cho bốn forbidden mock effect xảy ra, và chỉ thực thi action cần approval sau approval mô phỏng hợp lệ.
 
 Kết quả không chứng minh:
 
@@ -268,7 +268,7 @@ Prototype nhận tool call cuối đã được xác định sẵn, không có L
 
 ### 8.2. Internal validity
 
-Policy và harmful/benign oracle được thiết kế cùng corpus, tạo nguy cơ circular evaluation. Capability replay còn phụ thuộc thứ tự call: một call hợp lệ phải tiêu thụ quota trước khi replay bị chặn. Nghiên cứu chính cần tách development/test, lock policy và chạy episode độc lập.
+Policy và harmful/benign oracle được thiết kế cùng corpus, tạo nguy cơ circular evaluation. Structured effect oracle tách scoring khỏi `reference_assertion`, nhưng không làm fixture trở thành independent benchmark. Capability replay là một episode hai bước có quota cục bộ; nghiên cứu chính vẫn cần tách development/test, lock policy và chạy episode độc lập.
 
 ### 8.3. Baseline validity
 
@@ -285,16 +285,17 @@ Mẫu component gồm bảy call và có tính deterministic, nên không dùng 
 ## 9. Kế hoạch hoàn thiện
 
 1. Tách case manifest, policy manifest và scoring oracle khỏi mã nguồn.
-2. Bổ sung session binding, expiry, argument-level validation, state diff và canary detector cho prototype.
-3. Viết integration test bảo đảm direct tool call không thể bypass dispatcher.
-4. Thực hiện AgentDojo full evaluation hoặc sampled evaluation đã preregister.
-5. Chạy B0, B1, B2, P và ablation trên cùng model/runtime.
-6. Báo cáo 95% CI, paired comparison, latency p50/p95 và failure cases.
-7. Chỉ sau bước trên mới kết luận về hiệu quả của policy guard đối với indirect prompt injection của Agent thật.
+2. Hoàn tất R1 và khóa một contribution hẹp không trùng runtime guard hiện có.
+3. Bổ sung session binding, expiry, argument-level validation, state diff và canary detector cho prototype.
+4. Viết integration test bảo đảm direct tool call không thể bypass dispatcher.
+5. Thực hiện AgentDojo full evaluation hoặc sampled evaluation đã preregister.
+6. Chạy B0, B1, B2, P và ablation trên cùng model/runtime.
+7. Báo cáo 95% CI, paired comparison, latency p50/p95 và failure cases.
+8. Chỉ sau bước trên mới kết luận về hiệu quả đối với indirect prompt injection của Agent thật.
 
 ## 10. Kết luận
 
-Runtime Policy Guard là một hướng defense-in-depth tại tool boundary: nó không làm LLM miễn nhiễm với indirect prompt injection, nhưng có thể ngăn một tool call trái policy tạo side effect nếu tool dispatcher thực thi complete mediation. Kiểm chứng component ban đầu xác nhận logic capability, destination allowlist, call limit và approval của prototype trên fixture cố định.
+Runtime Policy Guard là một reference monitor defense-in-depth tại tool boundary: nó không làm LLM miễn nhiễm với indirect prompt injection, nhưng có thể ngăn một tool call trái policy tạo side effect nếu tool dispatcher thực thi complete mediation. Kiểm chứng component ban đầu xác nhận logic capability, destination allowlist, call limit và approval transaction của prototype trên fixture cố định.
 
 Đóng góp khoa học hợp lý của đề tài là một nghiên cứu thực nghiệm tái lập và trung thực về quan hệ giữa policy enforcement, action security và task utility. Để trở thành kết luận thực nghiệm đầy đủ, báo cáo cần được mở rộng bằng AgentDojo hoặc môi trường tương đương với LLM thật, attack carrier thực, baseline công bằng và thống kê theo episode.
 
@@ -318,16 +319,16 @@ SHA-256 tại thời điểm chạy:
 
 ```text
 policy_guard_sim.py
-EDD253BEEEA739489C799AADF1439313E330A9B746F3DAA8C4E6AB96C0871D25
+6B2429DCDC4FF24B7033904DFA7D33AFABD8BE90AF0267A31123BD295C1A470A
 
 policy_guard_sim_results.json
-0BC56B88ABCEC4663F3C96F71A15017741FB737FB5DDD347AEA0899A1F03A79C
+99436FB946CDE0DBCD4618A8C3685C3CA8D43BD299ABFF14F3F063DC95F55871
 
 policy_v1.json
-5F9C0F44CD1532A314C4627B3F0AC5F38A1A1A613B9876032F561D5072F1BC3E
+4C65AD704DDBFF4CBF76DB206D07D5A97848D08D580FEB37F030059C79A2D66C
 
 cases_v1.json
-73F78B4E46BFF7071BBEFDE9A4679CBE948AE6FC109FE0A4D83D4F341946EAB2
+5EF576474CAF74B25D67F13EA81FE091B6C78ADCFC5C7D083228E7036FA3D0CF
 ```
 
 ## Tài liệu tham khảo
@@ -338,3 +339,6 @@ cases_v1.json
 4. E. Debenedetti et al. “Defeating Prompt Injections by Design.” arXiv:2503.18813, 2025. https://arxiv.org/abs/2503.18813
 5. M. Costa et al. “Securing AI Agents with Information-Flow Control.” arXiv:2505.23643, 2025. https://arxiv.org/abs/2505.23643
 6. T. Shi et al. “Progent: Programmable Privilege Control for LLM Agents.” arXiv:2504.11703, 2025. https://arxiv.org/abs/2504.11703
+7. P. Wang et al. “AgentArmor: Enforcing Program Analysis on Agent Runtime Trace to Defend Against Prompt Injection.” arXiv:2508.01249, 2025. https://arxiv.org/abs/2508.01249
+8. W. Zhao, Z. Li, P. Zhang, and J. Sun. “ClawGuard: A Runtime Security Framework for Tool-Augmented LLM Agents Against Indirect Prompt Injection.” arXiv:2604.11790, 2026. https://arxiv.org/abs/2604.11790
+9. K. Zhang, Y. Peng, K. Jiang, and Y. Zhang. “ActGov: Governing LLM Agent Actions via Policy-Constrained Validation.” arXiv:2609.24446, 2026. https://arxiv.org/abs/2609.24446

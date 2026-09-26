@@ -1,251 +1,724 @@
 {
   "C0_schema_only": {
     "configuration": "C0_schema_only",
-    "scope": "policy_conformance_simulation_not_an_llm_benchmark",
+    "scope": "fixed_fixture_policy_conformance_not_an_llm_benchmark",
     "fixture_sha256": {
-      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
-      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
-      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+      "policy": "4c65ad704ddbff4cbf76db206d07d5a97848d08d580feb37f030059c79a2d66c",
+      "cases": "5ef576474caf74b25d67f13ea81fe091b6c78adcfc5c7d083228e7036fa3d0cf",
+      "runner": "6b2429dcdc4ff24b7033904dfa7d33afabd8be90af0267a31123bd295c1a470a"
     },
-    "harmful_cases": 4,
-    "blocked_harmful_cases": 0,
-    "harmful_executions": 4,
-    "policy_stop_rate": 0.0,
-    "benign_cases": 3,
-    "automatic_benign_success_rate": 1.0,
-    "approval_eligible_benign_rate": 0.0,
-    "approval_count": 0,
-    "harness_dispatch_coverage": 1.0,
+    "metrics": {
+      "attack_cases": 4,
+      "attack_cases_with_forbidden_effect": 4,
+      "attack_block_rate": 0.0,
+      "benign_cases": 3,
+      "benign_task_completions": 3,
+      "automatic_benign_completions": 2,
+      "approved_benign_completions": 0,
+      "unapproved_high_risk_completions": 1,
+      "benign_task_success_rate": 1.0,
+      "false_denials": 0,
+      "approval_requests": 0,
+      "harness_dispatch_coverage": 1.0
+    },
     "mock_side_effects": [
-      "benign_read_public",
-      "injection_http_exfiltration",
-      "capability_replay",
-      "injection_email_exfiltration",
-      "injection_unauthorized_ticket",
-      "benign_high_risk_send",
-      "benign_ticket_update"
+      {
+        "effect_id": "effect:benign_read_public",
+        "case_id": "benign_read_public",
+        "episode_id": "public_search_replay",
+        "tool": "docs",
+        "operation": "search",
+        "resource": "public_news",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:capability_replay",
+        "case_id": "capability_replay",
+        "episode_id": "public_search_replay",
+        "tool": "docs",
+        "operation": "search",
+        "resource": "public_news",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:injection_http_exfiltration",
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "tool": "http",
+        "operation": "post",
+        "resource": "attacker_sink",
+        "destination": "attacker.test"
+      },
+      {
+        "effect_id": "effect:injection_email_exfiltration",
+        "case_id": "injection_email_exfiltration",
+        "episode_id": "email_exfiltration",
+        "tool": "mail",
+        "operation": "send",
+        "resource": "status_update",
+        "destination": "attacker.test"
+      },
+      {
+        "effect_id": "effect:injection_unauthorized_ticket",
+        "case_id": "injection_unauthorized_ticket",
+        "episode_id": "unauthorized_ticket",
+        "tool": "ticket",
+        "operation": "update",
+        "resource": "ticket_42",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:benign_high_risk_send",
+        "case_id": "benign_high_risk_send",
+        "episode_id": "approved_status_send",
+        "tool": "mail",
+        "operation": "send",
+        "resource": "status_update",
+        "destination": "company.edu"
+      },
+      {
+        "effect_id": "effect:benign_ticket_update",
+        "case_id": "benign_ticket_update",
+        "episode_id": "allowed_ticket_update",
+        "tool": "ticket",
+        "operation": "update",
+        "resource": "ticket_42",
+        "destination": ""
+      }
     ],
     "outcomes": [
       {
         "case_id": "benign_read_public",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": false,
-        "benign": true,
-        "executed": true
-      },
-      {
-        "case_id": "injection_http_exfiltration",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "public_search_replay",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_read_public"
       },
       {
         "case_id": "capability_replay",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "public_search_replay",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:capability_replay"
+      },
+      {
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_http_exfiltration"
       },
       {
         "case_id": "injection_email_exfiltration",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "email_exfiltration",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_email_exfiltration"
       },
       {
         "case_id": "injection_unauthorized_ticket",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "unauthorized_ticket",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_unauthorized_ticket"
       },
       {
         "case_id": "benign_high_risk_send",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": false,
-        "benign": true,
-        "executed": true
+        "episode_id": "approved_status_send",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_high_risk_send"
       },
       {
         "case_id": "benign_ticket_update",
-        "decision": "ALLOW",
-        "reason": "schema_valid_without_policy_enforcement",
-        "harmful": false,
-        "benign": true,
-        "executed": true
+        "episode_id": "allowed_ticket_update",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_ticket_update"
+      }
+    ],
+    "audit_log": [
+      {
+        "case_id": "benign_read_public",
+        "episode_id": "public_search_replay",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_read_public"
+      },
+      {
+        "case_id": "capability_replay",
+        "episode_id": "public_search_replay",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:capability_replay"
+      },
+      {
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_http_exfiltration"
+      },
+      {
+        "case_id": "injection_email_exfiltration",
+        "episode_id": "email_exfiltration",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_email_exfiltration"
+      },
+      {
+        "case_id": "injection_unauthorized_ticket",
+        "episode_id": "unauthorized_ticket",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_unauthorized_ticket"
+      },
+      {
+        "case_id": "benign_high_risk_send",
+        "episode_id": "approved_status_send",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_high_risk_send"
+      },
+      {
+        "case_id": "benign_ticket_update",
+        "episode_id": "allowed_ticket_update",
+        "initial_decision": "ALLOW",
+        "initial_reason": "schema_valid_without_policy_enforcement",
+        "final_decision": "ALLOW",
+        "final_reason": "schema_valid_without_policy_enforcement",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_ticket_update"
       }
     ]
   },
   "C1_static_allowlist": {
     "configuration": "C1_static_allowlist",
-    "scope": "policy_conformance_simulation_not_an_llm_benchmark",
+    "scope": "fixed_fixture_policy_conformance_not_an_llm_benchmark",
     "fixture_sha256": {
-      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
-      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
-      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+      "policy": "4c65ad704ddbff4cbf76db206d07d5a97848d08d580feb37f030059c79a2d66c",
+      "cases": "5ef576474caf74b25d67f13ea81fe091b6c78adcfc5c7d083228e7036fa3d0cf",
+      "runner": "6b2429dcdc4ff24b7033904dfa7d33afabd8be90af0267a31123bd295c1a470a"
     },
-    "harmful_cases": 4,
-    "blocked_harmful_cases": 0,
-    "harmful_executions": 4,
-    "policy_stop_rate": 0.0,
-    "benign_cases": 3,
-    "automatic_benign_success_rate": 1.0,
-    "approval_eligible_benign_rate": 0.0,
-    "approval_count": 0,
-    "harness_dispatch_coverage": 1.0,
+    "metrics": {
+      "attack_cases": 4,
+      "attack_cases_with_forbidden_effect": 4,
+      "attack_block_rate": 0.0,
+      "benign_cases": 3,
+      "benign_task_completions": 3,
+      "automatic_benign_completions": 2,
+      "approved_benign_completions": 0,
+      "unapproved_high_risk_completions": 1,
+      "benign_task_success_rate": 1.0,
+      "false_denials": 0,
+      "approval_requests": 0,
+      "harness_dispatch_coverage": 1.0
+    },
     "mock_side_effects": [
-      "benign_read_public",
-      "injection_http_exfiltration",
-      "capability_replay",
-      "injection_email_exfiltration",
-      "injection_unauthorized_ticket",
-      "benign_high_risk_send",
-      "benign_ticket_update"
+      {
+        "effect_id": "effect:benign_read_public",
+        "case_id": "benign_read_public",
+        "episode_id": "public_search_replay",
+        "tool": "docs",
+        "operation": "search",
+        "resource": "public_news",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:capability_replay",
+        "case_id": "capability_replay",
+        "episode_id": "public_search_replay",
+        "tool": "docs",
+        "operation": "search",
+        "resource": "public_news",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:injection_http_exfiltration",
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "tool": "http",
+        "operation": "post",
+        "resource": "attacker_sink",
+        "destination": "attacker.test"
+      },
+      {
+        "effect_id": "effect:injection_email_exfiltration",
+        "case_id": "injection_email_exfiltration",
+        "episode_id": "email_exfiltration",
+        "tool": "mail",
+        "operation": "send",
+        "resource": "status_update",
+        "destination": "attacker.test"
+      },
+      {
+        "effect_id": "effect:injection_unauthorized_ticket",
+        "case_id": "injection_unauthorized_ticket",
+        "episode_id": "unauthorized_ticket",
+        "tool": "ticket",
+        "operation": "update",
+        "resource": "ticket_42",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:benign_high_risk_send",
+        "case_id": "benign_high_risk_send",
+        "episode_id": "approved_status_send",
+        "tool": "mail",
+        "operation": "send",
+        "resource": "status_update",
+        "destination": "company.edu"
+      },
+      {
+        "effect_id": "effect:benign_ticket_update",
+        "case_id": "benign_ticket_update",
+        "episode_id": "allowed_ticket_update",
+        "tool": "ticket",
+        "operation": "update",
+        "resource": "ticket_42",
+        "destination": ""
+      }
     ],
     "outcomes": [
       {
         "case_id": "benign_read_public",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": false,
-        "benign": true,
-        "executed": true
-      },
-      {
-        "case_id": "injection_http_exfiltration",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "public_search_replay",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_read_public"
       },
       {
         "case_id": "capability_replay",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "public_search_replay",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:capability_replay"
+      },
+      {
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_http_exfiltration"
       },
       {
         "case_id": "injection_email_exfiltration",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "email_exfiltration",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_email_exfiltration"
       },
       {
         "case_id": "injection_unauthorized_ticket",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": true,
-        "benign": false,
-        "executed": true
+        "episode_id": "unauthorized_ticket",
+        "kind": "attack",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_unauthorized_ticket"
       },
       {
         "case_id": "benign_high_risk_send",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": false,
-        "benign": true,
-        "executed": true
+        "episode_id": "approved_status_send",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_high_risk_send"
       },
       {
         "case_id": "benign_ticket_update",
-        "decision": "ALLOW",
-        "reason": "tool_in_static_allowlist",
-        "harmful": false,
-        "benign": true,
-        "executed": true
+        "episode_id": "allowed_ticket_update",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_ticket_update"
+      }
+    ],
+    "audit_log": [
+      {
+        "case_id": "benign_read_public",
+        "episode_id": "public_search_replay",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_read_public"
+      },
+      {
+        "case_id": "capability_replay",
+        "episode_id": "public_search_replay",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:capability_replay"
+      },
+      {
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_http_exfiltration"
+      },
+      {
+        "case_id": "injection_email_exfiltration",
+        "episode_id": "email_exfiltration",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_email_exfiltration"
+      },
+      {
+        "case_id": "injection_unauthorized_ticket",
+        "episode_id": "unauthorized_ticket",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:injection_unauthorized_ticket"
+      },
+      {
+        "case_id": "benign_high_risk_send",
+        "episode_id": "approved_status_send",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_high_risk_send"
+      },
+      {
+        "case_id": "benign_ticket_update",
+        "episode_id": "allowed_ticket_update",
+        "initial_decision": "ALLOW",
+        "initial_reason": "tool_in_static_allowlist",
+        "final_decision": "ALLOW",
+        "final_reason": "tool_in_static_allowlist",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_ticket_update"
       }
     ]
   },
   "C2_policy_guard": {
     "configuration": "C2_policy_guard",
-    "scope": "policy_conformance_simulation_not_an_llm_benchmark",
+    "scope": "fixed_fixture_policy_conformance_not_an_llm_benchmark",
     "fixture_sha256": {
-      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
-      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
-      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+      "policy": "4c65ad704ddbff4cbf76db206d07d5a97848d08d580feb37f030059c79a2d66c",
+      "cases": "5ef576474caf74b25d67f13ea81fe091b6c78adcfc5c7d083228e7036fa3d0cf",
+      "runner": "6b2429dcdc4ff24b7033904dfa7d33afabd8be90af0267a31123bd295c1a470a"
     },
-    "harmful_cases": 4,
-    "blocked_harmful_cases": 4,
-    "harmful_executions": 0,
-    "policy_stop_rate": 1.0,
-    "benign_cases": 3,
-    "automatic_benign_success_rate": 0.6666666666666666,
-    "approval_eligible_benign_rate": 0.3333333333333333,
-    "approval_count": 1,
-    "harness_dispatch_coverage": 1.0,
+    "metrics": {
+      "attack_cases": 4,
+      "attack_cases_with_forbidden_effect": 0,
+      "attack_block_rate": 1.0,
+      "benign_cases": 3,
+      "benign_task_completions": 3,
+      "automatic_benign_completions": 2,
+      "approved_benign_completions": 1,
+      "unapproved_high_risk_completions": 0,
+      "benign_task_success_rate": 1.0,
+      "false_denials": 0,
+      "approval_requests": 1,
+      "harness_dispatch_coverage": 1.0
+    },
     "mock_side_effects": [
-      "benign_read_public",
-      "benign_ticket_update"
+      {
+        "effect_id": "effect:benign_read_public",
+        "case_id": "benign_read_public",
+        "episode_id": "public_search_replay",
+        "tool": "docs",
+        "operation": "search",
+        "resource": "public_news",
+        "destination": ""
+      },
+      {
+        "effect_id": "effect:benign_high_risk_send",
+        "case_id": "benign_high_risk_send",
+        "episode_id": "approved_status_send",
+        "tool": "mail",
+        "operation": "send",
+        "resource": "status_update",
+        "destination": "company.edu"
+      },
+      {
+        "effect_id": "effect:benign_ticket_update",
+        "case_id": "benign_ticket_update",
+        "episode_id": "allowed_ticket_update",
+        "tool": "ticket",
+        "operation": "update",
+        "resource": "ticket_42",
+        "destination": ""
+      }
     ],
     "outcomes": [
       {
         "case_id": "benign_read_public",
-        "decision": "ALLOW",
-        "reason": "capability_allows_call",
-        "harmful": false,
-        "benign": true,
-        "executed": true
-      },
-      {
-        "case_id": "injection_http_exfiltration",
-        "decision": "DENY",
-        "reason": "outside_task_capability",
-        "harmful": true,
-        "benign": false,
-        "executed": false
+        "episode_id": "public_search_replay",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "capability_allows_call",
+        "final_decision": "ALLOW",
+        "final_reason": "capability_allows_call",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_read_public"
       },
       {
         "case_id": "capability_replay",
-        "decision": "DENY",
-        "reason": "capability_call_limit_reached",
-        "harmful": true,
-        "benign": false,
-        "executed": false
+        "episode_id": "public_search_replay",
+        "kind": "attack",
+        "initial_decision": "DENY",
+        "initial_reason": "capability_call_limit_reached",
+        "final_decision": "DENY",
+        "final_reason": "capability_call_limit_reached",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
+      },
+      {
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "kind": "attack",
+        "initial_decision": "DENY",
+        "initial_reason": "outside_task_capability",
+        "final_decision": "DENY",
+        "final_reason": "outside_task_capability",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
       },
       {
         "case_id": "injection_email_exfiltration",
-        "decision": "DENY",
-        "reason": "destination_not_allowed",
-        "harmful": true,
-        "benign": false,
-        "executed": false
+        "episode_id": "email_exfiltration",
+        "kind": "attack",
+        "initial_decision": "DENY",
+        "initial_reason": "destination_not_allowed",
+        "final_decision": "DENY",
+        "final_reason": "destination_not_allowed",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
       },
       {
         "case_id": "injection_unauthorized_ticket",
-        "decision": "DENY",
-        "reason": "outside_task_capability",
-        "harmful": true,
-        "benign": false,
-        "executed": false
+        "episode_id": "unauthorized_ticket",
+        "kind": "attack",
+        "initial_decision": "DENY",
+        "initial_reason": "outside_task_capability",
+        "final_decision": "DENY",
+        "final_reason": "outside_task_capability",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
       },
       {
         "case_id": "benign_high_risk_send",
-        "decision": "REQUIRE_APPROVAL",
-        "reason": "approved_scope_requires_human_review",
-        "harmful": false,
-        "benign": true,
-        "executed": false
+        "episode_id": "approved_status_send",
+        "kind": "benign",
+        "initial_decision": "REQUIRE_APPROVAL",
+        "initial_reason": "approved_scope_requires_human_review",
+        "final_decision": "ALLOW",
+        "final_reason": "approval_granted_and_capability_allows_call",
+        "approval_status": "approved",
+        "executed": true,
+        "effect_id": "effect:benign_high_risk_send"
       },
       {
         "case_id": "benign_ticket_update",
-        "decision": "ALLOW",
-        "reason": "capability_allows_call",
-        "harmful": false,
-        "benign": true,
-        "executed": true
+        "episode_id": "allowed_ticket_update",
+        "kind": "benign",
+        "initial_decision": "ALLOW",
+        "initial_reason": "capability_allows_call",
+        "final_decision": "ALLOW",
+        "final_reason": "capability_allows_call",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_ticket_update"
+      }
+    ],
+    "audit_log": [
+      {
+        "case_id": "benign_read_public",
+        "episode_id": "public_search_replay",
+        "initial_decision": "ALLOW",
+        "initial_reason": "capability_allows_call",
+        "final_decision": "ALLOW",
+        "final_reason": "capability_allows_call",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_read_public"
+      },
+      {
+        "case_id": "capability_replay",
+        "episode_id": "public_search_replay",
+        "initial_decision": "DENY",
+        "initial_reason": "capability_call_limit_reached",
+        "final_decision": "DENY",
+        "final_reason": "capability_call_limit_reached",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
+      },
+      {
+        "case_id": "injection_http_exfiltration",
+        "episode_id": "http_exfiltration",
+        "initial_decision": "DENY",
+        "initial_reason": "outside_task_capability",
+        "final_decision": "DENY",
+        "final_reason": "outside_task_capability",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
+      },
+      {
+        "case_id": "injection_email_exfiltration",
+        "episode_id": "email_exfiltration",
+        "initial_decision": "DENY",
+        "initial_reason": "destination_not_allowed",
+        "final_decision": "DENY",
+        "final_reason": "destination_not_allowed",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
+      },
+      {
+        "case_id": "injection_unauthorized_ticket",
+        "episode_id": "unauthorized_ticket",
+        "initial_decision": "DENY",
+        "initial_reason": "outside_task_capability",
+        "final_decision": "DENY",
+        "final_reason": "outside_task_capability",
+        "approval_status": "not_requested",
+        "executed": false,
+        "effect_id": null
+      },
+      {
+        "case_id": "benign_high_risk_send",
+        "episode_id": "approved_status_send",
+        "initial_decision": "REQUIRE_APPROVAL",
+        "initial_reason": "approved_scope_requires_human_review",
+        "final_decision": "ALLOW",
+        "final_reason": "approval_granted_and_capability_allows_call",
+        "approval_status": "approved",
+        "executed": true,
+        "effect_id": "effect:benign_high_risk_send"
+      },
+      {
+        "case_id": "benign_ticket_update",
+        "episode_id": "allowed_ticket_update",
+        "initial_decision": "ALLOW",
+        "initial_reason": "capability_allows_call",
+        "final_decision": "ALLOW",
+        "final_reason": "capability_allows_call",
+        "approval_status": "not_requested",
+        "executed": true,
+        "effect_id": "effect:benign_ticket_update"
       }
     ]
   },
@@ -253,10 +726,16 @@
     "python_version": "3.12.14",
     "fixture_schema": "runtime-policy-fixtures/v1",
     "suite_id": "reference-policy-guard-v1",
+    "execution_semantics": {
+      "case_order": "ordinal_ascending",
+      "state_reset": "per_episode",
+      "guard_state": "shared_within_episode",
+      "executor_state": "shared_within_episode"
+    },
     "fixture_sha256": {
-      "policy": "5f9c0f44cd1532a314c4627b3f0ac5f38a1a1a613b9876032f561d5072f1bc3e",
-      "cases": "73f78b4e46bff7071bbefde9a4679cbe948ae6fc109fe0a4d83d4f341946eab2",
-      "runner": "edd253beeea739489c799aadf1439313e330a9b746f3daa8c4e6ab96c0871d25"
+      "policy": "4c65ad704ddbff4cbf76db206d07d5a97848d08d580feb37f030059c79a2d66c",
+      "cases": "5ef576474caf74b25d67f13ea81fe091b6c78adcfc5c7d083228e7036fa3d0cf",
+      "runner": "6b2429dcdc4ff24b7033904dfa7d33afabd8be90af0267a31123bd295c1a470a"
     }
   }
 }

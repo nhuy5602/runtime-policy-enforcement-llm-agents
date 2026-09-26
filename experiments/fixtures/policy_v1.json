@@ -4,9 +4,9 @@
   "scope": "offline policy conformance simulation",
   "execution": {
     "case_order": "ordinal_ascending",
-    "state_reset": "per_configuration",
-    "guard_state": "shared_within_configuration",
-    "executor_state": "shared_within_configuration"
+    "state_reset": "per_episode",
+    "guard_state": "shared_within_episode",
+    "executor_state": "shared_within_episode"
   },
   "static_allowlist": [
     "docs.search",

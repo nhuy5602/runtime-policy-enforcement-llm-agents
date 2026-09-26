@@ -19,6 +19,9 @@ jobs:
         run: |
           python -m json.tool experiments/fixtures/policy_v1.json > /dev/null
           python -m json.tool experiments/fixtures/cases_v1.json > /dev/null
+      - name: Check simulator syntax
+        run: |
+          python -m py_compile experiments/policy_guard_sim.py
       - name: Run policy conformance self test
         run: |
           python experiments/policy_guard_sim.py --self-test --output /tmp/policy_guard_results.json
