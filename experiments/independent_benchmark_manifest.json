@@ -34,6 +34,15 @@
       "drift_mode_env": "AGENTDOJO_ATTESTATION_DRIFT_MODE",
       "adapter_module": "experiments/agentdojo_attestation_adapter.py",
       "module_to_load": "experiments.agentdojo_attestation_adapter",
+      "contract_migration": {
+        "module": "experiments/agentdojo_contract_migration.py",
+        "module_to_load": "experiments.agentdojo_contract_migration",
+        "manifest": "experiments/fixtures/agentdojo_contract_v0_to_v1.json",
+        "manifest_sha256": "226E162E2B31425D612F95C937CC938CEFC208DD3C97EA20552264C800A0B2F8",
+        "activation_env": "AGENTDOJO_CONTRACT_MANIFEST",
+        "audit_env": "AGENTDOJO_CONTRACT_AUDIT_PATH",
+        "scope": "name-only, semantics-preserving Workspace registry control; not a security result"
+      },
       "required_metadata": [
         "model_id_and_revision",
         "provider",
@@ -48,6 +57,8 @@
         "defense_config",
         "attack_config",
         "adapter_revision",
+        "contract_migration_manifest_sha256",
+        "contract_migration_witness",
         "workspace_snapshot_sha256"
       ],
       "result_status": "not_run",

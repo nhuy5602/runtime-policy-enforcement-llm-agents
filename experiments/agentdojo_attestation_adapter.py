@@ -5,8 +5,8 @@ AgentDojo imports its ``ToolsExecutor`` class before loading modules supplied by
 reference used by ``AgentPipeline.from_config``.  The replacement keeps
 AgentDojo's tool-result message shape, but executes a tool only when:
 
-1. the explicit ``AGENTDOJO_ATTESTATION_ALLOWLIST`` names the tool (or is the
-   explicit ``*`` opt-in);
+1. the explicit ``AGENTDOJO_ATTESTATION_ALLOWLIST`` names the stable policy
+   identity of the tool (or is the explicit ``*`` opt-in);
 2. approval-gated tools are explicitly approved with
    ``AGENTDOJO_ATTESTATION_APPROVE=1``; and
 3. the project's ``AttestationEngine`` verifies the argument-level effect and
@@ -78,6 +78,24 @@ def _policy_decision(tool_name: str) -> tuple[str, str]:
     if tool_name in _csv_env(APPROVAL_ENV) and os.environ.get(APPROVE_ENV) != "1":
         return "REQUIRE_APPROVAL", "explicit_approval_required"
     return "ALLOW", "explicit_allowlist_match"
+
+
+def _canonical_policy_tool_name(exposed_name: str) -> str:
+    """Use the v0 policy identity when a reviewed v0-to-v1 contract is active.
+
+    The runtime still dispatches the v1 name exposed to the model.  Keeping the
+    policy identity separate makes the allowlist stable across the controlled
+    name-only migration and leaves an auditable raw-vs-policy name pair.
+    """
+
+    manifest_path = os.environ.get("AGENTDOJO_CONTRACT_MANIFEST", "").strip()
+    if not manifest_path:
+        return exposed_name
+    try:
+        from agentdojo_contract_migration import canonical_tool_name, load_contract
+    except ModuleNotFoundError:  # pragma: no cover - package import from repo root
+        from experiments.agentdojo_contract_migration import canonical_tool_name, load_contract
+    return canonical_tool_name(exposed_name, load_contract(Path(manifest_path)))
 
 
 def _jsonable(value: Any) -> Any:
@@ -175,6 +193,7 @@ class _RuntimeAdapter:
 def _audit(
     *,
     tool_name: str,
+    policy_tool_name: str | None = None,
     decision: str,
     reason: str,
     result: Any | None = None,
@@ -193,6 +212,7 @@ def _audit(
         {
             "schema_version": POLICY_VERSION,
             "tool": tool_name,
+            "policy_tool": policy_tool_name or tool_name,
             "decision": decision,
             "reason": reason,
             "result_digest": result_digest,
@@ -269,6 +289,26 @@ def _install_agentdojo_patch() -> bool:
             tool_results = []
             for tool_call in tool_calls:
                 name = str(tool_call.function)
+                try:
+                    policy_name = _canonical_policy_tool_name(name)
+                except Exception as error:
+                    detail = f"runtime_attestation:deny:contract_error:{type(error).__name__}"
+                    _audit(
+                        tool_name=name,
+                        decision="DENY",
+                        reason="contract_error",
+                        error=detail,
+                    )
+                    tool_results.append(
+                        ChatToolResultMessage(
+                            role="tool",
+                            content=[text_content_block_from_string("")],
+                            tool_call_id=tool_call.id,
+                            tool_call=tool_call,
+                            error=detail,
+                        )
+                    )
+                    continue
                 args = dict(tool_call.args or {})
                 for key, value in list(args.items()):
                     if isinstance(value, str) and is_string_list(value):
@@ -306,10 +346,16 @@ def _install_agentdojo_patch() -> bool:
                     )
                     continue
 
-                decision, reason = _policy_decision(name)
+                decision, reason = _policy_decision(policy_name)
                 if decision != "ALLOW":
                     error = f"runtime_attestation:{decision.lower()}:{reason}"
-                    _audit(tool_name=name, decision=decision, reason=reason, error=error)
+                    _audit(
+                        tool_name=name,
+                        policy_tool_name=policy_name,
+                        decision=decision,
+                        reason=reason,
+                        error=error,
+                    )
                     tool_results.append(
                         ChatToolResultMessage(
                             role="tool",
@@ -325,9 +371,9 @@ def _install_agentdojo_patch() -> bool:
                     policy_version=POLICY_VERSION,
                     task_id=session,
                     session_id=session,
-                    tool=name,
+                    tool=policy_name,
                     operation="invoke",
-                    resource=name,
+                    resource=policy_name,
                     destination="",
                     arguments=args,
                 )
@@ -347,6 +393,7 @@ def _install_agentdojo_patch() -> bool:
                         error = f"runtime_attestation:aborted:{attested.reason}"
                         _audit(
                             tool_name=name,
+                            policy_tool_name=policy_name,
                             decision="DENY",
                             reason="attestation_abort",
                             error=error,
@@ -372,6 +419,7 @@ def _install_agentdojo_patch() -> bool:
                     _copy_environment_into(env, staged_env)
                     _audit(
                         tool_name=name,
+                        policy_tool_name=policy_name,
                         decision="ALLOW",
                         reason=reason,
                         result=adapter.result,
@@ -397,7 +445,13 @@ def _install_agentdojo_patch() -> bool:
                 except Exception as error:  # fail closed at the tool boundary
                     detail = (adapter.error if adapter is not None else None) or type(error).__name__
                     text = f"runtime_attestation:adapter_error:{detail}"
-                    _audit(tool_name=name, decision="DENY", reason="adapter_error", error=text)
+                    _audit(
+                        tool_name=name,
+                        policy_tool_name=policy_name,
+                        decision="DENY",
+                        reason="adapter_error",
+                        error=text,
+                    )
                     tool_results.append(
                         ChatToolResultMessage(
                             role="tool",

@@ -1,6 +1,7 @@
 import importlib.util
 import os
 import unittest
+from pathlib import Path
 
 try:
     from experiments import agentdojo_attestation_adapter as adapter
@@ -41,6 +42,25 @@ class AgentDojoAttestationAdapterTests(unittest.TestCase):
         nested = {"outer": {"function": "forbidden", "args": {}}}
         self.assertTrue(adapter._contains_nested_tool_call(nested))
         self.assertFalse(adapter._contains_nested_tool_call({"outer": {"value": 1}}))
+
+    def test_active_contract_keeps_policy_identity_at_v0(self):
+        previous = os.environ.get("AGENTDOJO_CONTRACT_MANIFEST")
+        fixture = Path(__file__).with_name("fixtures") / "agentdojo_contract_v0_to_v1.json"
+        os.environ["AGENTDOJO_CONTRACT_MANIFEST"] = str(fixture)
+        try:
+            self.assertEqual(
+                adapter._canonical_policy_tool_name("v1_send_email"),
+                "send_email",
+            )
+            self.assertEqual(
+                adapter._canonical_policy_tool_name("unknown_tool"),
+                "unknown_tool",
+            )
+        finally:
+            if previous is None:
+                os.environ.pop("AGENTDOJO_CONTRACT_MANIFEST", None)
+            else:
+                os.environ["AGENTDOJO_CONTRACT_MANIFEST"] = previous
 
     @unittest.skipUnless(
         importlib.util.find_spec("agentdojo") is not None,

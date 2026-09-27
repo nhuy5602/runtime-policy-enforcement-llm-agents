@@ -60,6 +60,27 @@ def load_manifest(path: Path = DEFAULT_MANIFEST) -> dict[str, Any]:
                 raise ValueError(f"benchmark {name} has an invalid data path")
             if not isinstance(digest, str) or not HEX64.fullmatch(digest):
                 raise ValueError(f"benchmark {name} has an invalid data SHA256")
+        if name == "agentdojo":
+            contract = spec.get("contract_migration")
+            if not isinstance(contract, dict):
+                raise ValueError("AgentDojo requires a reviewed contract_migration object")
+            for field in ("module", "module_to_load", "manifest", "activation_env", "audit_env"):
+                value = contract.get(field)
+                if not isinstance(value, str) or not value.strip():
+                    raise ValueError(f"AgentDojo contract_migration.{field} must be non-empty")
+            for field in ("module", "manifest"):
+                if Path(contract[field]).is_absolute():
+                    raise ValueError(f"AgentDojo contract_migration.{field} must be repo-relative")
+            expected_digest = contract.get("manifest_sha256")
+            if not isinstance(expected_digest, str) or not HEX64.fullmatch(expected_digest):
+                raise ValueError("AgentDojo contract_migration.manifest_sha256 must be SHA-256")
+            contract_module = ROOT / contract["module"]
+            contract_manifest = ROOT / contract["manifest"]
+            if not contract_module.is_file() or not contract_manifest.is_file():
+                raise ValueError("AgentDojo contract migration artifact is missing")
+            actual_digest = hashlib.sha256(contract_manifest.read_bytes()).hexdigest().upper()
+            if actual_digest != expected_digest.upper():
+                raise ValueError("AgentDojo contract migration manifest digest mismatch")
     return payload
 
 
@@ -208,6 +229,7 @@ def build_command(
                 spec["attack"],
             ]
         )
+        command.extend(["--module-to-load", spec["contract_migration"]["module_to_load"]])
         if track == "attested":
             command.extend(["--module-to-load", spec["module_to_load"]])
         if user_task:
@@ -244,6 +266,18 @@ def smoke(manifest: dict[str, Any], source_root: Path | None) -> dict[str, Any]:
         if name == "agentdojo":
             status["adapter_module"] = spec["adapter_module"]
             status["adapter_module_exists"] = (ROOT / spec["adapter_module"]).exists()
+            contract = spec["contract_migration"]
+            contract_manifest = ROOT / contract["manifest"]
+            status["contract_migration_module"] = contract["module"]
+            status["contract_migration_module_exists"] = (ROOT / contract["module"]).exists()
+            status["contract_migration_manifest"] = contract["manifest"]
+            status["contract_migration_manifest_sha256"] = (
+                sha256(contract_manifest) if contract_manifest.exists() else None
+            )
+            status["contract_migration_manifest_ok"] = (
+                status["contract_migration_manifest_sha256"]
+                == contract["manifest_sha256"].upper()
+            )
             status["package_importable_in_current_python"] = importlib.util.find_spec("agentdojo") is not None
             status["credentials_present"] = bool(
                 os.environ.get(spec["base_url_env"]) and os.environ.get(spec["api_key_env"])
@@ -342,6 +376,13 @@ def main() -> int:
     # cp1252 consoles cannot turn a diagnostic into a benchmark failure.
     run_env.setdefault("PYTHONUTF8", "1")
     run_env.setdefault("PYTHONIOENCODING", "utf-8")
+    if args.benchmark == "agentdojo":
+        contract = spec["contract_migration"]
+        run_env[contract["activation_env"]] = str((ROOT / contract["manifest"]).resolve())
+        run_env.setdefault(
+            contract["audit_env"],
+            str(args.output.resolve() / "contract_migration_witness.json"),
+        )
     if args.benchmark == "agentdojo" and args.track == "attested":
         run_env.setdefault(
             "AGENTDOJO_ATTESTATION_AUDIT_PATH",

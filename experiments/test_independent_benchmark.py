@@ -29,6 +29,8 @@ class IndependentBenchmarkManifestTests(unittest.TestCase):
             "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
         )
         self.assertTrue(report["benchmarks"]["agentdojo"]["adapter_module_exists"])
+        self.assertTrue(report["benchmarks"]["agentdojo"]["contract_migration_module_exists"])
+        self.assertTrue(report["benchmarks"]["agentdojo"]["contract_migration_manifest_ok"])
         self.assertEqual(
             manifest["benchmarks"]["agentdojo"]["environment"]["lockfile_sha256"],
             "2B67DA5479A37727CBDCB39C57A9070F9264F3350237173B3EAE21CC12ED215A",
@@ -46,6 +48,8 @@ class IndependentBenchmarkManifestTests(unittest.TestCase):
         self.assertIn("OPENAI_COMPATIBLE", rendered)
         self.assertIn("qwen/qwen3-8b", rendered)
         self.assertIn("module-to-load", rendered)
+        self.assertIn("experiments.agentdojo_contract_migration", rendered)
+        self.assertIn("experiments.agentdojo_attestation_adapter", rendered)
         self.assertNotIn("RUNPOD_API_KEY", rendered)
 
         locked_command = build_command(
@@ -70,7 +74,8 @@ class IndependentBenchmarkManifestTests(unittest.TestCase):
         self.assertIn("user_task_0", smoke_rendered)
         self.assertIn("--injection-task", smoke_rendered)
         self.assertIn("injection_task_0", smoke_rendered)
-        self.assertNotIn("module-to-load", smoke_rendered)
+        self.assertIn("experiments.agentdojo_contract_migration", smoke_rendered)
+        self.assertNotIn("experiments.agentdojo_attestation_adapter", smoke_rendered)
 
         baseline_command = build_command(
             "agentdojo",
@@ -80,7 +85,8 @@ class IndependentBenchmarkManifestTests(unittest.TestCase):
             track="baseline",
         )
         baseline_rendered = json.dumps(baseline_command)
-        self.assertNotIn("module-to-load", baseline_rendered)
+        self.assertIn("experiments.agentdojo_contract_migration", baseline_rendered)
+        self.assertNotIn("experiments.agentdojo_attestation_adapter", baseline_rendered)
         self.assertIn("OPENAI_COMPATIBLE", baseline_rendered)
 
         injec_command = build_command(

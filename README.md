@@ -48,6 +48,7 @@ experiments/
   live_trace_scorer.py      Deterministic scorer for frozen live LLM traces
   test_live_trace_scorer.py Regression tests for causal live scoring
   adapter_attestation.py    Staged adapter/state attestation harness
+  agentdojo_contract_migration.py  Fail-closed v0-to-v1 name-only registry control
   benchmark_outputs/       198-case offline trace benchmark, CSV/JSON/Markdown/SVG
   openai_trace_runner.py   Optional live post-LLM trace generator with carrier/prompt hashes; no tool execution
   live_trace_output.json   Last generic live-track status
@@ -232,6 +233,16 @@ manifest under `qa/`. The current one-task artifact is a pilot only: both
 tracks completed with 100% utility and 0% injection security, so it is
 evidence of end-to-end execution and a reproducible failure case—not a Q2
 efficacy result.
+
+Both paired tracks now load the reviewed
+`experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
+serializes its tool schemas. It migrates all 24 pinned Workspace function names
+from `v0` to distinct `v1_*` names while preserving their implementation and
+parameter schemas, then emits a name-independent hash witness. The baseline
+omits only the attestation adapter; it does not omit this controlled migration.
+The local pinned-runtime check is recorded in
+`experiments/agentdojo_contract_migration_validation_20260927.json`. This is a
+feasibility/control validation, not a security or LLM-efficacy result.
 
 The expected component result is that the policy guard prevents all four fixed forbidden effects, automatically completes two benign calls, and completes one benign high-risk call only after a simulated approval. The expanded harness evaluates 198 deterministic post-LLM traces and deliberately reports alias overblocking and adapter-mismatch residuals. Both are conformance/stress results, not attack-success-rate results for an LLM.
 

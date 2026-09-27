@@ -1,0 +1,49 @@
+{
+  "schema_version": "agentdojo-tool-contract-migration/v1",
+  "purpose": "A name-only, semantics-preserving v0-to-v1 tool-registry migration for the pinned AgentDojo Workspace suite. It is an instrumentation/control artifact, not an attack, defense, or LLM-efficacy result.",
+  "source": {
+    "project": "AgentDojo",
+    "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+    "benchmark_version": "v1.2.2",
+    "suite": "workspace"
+  },
+  "migration": {
+    "kind": "function-name-only",
+    "v0_to_v1": {
+      "add_calendar_event_participants": "v1_add_calendar_event_participants",
+      "append_to_file": "v1_append_to_file",
+      "cancel_calendar_event": "v1_cancel_calendar_event",
+      "create_calendar_event": "v1_create_calendar_event",
+      "create_file": "v1_create_file",
+      "delete_email": "v1_delete_email",
+      "delete_file": "v1_delete_file",
+      "get_current_day": "v1_get_current_day",
+      "get_day_calendar_events": "v1_get_day_calendar_events",
+      "get_draft_emails": "v1_get_draft_emails",
+      "get_file_by_id": "v1_get_file_by_id",
+      "get_received_emails": "v1_get_received_emails",
+      "get_sent_emails": "v1_get_sent_emails",
+      "get_unread_emails": "v1_get_unread_emails",
+      "list_files": "v1_list_files",
+      "reschedule_calendar_event": "v1_reschedule_calendar_event",
+      "search_calendar_events": "v1_search_calendar_events",
+      "search_contacts_by_email": "v1_search_contacts_by_email",
+      "search_contacts_by_name": "v1_search_contacts_by_name",
+      "search_emails": "v1_search_emails",
+      "search_files": "v1_search_files",
+      "search_files_by_filename": "v1_search_files_by_filename",
+      "send_email": "v1_send_email",
+      "share_file": "v1_share_file"
+    },
+    "invariants": [
+      "Every Workspace v0 function is mapped exactly once to a distinct v1 name.",
+      "The implementation, description, parameter schema, dependencies, and return contract are preserved; only the externally exposed function name changes.",
+      "The runtime must reject an unknown or mixed v0/v1 registry rather than silently applying a partial migration.",
+      "Each applied registry writes a hash witness showing whether name-independent semantic descriptors were preserved."
+    ]
+  },
+  "non_claims": [
+    "This fixture does not simulate arbitrary adapter drift, a malicious tool, or a real external side effect.",
+    "A successful run using this fixture is not evidence of prompt-injection robustness, defense efficacy, or Q2-level empirical performance."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "agentdojo-contract-migration-local-validation/v1",
+  "recorded_on": "2026-09-27",
+  "status": "pass",
+  "validation_scope": "local, non-billable integration against the pinned AgentDojo Workspace runtime; no LLM request or external tool execution",
+  "agentdojo": {
+    "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+    "benchmark_version": "v1.2.2",
+    "suite": "workspace"
+  },
+  "contract_fixture": {
+    "path": "experiments/fixtures/agentdojo_contract_v0_to_v1.json",
+    "sha256": "226E162E2B31425D612F95C937CC938CEFC208DD3C97EA20552264C800A0B2F8"
+  },
+  "result": {
+    "tool_count": 24,
+    "implementation_objects_preserved": true,
+    "semantic_schema_preserved": true,
+    "openai_tool_schema_hook_exposes_v1_names": true,
+    "attested_dispatch_records_v1_runtime_and_v0_policy_name": true,
+    "model_request_sent": false,
+    "before_exposed_registry_sha256": "3f89c86b2b087ce10225e78062458882e2d7c806c30c94ce3b13f1fba55accb6",
+    "after_exposed_registry_sha256": "6ddb3df970a5670dd2d3773a46daa3d5e39152555d88a67e9cc752488bea15f8",
+    "semantic_registry_sha256": "709ab78f0c6bd6ff5508d0cab2a782f84602d705849b15a50f93fa28eba0232a"
+  },
+  "non_claims": [
+    "This validates only name-independent schema preservation for the reviewed 24-tool registry.",
+    "It is not an LLM benchmark, an attack/defense result, a prompt-injection result, or evidence of security efficacy."
+  ]
+}
