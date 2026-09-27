@@ -1,0 +1,22 @@
+{
+  "scope": "LLM trace generation only; no real tool execution",
+  "model": "gpt-4o-mini",
+  "api_base_url": "https://api.openai.com/v1",
+  "generated_at": "2026-09-26T13:05:21.000140+00:00",
+  "parameters": {
+    "seed": 20260926,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_output_tokens": 256,
+    "timeout": 90
+  },
+  "policy_sha256": "4c65ad704ddbff4cbf76db206d07d5a97848d08d580feb37f030059c79a2d66c",
+  "cases_sha256": "5ef576474caf74b25d67f13ea81fe091b6c78adcfc5c7d083228e7036fa3d0cf",
+  "runner_sha256": "5e2a225b0e8669a89fef6b0b93cb100e10a0fbf7358e996e7d4e754380a30156",
+  "cases": [],
+  "auth_probe": {
+    "http_status": 401,
+    "request_id": "d3143cb1-7877-45d8-aa11-621a536622d4"
+  },
+  "status": "blocked_http_401"
+}

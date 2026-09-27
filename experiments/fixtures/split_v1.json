@@ -1,0 +1,18 @@
+{
+  "manifest_version": "runtime-policy-split/v1",
+  "suite_id": "reference-policy-guard-v1",
+  "split_unit": "semantic_source_component",
+  "purpose": "Locked source-level split for leakage-aware replay; this is not an independent LLM benchmark.",
+  "development_group_ids": [
+    "benign_read_public",
+    "capability_replay",
+    "injection_http_exfiltration"
+  ],
+  "test_group_ids": [
+    "benign_high_risk_send",
+    "injection_email_exfiltration",
+    "benign_ticket_update",
+    "injection_unauthorized_ticket"
+  ],
+  "leakage_rule": "A canonical tool-operation-resource-destination signature must not occur in both selected splits."
+}

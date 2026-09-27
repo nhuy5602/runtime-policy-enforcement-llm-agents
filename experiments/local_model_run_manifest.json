@@ -1,0 +1,45 @@
+{
+  "manifest_version": "1.0",
+  "track": "local_openai_compatible_smoke",
+  "status": "template_pending_execution",
+  "purpose": "Generate post-LLM traces without executing real tools; score with the deterministic policy harness.",
+  "model": {
+    "source": "Qwen/Qwen3-4B-GGUF",
+    "reference": "Qwen/Qwen3-4B-GGUF:Q4_K_M",
+    "quantization": "Q4_K_M",
+    "expected_download_gb": 2.5,
+    "revision": "record the Hugging Face commit SHA after download"
+  },
+  "runtime": {
+    "name": "llama.cpp",
+    "installation": "winget install --id ggml.llamacpp -e --accept-source-agreements --accept-package-agreements",
+    "launch": "llama-server -hf Qwen/Qwen3-4B-GGUF:Q4_K_M --host 127.0.0.1 --port 8080 --jinja -c 8192 -t 8",
+    "endpoint": "http://127.0.0.1:8080/v1",
+    "api_style": "chat_completions",
+    "runtime_version": "0.5.0-dev (build b11193, commit 4e7481175)"
+  },
+  "hardware": {
+    "platform": "Windows",
+    "acceleration": "CPU fallback unless a supported backend is explicitly configured",
+    "notes": "This host has no NVIDIA CUDA device; use a Linux CUDA host for the main 8B efficacy track."
+  },
+  "sampling": {
+    "seed": 20260926,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_output_tokens": 256
+  },
+  "runner": {
+    "command": "python experiments/openai_trace_runner.py --api-style chat --base-url http://127.0.0.1:8080/v1 --model Qwen/Qwen3-4B-GGUF:Q4_K_M --max-cases 7 --seed 20260926 --temperature 0 --top-p 1 --max-output-tokens 256 --output experiments/live_trace_qwen3_4b_local.json",
+    "auth": "loopback endpoint; no OPENAI_API_KEY required",
+    "raw_trace_policy": "retain redacted raw model text and hashes; never execute proposed tools"
+  },
+  "record_after_run": [
+    "llama --version",
+    "model revision or GGUF SHA256",
+    "CPU model and RAM",
+    "wall-clock latency per case",
+    "runner SHA256",
+    "cases/policy SHA256"
+  ]
+}

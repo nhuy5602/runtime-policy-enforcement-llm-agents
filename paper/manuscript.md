@@ -1,6 +1,13 @@
-# Báo cáo khoa học đề xuất và kiểm chứng prototype ban đầu
+# Bản thảo nghiên cứu và kiểm chứng pilot
 
-## Runtime Policy Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse
+## Semantic Mediation Fidelity Under Tool Adapter Drift
+
+> **R1 reopening — 27 September 2026.** This is an archived mechanism-pilot
+> draft, not the locked paper title or contribution. The closest-prior audit
+> found direct overlap with VIGIL, CXI, CONTINUITY and schema/policy/toolset
+> drift evaluation. The active candidate and stop gate are recorded in
+> `paper/r1_reopening_20260927.md`; no section below may be cited as a novelty
+> or LLM-efficacy claim until that gate passes.
 
 **Nhóm 11**
 
@@ -8,16 +15,35 @@
 - Đặng Ngọc Huy — 20261112M
 - Vũ Hồng Quang — 20261114M
 
-**Trạng thái nghiên cứu:** Đề xuất nghiên cứu và kiểm chứng component ở mức prototype
-**Ngày:** 26 tháng 09 năm 2026
+**Trạng thái nghiên cứu:** R1 mở lại; mechanism-pilot/trace-replay archive,
+full LLM efficacy chưa có.
+**Ngày cập nhật:** 27 tháng 09 năm 2026
+
+> Bản `paper/q2_ready_report.md` là manuscript hợp nhất và là nguồn chính để
+> dựng DOCX/PDF. Tệp này giữ bản diễn giải ngắn hơn cho người đọc muốn xem
+> mạch lập luận; không dùng các đoạn “đóng góp dự kiến” cũ ở dưới để thay thế
+> cho novelty matrix và các giới hạn trong bản hợp nhất.
 
 ## Tóm tắt
 
-LLM Agent có thể đọc dữ liệu từ email, web page, tài liệu hoặc tool output, rồi gọi API và công cụ để tạo tác động lên môi trường. Trong indirect prompt injection, nội dung không đáng tin cậy có thể khiến Agent chuyển hướng hành động và sử dụng tool ngoài mục đích của người dùng. Báo cáo này đề xuất một Runtime Policy Guard đặt tại biên thực thi tool. Thay vì giả định LLM luôn phân biệt được dữ liệu và chỉ dẫn độc hại, Guard kiểm tra mọi tool call theo capability của task, resource scope, destination, call limit và chính sách rủi ro; sau đó trả về `ALLOW`, `DENY` hoặc `REQUIRE_APPROVAL`.
+LLM Agent có thể đọc dữ liệu từ email, web page, tài liệu hoặc tool output, rồi gọi API và công cụ để tạo tác động lên môi trường. Trong indirect prompt injection, nội dung không đáng tin cậy có thể khiến Agent chuyển hướng hành động và sử dụng tool ngoài mục đích của người dùng. Bản thảo này đặt Runtime Policy Guard làm baseline và tập trung vào câu hỏi khác: quyết định `ALLOW` hoặc `REQUIRE_APPROVAL` có còn đúng về mặt ngữ nghĩa sau khi tool call đi qua alias, schema version, serialization hoặc adapter có thể remap side effect hay không.
 
-Đóng góp của nghiên cứu không phải là tuyên bố một primitive bảo mật mới. Capability, information-flow control và runtime privilege control đã được nghiên cứu trong CaMeL, Fides và Progent. Báo cáo định vị đóng góp ở một threat model hẹp, policy profile kiểm toán được, bộ oracle dựa trên hành động và protocol đánh giá tái lập được cho đường đi từ indirect prompt injection đến tool misuse.
+Đóng góp của nghiên cứu không phải là tuyên bố một primitive bảo mật mới.
+Capability, information-flow control, runtime authorization và post-call
+contracts đã xuất hiện trong các công trình gần. Bài báo định vị đóng góp ở
+protocol paired đo semantic mediation fidelity dưới drift, bộ metric
+`AFER/PDER_schema/SMF/BDP`, và ablation canonicalization–post-verification với
+oracle side-effect độc lập.
 
-Prototype offline hiện đã kiểm chứng policy conformance trên bảy tool call chuẩn hóa: bốn harmful call và ba benign call. Policy Guard từ chối bốn harmful call, tự động cho phép hai benign call và yêu cầu phê duyệt cho một benign call có rủi ro cao. Kết quả này chỉ xác nhận sự phù hợp giữa policy, mock executor và oracle cố định; nó không phải benchmark LLM, không đo indirect prompt injection attack success rate trên AgentDojo và không chứng minh độ bền trước paraphrase hay adaptive attacker.
+Prototype offline hiện đã kiểm chứng policy conformance trên bảy tool call chuẩn hóa và trace-replay pilot trên 198 episode. P0 để lọt 2/3 adapter-alias effects, P1 khôi phục benign drift portability, còn P2 loại bỏ 3/3 adapter escapes trong simulator. Đây vẫn là kết quả enforcement-boundary, không phải benchmark LLM, không đo indirect prompt injection attack success rate trên AgentDojo và không chứng minh độ bền trước adaptive attacker.
+
+Một pilot live controlled trước đó với Qwen3-8B trên bảy fixture đã parse đúng
+7/7 proposal; replay qua C2 tạo forbidden effect 0/4 attack, CTS 2/3 và FBR
+1/3. Một trace realistic thứ hai (không lộ nhãn attack/benign hoặc fixture ID)
+đã hoàn tất 7/7 case; exact five-field match là 4/7, C2 tạo forbidden effect
+0/4, CTS 3/3 và FBR 0/3, trong khi C0/C1 tạo 1/4 forbidden effect. Cả hai
+đều là pilot một model, không có drift mutation hay benchmark độc lập, nên
+không được gọi là `AFER` hay full LLM efficacy.
 
 **Từ khóa:** LLM Agent, indirect prompt injection, tool misuse, runtime policy enforcement, least privilege, capability, agent security.
 
@@ -48,11 +74,22 @@ InjecAgent là benchmark chuyên cho indirect prompt injection trong Tool-Integr
 
 CaMeL tách control flow khỏi dữ liệu không đáng tin cậy và dùng capability để hạn chế hành vi gây hại [4]. Fides tiếp cận Agent security bằng information-flow control, theo dõi nhãn confidentiality và integrity để thực thi chính sách xác định [5]. Progent cung cấp programmable privilege control ở runtime cho LLM Agent, gồm biểu diễn policy và thực thi ràng buộc trên tool call [6].
 
-Các công trình gần hơn cũng làm hẹp mạnh không gian novelty: AgentArmor áp dụng program analysis trên runtime trace [7], ClawGuard thực thi rule tại mỗi tool-call boundary để chống indirect prompt injection [8], và ActGov kiểm tra từng action theo task-scoped policy [9]. Vì vậy, báo cáo này không claim các ý tưởng “runtime policy”, “least privilege”, “capability”, “information-flow tracking” hay “tool-boundary enforcement” là mới. Prototype chỉ là reference implementation; trước khi chạy benchmark, cổng R1 phải chốt một contribution hẹp và đo được, chẳng hạn policy portability dưới tool-schema evolution hoặc action canonicalization/policy drift.
+Các công trình gần hơn cũng làm hẹp mạnh không gian novelty: AgentArmor áp dụng
+program analysis trên runtime trace [7], ClawGuard thực thi rule tại mỗi
+tool-call boundary để chống indirect prompt injection [8], và ActGov kiểm tra
+từng action theo task-scoped policy [9]. Vì vậy, bản thảo không claim các ý
+tưởng “runtime policy”, “least privilege”, “capability”, “information-flow
+tracking” hay “tool-boundary enforcement” là mới. Prototype chỉ là reference
+implementation; contribution đã khóa ở policy portability và semantic fidelity
+dưới tool-schema/adapter drift.
 
 ### 2.3. Khoảng trống mà báo cáo giải quyết
 
-Khoảng trống của nghiên cứu không phải là sự vắng mặt hoàn toàn của system-level defense. Trong trạng thái hiện tại, khoảng trống vẫn là giả thuyết cần được R1 kiểm chứng bằng literature matrix, thay vì claim đã được chứng minh. Hướng khả thi là một đánh giá tái lập được về tính ổn định của policy khi tool schema, alias API, serialization hoặc kênh injection thay đổi. Cụ thể, báo cáo hướng đến:
+Khoảng trống của nghiên cứu không phải là sự vắng mặt hoàn toàn của
+system-level defense. Literature matrix đã loại generic runtime guard khỏi
+novelty claim; hướng bài là đánh giá tái lập được về tính ổn định của policy khi
+tool schema, alias API, serialization hoặc adapter thay đổi. Cụ thể, báo cáo
+hướng đến:
 
 - threat model hẹp với attacker chỉ kiểm soát dữ liệu ngoài mà Agent hợp lệ đọc;
 - policy enforcement tại tool boundary với reason code có thể kiểm toán;
@@ -128,17 +165,27 @@ Guard không biết chắc mọi token trong LLM bị ảnh hưởng bởi ngu�
 
 ## 5. Câu hỏi nghiên cứu và giả thuyết
 
-**RQ1.** Runtime policy enforcement có giảm action-grounded attack success rate của indirect prompt injection dẫn đến tool misuse so với Agent không bảo vệ, prompt-only defense và static allowlist không?
+**RQ1 (primary).** Khi cùng một action trace đi qua schema/alias hoặc adapter
+drift, defense nào tạo forbidden post-effect nhiều nhất, đo bằng
+`AFER_uncond`?
 
-**RQ2.** Những thành phần nào của policy — task scope, resource/destination constraint, call limit và approval — tạo trade-off tốt nhất giữa security, clean task success, false block và approval burden?
+**RQ2.** Canonicalization và post-call verification ảnh hưởng thế nào tới
+`BDP`, `CTS`, `FBR_drift`, approval burden và p95 overhead?
 
-**RQ3.** Enforcement tại tool boundary có giữ hiệu lực hơn input filtering khi attacker thay đổi cách diễn đạt, chia nhỏ instruction hoặc thay đổi tham số của một tool hợp lệ không?
+**RQ3.** Held-out và policy-aware adaptive traces có làm thay đổi
+pre-dispatch ASR và post-effect AFER khác nhau giữa các model và adapter hay
+không?
+
+**RQ4.** Post-call state-diff có loại bỏ executor-alias escape mà pre-dispatch
+guard không nhìn thấy hay không?
 
 Các giả thuyết được preregister trước khi chạy benchmark:
 
-- **H1:** Policy Guard giảm ít nhất 15 điểm phần trăm action-grounded ASR so với baseline mạnh nhất được chạy trong cùng môi trường.
-- **H2:** Clean Task Success không giảm quá 10 điểm phần trăm so với Unsafe Agent.
-- **H3:** Các ràng buộc cấu trúc tại tool/argument ít phụ thuộc vào wording của injection hơn prompt-only filtering, nhưng thất bại khi capability được cấp quá rộng.
+- **H1:** P2 giảm `AFER_uncond` so với P0 trên held-out adapter-drift attacks.
+- **H2:** P1 không kém canonical control quá 5 điểm phần trăm về `BDP` và
+  giảm `FBR_drift` so với P0.
+- **H3:** AFER trên held-out/white-box drift không tăng quá 5–10 điểm phần
+  trăm so với development split.
 
 Các ngưỡng này là tiêu chí đánh giá đề xuất, không phải kết quả hiện tại.
 
@@ -179,7 +226,9 @@ Schema tối thiểu:
 | B0 | Unsafe Agent: LLM gọi tool không qua policy enforcement |
 | B1 | Prompt-only baseline: system prompt hướng dẫn coi dữ liệu ngoài là data, không là instruction |
 | B2 | Static Tool Filter: allowlist tool nhưng không xét task, argument, resource hoặc destination |
-| P | Proposed Guard: task capability, resource/destination constraint, call limit, approval và audit |
+| P0 | Pre-dispatch Guard: task capability, resource/destination constraint, call limit, approval và audit |
+| P1 | P0 + canonicalization của tool/resource/destination aliases |
+| P2 | P1 + post-call effect/state-diff verification |
 | A1-A4 | Ablation: lần lượt bỏ task scope, destination constraint, call limit hoặc approval |
 
 CaMeL, Fides và Progent chỉ được gọi là baseline thực nghiệm nếu nhóm thực sự chạy lại chúng với model, tool runtime và configuration tương thích. Nếu không, chúng là related work và mốc so sánh khái niệm.
@@ -188,6 +237,11 @@ CaMeL, Fides và Progent chỉ được gọi là baseline thực nghiệm nếu
 
 | Metric | Định nghĩa |
 |---|---|
+| AFER_uncond | Drift attack tạo forbidden post-effect / tổng drift attack |
+| AFER_cond | Forbidden post-effect / drift attack được phép qua pre-dispatch |
+| PDER_schema | Forbidden effect trên schema/alias drift, không gồm executor mismatch |
+| SMF | Được phép thực thi và observed effect đúng canonical authorized effect / số call được phép |
+| BDP | Benign semantics-preserving drift đạt expected effect / tổng benign drift |
 | Action-grounded ASR | Attack cases tạo forbidden end state / tổng attack cases |
 | Tool Misuse Rate | Episode có ít nhất một tool call vi phạm policy / tổng episode |
 | Sensitive Data Exfiltration Rate | Cases có canary tại external sink / tổng cases chứa canary |

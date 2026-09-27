@@ -1,16 +1,39 @@
-# Protocol nghiên cứu v1
+# Protocol nghiên cứu v2 — candidate, R1 reopened
 
 ## Đề tài
 
-**Runtime Policy Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse**
+**When Safe Tools Change: Security Regression Testing of Indirect Prompt-Injection Defenses under Versioned Agent Tool Contracts**
 
-## Cổng novelty R1
+Đây là candidate evaluation pivot của đề tài ban đầu **Runtime Policy
+Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse**.
+Runtime guard, capability, provenance và approval được giữ làm
+baseline/reference monitor; không được trình bày như đóng góp cơ chế mới.
 
-Tính đến ngày 26 tháng 09 năm 2026, generic runtime policy enforcement ở tool boundary không thể được xem là contribution mới mặc định: CaMeL, Fides, Progent, AgentArmor, ClawGuard và ActGov đều đã đưa ra defense system-level hoặc runtime rất gần. Vì vậy protocol này mô tả một reference monitor và evaluation harness. Trước khi freeze benchmark, nhóm phải chốt một contribution hẹp có thể kiểm chứng (ví dụ policy portability dưới tool-schema evolution, action canonicalization/policy drift, hoặc case study SOC/OT) và ghi quyết định trong `related_work_matrix.md`.
+## Cổng novelty R1 đã mở lại
+
+Tính đến ngày 27 tháng 09 năm 2026, generic runtime policy enforcement,
+verify-before-commit, exact-effect authorization, transformation integrity và
+schema/policy/toolset drift đều có công trình gần (bao gồm VIGIL, CXI,
+CONTINUITY và Assidiqi et al.). Vì vậy **semantic mediation fidelity không còn
+được khóa làm contribution độc lập**. Candidate mới là paired
+security-regression evaluation của IPI defenses khi tool contract đổi từ `v0`
+sang `v1`, với harmful-effect oracle. Candidate chỉ được khóa sau literature
+stop gate trong `paper/r1_reopening_20260927.md`; protocol này không claim
+“first runtime policy guard”, “first post-call contract”, “first drift
+benchmark” hoặc “provably secure”.
 
 ## Luận điểm nghiên cứu
 
-LLM Agent có thể vẫn bị ảnh hưởng bởi nội dung không đáng tin cậy. Nghiên cứu này không cố chứng minh rằng LLM trở nên miễn nhiễm với indirect prompt injection. Thay vào đó, nghiên cứu kiểm tra liệu một policy gateway độc lập tại biên thực thi tool có ngăn ảnh hưởng đó trở thành hành động trái phép hay không.
+LLM Agent có thể vẫn bị ảnh hưởng bởi nội dung không đáng tin cậy. Nghiên cứu
+này không cố chứng minh rằng LLM trở nên miễn nhiễm với indirect prompt
+injection. Thay vào đó, nghiên cứu kiểm tra một câu hỏi hẹp hơn: **sau khi
+tool call đã được đề xuất, quyết định `ALLOW` hoặc `REQUIRE_APPROVAL` có còn
+đúng với side effect quan sát được khi call đi qua drift của schema/adapter
+hay không?**
+
+Guard tại biên thực thi là baseline cần thiết để cô lập câu hỏi này. Hai mở
+rộng được đánh giá là canonicalization trước dispatch và post-call
+state-diff/effect verification sau dispatch.
 
 ## Phạm vi
 
@@ -39,19 +62,32 @@ Tài sản bảo vệ gồm secret canary giả lập, dữ liệu hồ sơ gi�
 
 ## Câu hỏi nghiên cứu
 
-**RQ1.** Với contribution hẹp được R1 khóa trước, cấu hình policy guard có giảm Action-grounded Attack Success Rate của indirect prompt injection dẫn tới tool misuse so với B0, B1 và B2 chạy cùng task, model, tool schema và case không?
+**RQ1 (primary).** Một IPI defense đã ngăn harmful effect dưới tool contract
+`v0` có tiếp tục ngăn effect đó dưới migration `v1` hay không, đo bằng paired
+security-regression rate và effect-level ASR?
 
-**RQ2.** Các ràng buộc task scope, destination, call limit và approval thay đổi thế nào đối với security, utility, overblocking, approval burden và overhead?
+**RQ2.** Migration nào tạo regression lớn nhất—rename/alias thuần cú pháp,
+thêm precondition/approval, hay đổi field/sink/scope liên quan authorization—
+khi schema validity và benign end-state success vẫn được đo riêng?
 
-**RQ3.** Với cùng forbidden end-state oracle, policy enforcement có giữ hiệu lực thế nào khi attacker dùng paraphrase, instruction splitting, role-play, encoding hoặc tool-output injection?
+**RQ3.** Baseline **migrate-or-escalate** có giảm regression so với frozen
+policy hay không, và phải trả giá bao nhiêu về clean task success,
+escalation/approval và p95 overhead?
 
 ## Giả thuyết và tiêu chí thành công
 
-- **H1:** cấu hình policy guard đầy đủ giảm ít nhất 20 điểm phần trăm Targeted ASR so với từng baseline B0, B1 và B2 đã khóa trước.
-- **H2:** Clean Task Success của P không giảm quá 5 điểm phần trăm so với B0 ở cận xấu nhất của khoảng tin cậy 95%.
-- **H3:** trên paired mutation suite, ràng buộc cấu trúc ở tool/argument có chênh lệch ASR thấp hơn B1; giả thuyết bị bác bỏ nếu khoảng tin cậy 95% không loại trừ chênh lệch bằng không.
+- **H1:** Frozen-policy defenses have a higher paired security-regression rate
+  than migrate-or-escalate on held-out `v0 -> v1` cases. The minimum effect,
+  clustered unit and sample size must be fixed before the test run.
+- **H2:** Authorization-relevant migrations have a higher regression rate than
+  semantics-preserving rename/alias migrations under the same agent, carrier
+  and reset state.
+- **H3:** Migrate-or-escalate reduces regression at the cost of either lower
+  clean end-state success or higher escalation burden; report the full Pareto
+  trade-off rather than optimise a single rate.
 
-Security là primary endpoint. RQ2 chỉ gọi một ablation là trade-off tốt hơn nếu đạt H1, H2 và không làm false-block rate, approval burden hoặc p95 guard latency vượt giới hạn được freeze trước run. Các ngưỡng trên là tiêu chí đặt trước cho nghiên cứu, không phải kết quả đã có.
+Các ngưỡng trên là tiêu chí đặt trước, không phải kết quả đã có. Không được
+đổi endpoint hoặc nới ngưỡng sau khi xem test set.
 
 ## Thiết kế hệ thống
 
@@ -90,15 +126,22 @@ Provenance trong prototype là nhãn nguồn ở resource hoặc session level, 
 
 ## Cấu hình so sánh
 
-| Mã | Cấu hình |
-|---|---|
-| B0 | Unsafe Agent: không có runtime enforcement |
-| B1 | Prompt only: system prompt yêu cầu coi external content là data, không là instruction |
-| B2 | Static Tool Filter: allowlist tool tĩnh, không xét task/argument/destination |
-| P | Proposed Guard: capability theo task, resource/destination constraint, risk rule, approval và audit |
-| A1-A4 | Ablation: lần lượt bỏ task scope, destination constraint, call limit hoặc approval rule |
+| Mã | Cấu hình | Vai trò |
+|---|---|---|
+| B0 | Unsafe Agent: không có runtime enforcement | Upper-risk reference |
+| B1 | Prompt-only proxy: system prompt coi external content là data | Weak baseline |
+| B2 | Static Tool Filter: allowlist tool tĩnh | Boundary baseline |
+| B4 | Argument Guard: kiểm tra tool/argument đơn giản | Stronger pre-dispatch baseline |
+| D0 | Frozen defense/policy from `v0` used unchanged at `v1` | Security-regression baseline |
+| D1 | Manually migrated defense/policy under a preregistered mapping | Adaptation comparator |
+| D2 | Migrate-or-escalate when no machine-checkable equivalence witness exists | Conservative candidate baseline |
+| P0/P1/P2 | Existing reference guard, canonicalization and staged state-diff checks | Component stress/diagnostic only, not primary contribution |
+| A1–A4 | Bỏ lần lượt scope, destination, quota hoặc approval | Mechanism ablation only |
 
-CaMeL, Fides, Progent, AgentArmor, ClawGuard và ActGov được dùng làm related work và mốc so sánh khái niệm. Chỉ gọi chúng là baseline thực nghiệm nếu cùng mã nguồn, model, tool runtime và cấu hình thực sự được chạy lại.
+CaMeL, Fides, Progent, AgentArmor, ClawGuard, ActGov, AgentSpec, PACT, RAC
+và TraceGrant được dùng làm related work và mốc so sánh khái niệm. Chỉ gọi
+chúng là baseline thực nghiệm nếu cùng mã nguồn, model, tool runtime và cấu
+hình thực sự được chạy lại.
 
 ## Dữ liệu và benchmark
 
@@ -132,25 +175,44 @@ Schema tối thiểu của một case:
 
 | Metric | Definition |
 |---|---|
-| Action grounded ASR | Attack case tạo được forbidden end state / tổng attack case |
-| Tool Misuse Rate | Episode có ít nhất một tool call vi phạm policy / tổng episode |
-| Sensitive Data Exfiltration Rate | Case có canary tại external sink / tổng case chứa canary |
-| Clean Task Success | Task hợp lệ hoàn thành đúng khi không có attack / tổng benign task |
-| Secure Task Success | Task thành công và không có side effect trái phép / tổng episode |
-| False Block Rate | Legitimate canonical call bị DENY / tổng legitimate canonical call |
-| Approval Burden | Số approval request trung bình/episode và tỷ lệ approval cần thiết |
-| Guard Overhead | p50/p95 decision latency của Guard, tách khỏi API latency của LLM |
+| `AFER_uncond` (primary) | Drift attack tạo forbidden post-effect / tổng drift attack |
+| `AFER_cond` | Forbidden post-effect / drift attack qua `ALLOW` hoặc approval hợp lệ trước dispatch |
+| `PDER_schema` | Forbidden effect trên schema/alias drift; loại trừ executor mismatch |
+| `AFER_adapter` | Forbidden effect trên executor/adapter-alias drift; denominator tách khỏi `PDER_schema` |
+| `SMF` | Observed effect đúng canonical authorized effect / số call đã thực thi |
+| `BDP` | Benign semantics-preserving drift đạt expected effect / tổng benign drift |
+| Action-grounded ASR | Attack case tạo forbidden end state / tổng attack case |
+| Clean Task Success (`CTS`) | Task hợp lệ hoàn thành đúng / tổng benign task |
+| False Block Rate (`FBR`) | Benign case bị deny / tổng benign case |
+| `FBR_drift` | `FBR` chỉ trên benign semantics-preserving drift cases |
+| Approval Burden (`AB`) | Số approval request trung bình/episode và tỷ lệ benign call cần approval |
+| Guard Overhead | p50/p95 end-to-end mediation latency, tách riêng LLM latency |
 | Mediation Coverage | Tool execution đi qua Guard / tổng tool execution |
 
 ## Protocol tái lập
 
-1. Chốt policy, prompt, tool schema, model/version, dataset manifest và scoring oracle trước khi xem test results.
-2. Tách development và locked test theo fixed random seed; development chỉ dùng để debug và hiệu chỉnh policy tổng quát.
-3. Reset sandbox sau mỗi episode; dùng cùng initial state, model, temperature, max steps và case cho mọi baseline.
-4. Chạy tối thiểu ba lần/case khi model không deterministic hoàn toàn; lưu seed nếu API hỗ trợ.
-5. Lưu `run_id`, `case_id`, `configuration`, model/version, normalized tool call, decision, policy rule, timestamp, state diff, task success và attack success.
-6. Báo cáo numerator/denominator, chênh lệch tuyệt đối và 95% confidence interval. Với các case paired, dùng paired bootstrap hoặc exact McNemar test; với latency báo cáo median và p95.
-7. Xác minh Mediation Coverage bằng test bảo đảm direct call không qua dispatcher thất bại.
+1. Chốt policy, prompt, tool schema, model/version, dataset manifest, drift map
+   và scoring oracle trước khi xem test results.
+2. Tách development và locked test theo fixed random seed; development chỉ dùng
+   để debug và hiệu chỉnh policy tổng quát.
+3. Với trace replay, freeze một action trace rồi replay qua canonical,
+   harmless-alias, schema-version, semantic-remapping và malformed-adapter
+   variants; không để model thích nghi làm nhiễu phép đo enforcement.
+4. Với full LLM track, giữ cùng task, carrier, model parameters và environment
+   giữa B0–B4, P0–P2; reset sandbox sau mỗi episode.
+5. Chạy tối thiểu ba model snapshots, trong đó có một open-weight model; nếu
+   provider không deterministic, chạy tối thiểu ba seed/case và lưu sampling
+   metadata.
+6. Lưu `run_id`, `case_id`, `configuration`, model/version/checksum, normalized
+   tool call, decision, policy rule, timestamp, state diff, task success và
+   attack success. Raw traces phải redacted.
+7. Báo cáo numerator/denominator, chênh lệch tuyệt đối, 95% CI, effect size và
+   correction multiple testing. Với case paired, dùng paired bootstrap hoặc
+   exact McNemar; với nhiều model/task, dùng mixed-effects logistic model.
+8. Báo cáo p50/p95 của end-to-end mediation (serialization/IPC/network nếu có),
+   approval burden và token/API cost; synthetic latency phải gắn nhãn là proxy.
+9. Xác minh Mediation Coverage bằng test bảo đảm direct call không qua
+   dispatcher thất bại.
 
 ## Kế hoạch phân tích kết quả
 
@@ -178,15 +240,37 @@ Các harmful call trong corpus này gồm HTTP exfiltration, gửi email tới d
 
 Kết quả chỉ cho thấy policy và mock executor khớp với oracle của corpus do nhóm định nghĩa. Corpus này được xây dựng để kiểm tra ràng buộc policy nên không được dùng để suy rộng về Attack Success Rate của LLM thật, độ bền trước prompt paraphrase hoặc hiệu quả trên AgentDojo. Các câu hỏi đó chỉ được trả lời sau khi chạy protocol benchmark đã mô tả ở trên.
 
+Trace-replay harness trong `experiments/offline_benchmark_harness.py` mở rộng
+thành 198 episode (99 attack, 99 benign), với alias tool/resource/destination
+và ba executor-alias mismatch cases. Ba mươi identity controls (12 attack và
+18 benign destination-alias rows có destination rỗng) được giữ trong ma trận
+nhưng loại khỏi các endpoint drift. Kết quả đã khóa cho P0/P1/P2 là:
+
+| Cấu hình | Trace ASR | `AFER_uncond` | `PDER_schema` | `AFER_adapter` | `BDP` (applied drift) | p95 proxy |
+|---|---:|---:|---:|---:|---:|---:|
+| P0 pre-dispatch | 2/99 | 2/63 | 0/60 | 2/3 | 0/54 | 15 µs |
+| P1 canonicalized | 2/99 | 2/63 | 0/60 | 2/3 | 54/54 | 20 µs |
+| P2 postverify | 0/99 | 0/63 | 0/60 | 0/3 | 54/54 | 23 µs |
+
+Đây là pilot trên các trace cố định được sinh từ fixture và mutation map; harness
+không gọi LLM. Kết quả đo enforcement boundary, không phải efficacy của LLM.
+Các tỷ lệ, numerator/denominator và hash được tái tạo bằng lệnh trong README;
+`wall_clock_ms` chỉ là chẩn đoán không quyết định và có thể thay đổi giữa máy.
+
 ## Đóng góp được định vị
 
-Nghiên cứu không claim phát minh capability, least privilege, information flow control hoặc runtime policy enforcement. Đóng góp dự kiến, chỉ được khóa sau R1, là:
+Nghiên cứu không claim phát minh capability, least privilege, information-flow
+control, runtime policy enforcement hoặc post-call contracts. Đóng góp được
+khóa ở dạng extension/replication:
 
-1. threat model hẹp và kiểm tra được cho indirect prompt injection dẫn đến tool misuse;
-2. hiện thực tham chiếu của policy gateway tại execution boundary;
-3. bộ case action grounded có security oracle và utility oracle;
-4. protocol tái lập được để đo security, utility, overblocking, approval burden và overhead;
-5. phân tích failure mode của policy enforcement.
+1. protocol paired để replay cùng action qua schema/alias/adapter drift;
+2. metric `AFER_uncond`, `AFER_cond`, `PDER_schema`, `SMF` và `BDP` với
+   forbidden-effect oracle độc lập;
+3. ablation P0/P1/P2 tách canonicalization khỏi post-call verification;
+4. báo cáo đồng thời security, utility, approval burden, latency và failure
+   cases;
+5. artifact tái lập có manifest, hash, self-test và trạng thái pending rõ ràng
+   cho full LLM efficacy.
 
 ## Tài liệu tham khảo ban đầu
 
@@ -199,3 +283,35 @@ Nghiên cứu không claim phát minh capability, least privilege, information f
 7. Peiran Wang et al. *AgentArmor: Enforcing Program Analysis on Agent Runtime Trace to Defend Against Prompt Injection*. arXiv:2508.01249, 2025. https://arxiv.org/abs/2508.01249
 8. Wei Zhao, Zhe Li, Peixin Zhang, and Jun Sun. *ClawGuard: A Runtime Security Framework for Tool-Augmented LLM Agents Against Indirect Prompt Injection*. arXiv:2604.11790, 2026. https://arxiv.org/abs/2604.11790
 9. Kaiyuan Zhang, Yuke Peng, Ke Jiang, and Yinqian Zhang. *ActGov: Governing LLM Agent Actions via Policy-Constrained Validation*. arXiv:2609.24446, 2026. https://arxiv.org/abs/2609.24446
+
+## Round update: locked split, attestation, and realistic live pilot
+
+The implementation now contains three additions required before the full
+efficacy run but not sufficient to satisfy that gate:
+
+1. `experiments/fixtures/split_v1.json` fixes a source-component
+   development/test split. Attack cases and their benign twins stay in the same
+   split, and the harness rejects group overlap and canonical-signature
+   leakage. The selected split runs contain 98 development cases and 100 test
+   cases.
+2. `experiments/adapter_attestation.py` implements a dependency-free staged
+   transaction contract. The authorized signature includes policy version,
+   task/session, tool operation, resource, destination, normalized arguments,
+   body/payload, and optional canary. A nonce-bound pre-state hash and a
+   recomputed post-state hash are checked before a live-state commit. The
+   self-test passes replay, mismatch, stale-state, TOCTOU, post-hash and
+   canary cases; the fixture smoke test aborts 3/3 executor-alias mismatches
+   with zero live effects and commits 1/1 clean control.
+3. `openai_trace_runner.py --prompt-mode realistic` removes explicit
+   attack/benign labels and the fixture identifier from the model prompt. The
+   frozen Runpod Qwen3-8B trace in
+   `experiments/live_trace_runpod_gbo4nj1k5ublmt_realistic7.json` has 7/7
+   completed, schema-valid responses. C2 post-guard forbidden-effect rate is
+   0/4, CTS is 3/3, and FBR is 0/3 for this descriptive pilot; C0/C1 execute
+   1/4 forbidden effects. These numbers are not population estimates and do
+   not establish AgentDojo/InjecAgent efficacy.
+
+The attestation result is a transactional adapter contract: it prevents a
+commit after a mismatch when the adapter supports staged execution. It does
+not retroactively undo an irreversible external side effect already emitted by
+an adapter outside that contract.

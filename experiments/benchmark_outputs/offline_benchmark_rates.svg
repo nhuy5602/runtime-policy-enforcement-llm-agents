@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1276" height="520" viewBox="0 0 1276 520">
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="28" font-family="sans-serif" font-size="18" font-weight="bold">Offline benchmark rates (simulated post-LLM traces)</text>
+<line x1="180" y1="440.0" x2="1256" y2="440.0" stroke="#dddddd"/>
+<text x="145" y="444.0" font-family="sans-serif" font-size="11">0.00</text>
+<line x1="180" y1="345.0" x2="1256" y2="345.0" stroke="#dddddd"/>
+<text x="145" y="349.0" font-family="sans-serif" font-size="11">0.25</text>
+<line x1="180" y1="250.0" x2="1256" y2="250.0" stroke="#dddddd"/>
+<text x="145" y="254.0" font-family="sans-serif" font-size="11">0.50</text>
+<line x1="180" y1="155.0" x2="1256" y2="155.0" stroke="#dddddd"/>
+<text x="145" y="159.0" font-family="sans-serif" font-size="11">0.75</text>
+<line x1="180" y1="60.0" x2="1256" y2="60.0" stroke="#dddddd"/>
+<text x="145" y="64.0" font-family="sans-serif" font-size="11">1.00</text>
+<text x="213" y="460" transform="rotate(35 213 460)" font-family="sans-serif" font-size="10">B0_unsafe</text>
+<rect x="188" y="60.0" width="18" height="380.0" fill="#c0392b"><title>ASR=1.000</title></rect>
+<rect x="208" y="60.0" width="18" height="380.0" fill="#8e44ad"><title>UAR=1.000</title></rect>
+<rect x="228" y="60.0" width="18" height="380.0" fill="#2980b9"><title>CTS=1.000</title></rect>
+<text x="309" y="460" transform="rotate(35 309 460)" font-family="sans-serif" font-size="10">B1_prompt_only_proxy</text>
+<rect x="284" y="244.2" width="18" height="195.8" fill="#c0392b"><title>ASR=0.515</title></rect>
+<rect x="304" y="244.2" width="18" height="195.8" fill="#8e44ad"><title>UAR=0.515</title></rect>
+<rect x="324" y="244.2" width="18" height="195.8" fill="#2980b9"><title>CTS=0.515</title></rect>
+<text x="405" y="460" transform="rotate(35 405 460)" font-family="sans-serif" font-size="10">B2_static_allowlist</text>
+<rect x="380" y="152.1" width="18" height="287.9" fill="#c0392b"><title>ASR=0.758</title></rect>
+<rect x="400" y="152.1" width="18" height="287.9" fill="#8e44ad"><title>UAR=0.758</title></rect>
+<rect x="420" y="152.1" width="18" height="287.9" fill="#2980b9"><title>CTS=0.758</title></rect>
+<text x="501" y="460" transform="rotate(35 501 460)" font-family="sans-serif" font-size="10">B4_argument_guard</text>
+<rect x="476" y="290.3" width="18" height="149.7" fill="#c0392b"><title>ASR=0.394</title></rect>
+<rect x="496" y="290.3" width="18" height="149.7" fill="#8e44ad"><title>UAR=0.394</title></rect>
+<rect x="516" y="152.1" width="18" height="287.9" fill="#2980b9"><title>CTS=0.758</title></rect>
+<text x="597" y="460" transform="rotate(35 597 460)" font-family="sans-serif" font-size="10">P_policy_guard</text>
+<rect x="572" y="432.3" width="18" height="7.7" fill="#c0392b"><title>ASR=0.020</title></rect>
+<rect x="592" y="432.3" width="18" height="7.7" fill="#8e44ad"><title>UAR=0.020</title></rect>
+<rect x="612" y="267.3" width="18" height="172.7" fill="#2980b9"><title>CTS=0.455</title></rect>
+<text x="693" y="460" transform="rotate(35 693 460)" font-family="sans-serif" font-size="10">P_canonicalized</text>
+<rect x="668" y="432.3" width="18" height="7.7" fill="#c0392b"><title>ASR=0.020</title></rect>
+<rect x="688" y="432.3" width="18" height="7.7" fill="#8e44ad"><title>UAR=0.020</title></rect>
+<rect x="708" y="60.0" width="18" height="380.0" fill="#2980b9"><title>CTS=1.000</title></rect>
+<text x="789" y="460" transform="rotate(35 789 460)" font-family="sans-serif" font-size="10">P_postverify</text>
+<rect x="764" y="440.0" width="18" height="0.0" fill="#c0392b"><title>ASR=0.000</title></rect>
+<rect x="784" y="440.0" width="18" height="0.0" fill="#8e44ad"><title>UAR=0.000</title></rect>
+<rect x="804" y="60.0" width="18" height="380.0" fill="#2980b9"><title>CTS=1.000</title></rect>
+<text x="885" y="460" transform="rotate(35 885 460)" font-family="sans-serif" font-size="10">A_no_scope</text>
+<rect x="860" y="248.1" width="18" height="191.9" fill="#c0392b"><title>ASR=0.505</title></rect>
+<rect x="880" y="248.1" width="18" height="191.9" fill="#8e44ad"><title>UAR=0.505</title></rect>
+<rect x="900" y="175.2" width="18" height="264.8" fill="#2980b9"><title>CTS=0.697</title></rect>
+<text x="981" y="460" transform="rotate(35 981 460)" font-family="sans-serif" font-size="10">A_no_destination</text>
+<rect x="956" y="432.3" width="18" height="7.7" fill="#c0392b"><title>ASR=0.020</title></rect>
+<rect x="976" y="432.3" width="18" height="7.7" fill="#8e44ad"><title>UAR=0.020</title></rect>
+<rect x="996" y="244.2" width="18" height="195.8" fill="#2980b9"><title>CTS=0.515</title></rect>
+<text x="1077" y="460" transform="rotate(35 1077 460)" font-family="sans-serif" font-size="10">A_no_call_limit</text>
+<rect x="1052" y="386.3" width="18" height="53.7" fill="#c0392b"><title>ASR=0.141</title></rect>
+<rect x="1072" y="386.3" width="18" height="53.7" fill="#8e44ad"><title>UAR=0.141</title></rect>
+<rect x="1092" y="267.3" width="18" height="172.7" fill="#2980b9"><title>CTS=0.455</title></rect>
+<text x="1173" y="460" transform="rotate(35 1173 460)" font-family="sans-serif" font-size="10">A_no_approval</text>
+<rect x="1148" y="428.5" width="18" height="11.5" fill="#c0392b"><title>ASR=0.030</title></rect>
+<rect x="1168" y="428.5" width="18" height="11.5" fill="#8e44ad"><title>UAR=0.030</title></rect>
+<rect x="1188" y="267.3" width="18" height="172.7" fill="#2980b9"><title>CTS=0.455</title></rect>
+<rect x="1086" y="38" width="12" height="12" fill="#c0392b"/>
+<text x="1102" y="49" font-family="sans-serif" font-size="11">ASR</text>
+<rect x="1144" y="38" width="12" height="12" fill="#8e44ad"/>
+<text x="1160" y="49" font-family="sans-serif" font-size="11">UAR</text>
+<rect x="1202" y="38" width="12" height="12" fill="#2980b9"/>
+<text x="1218" y="49" font-family="sans-serif" font-size="11">CTS</text>
+</svg>

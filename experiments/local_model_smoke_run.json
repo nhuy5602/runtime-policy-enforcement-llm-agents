@@ -1,0 +1,46 @@
+{
+  "manifest_version": "1.0",
+  "track": "local_llm_smoke",
+  "status": "completed",
+  "model": {
+    "source": "ggml-org/Qwen3-0.6B-GGUF",
+    "file": "Qwen3-0.6B-Q4_0.gguf",
+    "path": "D:\\Models\\qwen3\\Qwen3-0.6B-Q4_0.gguf",
+    "quantization": "Q4_0",
+    "file_size_bytes": 428970080,
+    "sha256": "DA2572F16C06133561CE56ACCAA822216F2391EF4D37FBA427801CD6736417D4"
+  },
+  "runtime": {
+    "name": "llama.cpp",
+    "build": "b11193",
+    "commit": "4e7481175",
+    "server": "llama-server.exe",
+    "endpoint": "http://127.0.0.1:8080/v1",
+    "api_style": "chat_completions",
+    "context_tokens": 4096,
+    "threads": 8,
+    "reasoning_budget": 0
+  },
+  "sampling": {
+    "seed": 20260926,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_output_tokens": 512
+  },
+  "runner": {
+    "command": "python experiments/openai_trace_runner.py --api-style chat --base-url http://127.0.0.1:8080/v1 --model D:\\Models\\qwen3\\Qwen3-0.6B-Q4_0.gguf --max-cases 7 --seed 20260926 --temperature 0 --top-p 1 --max-output-tokens 512 --timeout 180 --output experiments/live_trace_qwen3_0_6b_local_full7.json",
+    "trace_output": "experiments/live_trace_qwen3_0_6b_local_full7.json",
+    "cases_generated": 7,
+    "cases_with_parsed_json": 6,
+    "exact_fixture_tool_proposals": 2,
+    "tool_execution": false
+  },
+  "hardware": {
+    "os": "Windows 11 x64",
+    "cpu": "Intel Core i5-13420H",
+    "logical_cpus": 12,
+    "ram_gb_approx": 16.8,
+    "gpu": "Intel UHD Graphics; no NVIDIA CUDA device"
+  },
+  "scope_note": "Integration/smoke track only. This run is not the paper's primary LLM efficacy result."
+}

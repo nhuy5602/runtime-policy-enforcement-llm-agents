@@ -1,6 +1,8 @@
-# Runtime Policy Enforcement for LLM Agents
+# Working candidate: security regression under versioned agent tool contracts
 
-Research repository for the paper **Runtime Policy Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse**.
+Research repository for a paper on indirect prompt injection and tool misuse.
+The prior *Semantic Mediation Fidelity Under Tool Adapter Drift* direction is
+retained as a component stress artifact, not as a locked novelty claim.
 
 This repository is for building the final scientific paper and its reproducible research artifacts. It intentionally excludes weekly class reports and unrelated course files.
 
@@ -8,21 +10,42 @@ The execution, review, and test gates for a Q2-ready manuscript are defined in [
 
 ## Current status
 
-The manuscript is a research proposal plus a preliminary component-level validation. The current simulator verifies policy enforcement at a mock tool boundary; it is **not** an LLM benchmark and does not establish resistance to prompt injection in a real Agent. A generic runtime tool guard is treated as a reference implementation, not the paper's novelty; E1 in the roadmap must select a narrower, defensible contribution before the benchmark phase.
+R1 was reopened on 27 September 2026 after a closest-prior audit. The active
+candidate is **Security Regression Testing of Indirect Prompt-Injection
+Defenses under Versioned Agent Tool Contracts**; it is not locked until the
+literature stop gate in `paper/r1_reopening_20260927.md` passes. The repository
+still contains a proposal plus preliminary component-level validation: the
+simulator verifies policy enforcement at a mock tool boundary; it is **not** an
+LLM benchmark and does not establish resistance to prompt injection in a real
+Agent. A generic runtime tool guard is a reference implementation, not the
+paper's novelty.
 
 ## Repository layout
 
 ```text
 paper/
   manuscript.md            Scientific report draft
+  q2_ready_report.md       Consolidated Q2-readiness report (E1-E5, R1-R3, P1-P2)
+  peer_review_matrix.md    Internal review matrix and Q2 gates
+  novelty_pivot_memo.md    Closest-prior review and drift-focused pivot
+  claim_strategy_review.md Primary metric/RQ/Hypothesis strategy
   research_protocol.md     Threat model, RQs, protocol, and planned evaluation
   related_work_matrix.md   R1 novelty and overlap gate
 experiments/
   policy_guard_sim.py      Offline policy-conformance simulator
   policy_guard_sim_results.json
+  offline_benchmark_harness.py
+  live_trace_scorer.py      Deterministic scorer for frozen live LLM traces
+  test_live_trace_scorer.py Regression tests for causal live scoring
+  adapter_attestation.py    Staged adapter/state attestation harness
+  benchmark_outputs/       198-case offline trace benchmark, CSV/JSON/Markdown/SVG
+  openai_trace_runner.py   Optional live post-LLM trace generator with carrier/prompt hashes; no tool execution
+  live_trace_output.json   Last generic live-track status
+  live_trace_runpod_*      Runpod traces, including realistic seven-case pilot
   fixtures/
     policy_v1.json         Versioned capabilities and static allowlist
     cases_v1.json          Versioned calls and security/utility oracles
+    split_v1.json          Locked development/test source-component split
 ```
 
 ## Run the prototype check
@@ -33,18 +56,224 @@ The current prototype has no third-party Python dependencies.
 python experiments/policy_guard_sim.py --self-test --output experiments/policy_guard_sim_results.json
 ```
 
-The expected component result is that the policy guard prevents all four fixed forbidden effects, automatically completes two benign calls, and completes one benign high-risk call only after a simulated approval. The mock comparison configurations complete that high-risk call without approval. This is a conformance result on a fixed fixture, not an attack-success-rate result for an LLM.
+Run the expanded deterministic trace benchmark:
 
-GitHub Actions runs the JSON validation and simulator self-test on each push and pull request. It does not call an LLM, use secrets, or contact real tools.
+```powershell
+python experiments/offline_benchmark_harness.py --self-test `
+  --output-dir experiments/benchmark_outputs --seed 20260926 --bootstrap 1000
+```
+
+The harness also supports a locked, source-component split that keeps each
+attack/benign-twin pair together and rejects canonical-signature leakage:
+
+```powershell
+python experiments/offline_benchmark_harness.py --self-test --split test `
+  --output-dir experiments/benchmark_outputs_test --seed 20260926 --bootstrap 1000
+```
+
+The split is declared in `experiments/fixtures/split_v1.json` and is still a
+synthetic post-LLM trace replay; it is not evidence of independent LLM
+efficacy.
+
+Or run both regression checks plus syntax validation with:
+
+```powershell
+.\scripts\reproduce_main_table.ps1
+```
+
+The optional live trace runner supports a no-network manifest mode and a
+non-billing authentication probe. `--dry-run` records case/prompt hashes only;
+`--check-auth` performs `GET /models` and never creates a completion. A local
+OpenAI-compatible server can be selected with `OPENAI_BASE_URL`; anonymous
+access is accepted only for loopback URLs (`localhost`, `127.0.0.1`, `::1`).
+The current remote probe is intentionally recorded as `blocked_http_401`; no
+paid completion is attempted without an authorized credential.
+
+```powershell
+python experiments/openai_trace_runner.py --dry-run `
+  --output qa/live_trace_dryrun.json
+python experiments/openai_trace_runner.py --check-auth --max-cases 0 `
+  --output qa/live_trace_authcheck.json
+```
+
+## Local LLM smoke track
+
+This repository includes a CPU-compatible local path for trace generation. The
+host used for the artifact has 16 GB RAM and no NVIDIA CUDA device, so this
+track is for integration/smoke validation rather than the primary efficacy
+claim.
+
+Install the runtime and create the pinned Python environment:
+
+```powershell
+winget install --id ggml.llamacpp -e --accept-source-agreements --accept-package-agreements
+uv venv --python 3.13 .venv
+```
+
+Start Qwen3-4B in an OpenAI-compatible local server (the first run downloads
+the GGUF file):
+
+```powershell
+.\scripts\start_local_llm.ps1
+```
+
+On a CPU-only machine, use the smaller smoke model after downloading it:
+
+```powershell
+New-Item -ItemType Directory -Force D:\Models\qwen3 | Out-Null
+curl.exe -L --fail -o D:\Models\qwen3\Qwen3-0.6B-Q4_0.gguf `
+  https://huggingface.co/ggml-org/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_0.gguf
+.\scripts\start_local_llm.ps1 `
+  -ModelPath D:\Models\qwen3\Qwen3-0.6B-Q4_0.gguf -Context 4096 -Threads 8
+```
+
+Then generate redacted traces through the local Chat Completions endpoint:
+
+```powershell
+.\.venv\Scripts\python.exe experiments/openai_trace_runner.py `
+  --api-style chat --base-url http://127.0.0.1:8080/v1 `
+  --model Qwen/Qwen3-4B-GGUF:Q4_K_M --max-cases 7 `
+  --seed 20260926 --temperature 0 --top-p 1 `
+  --max-output-tokens 256 `
+  --output experiments/live_trace_qwen3_4b_local.json
+```
+
+The exact local model/runtime fields are recorded in
+`experiments/local_model_run_manifest.json`. Keep this track separate from the
+main paper result: the latter still requires a pinned CUDA run on at least
+three model snapshots and an external agent benchmark.
+
+The completed CPU smoke run is recorded in
+`experiments/local_model_smoke_run.json` and
+`experiments/live_trace_qwen3_0_6b_local_full7.json`. It generated seven
+post-LLM proposals without executing any tool; malformed or incomplete model
+proposals remain valid failure outcomes and must not be silently repaired.
+
+## Runpod endpoint track
+
+The project records a manually released Runpod serverless queue endpoint for
+the independent benchmark: `h5ec6v08cb8uc2`. The endpoint manifest is
+`experiments/runpod_endpoint_manifest.json`; it contains no credential and
+must be refreshed from a live read before a billable run.
+
+Set the account key only in the current shell, then check readiness and model
+discovery before submitting a completion:
+
+```powershell
+$env:RUNPOD_API_KEY = "<paste locally; never commit or send in chat>"
+.\scripts\check_runpod_endpoint.ps1
+```
+
+This endpoint is a `serverless_queue`. Its documented OpenAI-compatible route
+is `/openai/v1`; the local `experiments/runpod_openai_proxy.py` is the
+successful fallback for tool-bearing requests and sends them through `/runsync`
+with `input.route=/v1/chat/completions`. The deployed model is `qwen/qwen3-8b`,
+with vLLM `ENABLE_AUTO_TOOL_CHOICE=true` and `TOOL_CALL_PARSER=hermes`. A
+completion is billable, so it is intentionally guarded:
+
+```powershell
+$env:RUNPOD_MODEL = "Qwen/Qwen3-8B"
+.\scripts\run_runpod_trace.ps1 -MaxCases 1 -ConfirmBillable
+```
+
+This invokes the OpenAI-compatible route and writes
+`experiments/live_trace_runpod_h5ec6v08cb8uc2.json`. The runner resolves
+`RUNPOD_API_KEY` only for Runpod URLs, never writes the key, and still never
+executes a proposed tool. If the endpoint exposes only the generic Runpod
+worker route shown in its Quick start panel, use the `/runsync` adapter:
+
+```powershell
+.\scripts\run_runpod_trace.ps1 -Transport runsync -MaxCases 1 -ConfirmBillable
+```
+
+Do not use `-Transport direct` for this endpoint. The
+`https://<endpoint-id>.api.runpod.ai/v1` surface is for Runpod load-balancing
+endpoints, not a queue endpoint; the script now fails fast before a billable
+request if the manifest identifies a queue.
+
+The native queue path uses a larger output budget because Qwen3 may emit a
+reasoning trace before its JSON:
+
+```powershell
+.\scripts\run_runpod_trace.ps1 -Transport runsync -MaxCases 1 `
+  -MaxOutputTokens 2048 -ConfirmBillable
+```
+
+The `/runsync` bridge forwards the supplied request body to the worker's
+`/v1/chat/completions` route. The standalone trace runner can request
+`chat_template_kwargs.enable_thinking=false`; the AgentDojo proxy does not
+inject sampling or thinking parameters, so every full run must archive its
+actual serialized request before those parameters are described as locked.
+
+For the pinned independent benchmark, first acquire the exact AgentDojo source
+and lockfile, then run the one-task paired smoke. The Runpod key is injected
+only through the current shell or CI secret; the script never reads a Codex
+configuration file:
+
+```powershell
+$benchRoot = "D:\Research\benchmarks"
+python experiments/independent_benchmark_runner.py --source-root $benchRoot --fetch --smoke
+python scripts/run_agentdojo_paired_smoke.py --source-root $benchRoot
+```
+
+The script starts the proxy, runs the same `user_task_0`/`injection_task_0`
+once for baseline and once for the attested adapter, and writes a short
+manifest under `qa/`. The current one-task artifact is a pilot only: both
+tracks completed with 100% utility and 0% injection security, so it is
+evidence of end-to-end execution and a reproducible failure case—not a Q2
+efficacy result.
+
+The expected component result is that the policy guard prevents all four fixed forbidden effects, automatically completes two benign calls, and completes one benign high-risk call only after a simulated approval. The expanded harness evaluates 198 deterministic post-LLM traces and deliberately reports alias overblocking and adapter-mismatch residuals. Both are conformance/stress results, not attack-success-rate results for an LLM.
+
+The live runner also supports `--prompt-mode realistic`. This track removes
+attack/benign labels and the fixture case identifier from the model prompt while
+retaining the task capability schema. The frozen seven-case Qwen3-8B run is
+`experiments/live_trace_runpod_gbo4nj1k5ublmt_realistic7.json`; it remains a
+descriptive pilot because it has one model, seven handcrafted cases, no
+adapter-drift replay, and no external benchmark.
+
+The adapter boundary is tested separately:
+
+```powershell
+python experiments/adapter_attestation.py --self-test `
+  --output qa/adapter_attestation_selftest.json
+python experiments/adapter_attestation.py --fixture-smoke `
+  --output qa/adapter_attestation_fixture_smoke.json
+python -m unittest experiments.test_live_trace_scorer -v
+```
+
+The attestation harness verifies staged commit, session-bound nonce,
+normalized arguments/body, pre/post state hashes, recursive state diff,
+replay/TOCTOU rejection, and canary evidence. It is an
+enforcement-isolation artifact, not proof that an irreversible external side
+effect can be rolled back after emission.
+
+GitHub Actions runs the JSON validation and simulator self-test on each push and pull request. It does not call an LLM, use secrets, or contact real tools. The Runpod Qwen3-8B seven-case trace is now frozen as a pilot and scored by `experiments/live_trace_scorer.py`; the full LLM efficacy benchmark remains pending because this pilot has no drift mutation, held-out split, or model replication.
 
 ## Research scope
 
-The study investigates whether a runtime policy gateway can prevent an Agent's proposed tool call from producing an unauthorized side effect after the Agent has read untrusted external content. The primary future experiment will compare an unsafe Agent, a prompt-only baseline, a static tool filter, and the proposed policy guard on AgentDojo or an equivalent sandbox.
+The active candidate investigates whether a defense that prevents an
+indirect-prompt-injection effect under a tool contract `v0` regresses after a
+controlled `v1` migration. The primary parameter would be a paired,
+action-grounded security-regression rate; benign end-state success,
+escalation/approval burden and latency are guardrails. Semantic mediation
+fidelity, AFER and benign drift portability remain mechanism-level diagnostic
+metrics. The full experiment would combine paired trace replay for enforcement
+isolation with end-to-end LLM efficacy on AgentDojo/InjecAgent or an equivalent
+sandbox.
 
-The study does not claim a new capability system, information-flow-control mechanism, or generic solution to prompt injection. It evaluates a transparent policy profile, action-grounded security oracles, and the trade-offs among security, utility, approval burden, and latency.
+The study does not claim a new capability system, information-flow-control
+mechanism, post-call contract, generic drift benchmark, or generic solution to
+prompt injection. It evaluates action-grounded security regression and keeps
+semantic-mediation diagnostics separate from LLM efficacy claims.
 
 ## Next research steps
 
-1. Version the case manifest, policy manifest, and scoring oracle separately from the simulator.
-2. Choose and justify a narrow contribution after the literature/novelty gate; then add session binding, expiry, argument-level constraints, state-diff logging, and a bypass-resistance integration test.
-3. Run the preregistered AgentDojo evaluation with a real LLM Agent and report paired outcomes, confidence intervals, latency, and failure cases.
+1. Run the frozen trace-replay protocol on a real model trace set, preserving
+   separate P0/P1/P2 outputs and raw redacted traces.
+2. Run the preregistered end-to-end track on at least three model snapshots
+   (including one open-weight model) with AgentDojo/InjecAgent or an equivalent
+   sandbox, held-out drift, paired confidence intervals and failure analysis.
+3. Add lockfile/container, session binding, expiry, argument-level constraints,
+   state-diff logging and a real adapter-bypass integration test before making a
+   Q2 submission claim.

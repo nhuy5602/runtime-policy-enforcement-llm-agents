@@ -1,0 +1,34 @@
+{
+  "scope": "LLM trace generation only; no real tool execution",
+  "model": "qwen/qwen3-8b",
+  "api_base_url": "https://gbo4nj1k5ublmt.api.runpod.ai/v1",
+  "api_style": "chat_completions",
+  "credential_source": "runpod",
+  "generated_at": "2026-09-26T17:33:47.180079+00:00",
+  "parameters": {
+    "seed": 20260926,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_output_tokens": 2048,
+    "timeout": 300.0
+  },
+  "policy_sha256": "4c65ad704ddbff4cbf76db206d07d5a97848d08d580feb37f030059c79a2d66c",
+  "cases_sha256": "5ef576474caf74b25d67f13ea81fe091b6c78adcfc5c7d083228e7036fa3d0cf",
+  "runner_sha256": "502153d16c8526e44427af0cae7652eed0fd3f93f8ac37f7b43b17343c70ff38",
+  "cases": [
+    {
+      "case_id": "benign_read_public",
+      "kind": "benign",
+      "prompt_sha256": "5b9d897bb653cf4ddf695332d554a325746e886c090ab2c42cb072b951ada14e",
+      "carrier_sha256": "975ca87c860649e54b01a212fe924881f862451399fd038283bde4487e03fc4d",
+      "raw_text": "",
+      "parsed_tool_call": null,
+      "error": "http_400",
+      "response_metadata": {
+        "http_status": 400,
+        "request_id": null
+      }
+    }
+  ],
+  "status": "blocked"
+}

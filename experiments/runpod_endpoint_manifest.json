@@ -1,0 +1,54 @@
+{
+  "manifest_version": "1.0",
+  "provider": "Runpod",
+  "endpoint_id": "h5ec6v08cb8uc2",
+  "endpoint_name": "q2-agentdojo-toolcalling-hub-20260926",
+  "endpoint_type": "serverless_queue",
+  "status_at_setup": "Ready",
+  "observed_on": "2026-09-27",
+  "openai_base_url": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/openai/v1",
+  "direct_base_url": null,
+  "health_url": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/health",
+  "job_url": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/runsync",
+  "api_style": "runsync_input_route",
+  "credential_env": "RUNPOD_API_KEY",
+  "model": "qwen/qwen3-8b",
+  "hub": {
+    "repository": "runpod-workers/worker-vllm",
+    "release": null,
+    "release_id": "cmuiv9ikc006zsrv0m5oo5ims",
+    "release_source": "MANUAL",
+    "endpoint_version": 1,
+    "rollout_percent_on_latest": 100,
+    "image_digest": "sha256:846ea19fc944f44935c055125bb40a7f5b19292590510d86056ddface1f15c55"
+  },
+  "runtime_config": {
+    "enable_auto_tool_choice": true,
+    "tool_call_parser": "hermes",
+    "cuda": "13.0",
+    "gpu_pool": "AMPERE_80",
+    "observed_gpu": "NVIDIA A100-SXM4-80GB",
+    "workers_min": 0,
+    "workers_max": 1
+  },
+  "sampling": {
+    "server_default_seed": 0,
+    "agentdojo_request_locked": [
+      "model",
+      "messages",
+      "tools",
+      "tool_choice",
+      "temperature"
+    ],
+    "agentdojo_not_request_locked": [
+      "seed",
+      "top_p",
+      "max_output_tokens",
+      "chat_template_kwargs.enable_thinking"
+    ],
+    "runsync_route": "/v1/chat/completions",
+    "reproducibility_note": "Record the serialized request and response metadata for every AgentDojo episode; endpoint defaults are not per-request controls."
+  },
+  "scope_note": "The endpoint is a serverless queue. The documented /openai/v1 route is recorded but not yet validated by a tool-bearing completion for this endpoint; the local proxy uses the successful /runsync input.route=/v1/chat/completions fallback. Proposed tools execute only inside the pinned AgentDojo sandbox; no external side effects are claimed.",
+  "cost_guard": "No new endpoint was created for the paired smoke. Live invocation is billable at the observed $2.72/GPU-hour; health and worker logs are recorded before each run."
+}

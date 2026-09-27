@@ -1,0 +1,89 @@
+{
+  "schema_version": "independent-benchmark/v1",
+  "recorded_on": "2026-09-26",
+  "status": "not_run",
+  "purpose": "Pinned acquisition and execution contract; no benchmark results are claimed until raw logs and scorer outputs exist.",
+  "common_requirements": {
+    "same_model_parameters_across_configurations": true,
+    "redacted_raw_traces_required": true,
+    "tool_execution_in_sandbox_only": true,
+    "result_status_must_be_not_run_until_artifact_exists": true
+  },
+  "benchmarks": {
+    "agentdojo": {
+      "project": "AgentDojo",
+      "repository": "https://github.com/ethz-spylab/agentdojo.git",
+      "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+      "package_spec": "agentdojo @ git+https://github.com/ethz-spylab/agentdojo@089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+      "environment": {
+        "lockfile": "uv.lock",
+        "lockfile_sha256": "2B67DA5479A37727CBDCB39C57A9070F9264F3350237173B3EAE21CC12ED215A",
+        "lock_required_for_run": true
+      },
+      "benchmark_version": "v1.2.2",
+      "suite": "workspace",
+      "attack": "injecagent",
+      "model_provider": "OPENAI_COMPATIBLE",
+      "model_id": "qwen/qwen3-8b",
+      "base_url_env": "OPENAI_COMPATIBLE_BASE_URL",
+      "api_key_env": "OPENAI_COMPATIBLE_API_KEY",
+      "allowlist_env": "AGENTDOJO_ATTESTATION_ALLOWLIST",
+      "approval_tools_env": "AGENTDOJO_ATTESTATION_APPROVAL_TOOLS",
+      "approval_env": "AGENTDOJO_ATTESTATION_APPROVE",
+      "drift_tool_env": "AGENTDOJO_ATTESTATION_DRIFT_TOOL",
+      "drift_mode_env": "AGENTDOJO_ATTESTATION_DRIFT_MODE",
+      "adapter_module": "experiments/agentdojo_attestation_adapter.py",
+      "module_to_load": "experiments.agentdojo_attestation_adapter",
+      "required_metadata": [
+        "model_id_and_revision",
+        "provider",
+        "transport",
+        "serialized_request_sha256",
+        "request_parameters_sent",
+        "server_defaults_observed",
+        "endpoint_release_id",
+        "lockfile_sha256",
+        "suite",
+        "task_split",
+        "defense_config",
+        "attack_config",
+        "adapter_revision",
+        "workspace_snapshot_sha256"
+      ],
+      "result_status": "not_run",
+      "output_scope": "redacted AgentDojo logs and run manifest; no external tool side effects"
+    },
+    "injecagent": {
+      "project": "InjecAgent",
+      "repository": "https://github.com/uiuc-kang-lab/InjecAgent.git",
+      "commit": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+      "setting": "base",
+      "prompt_type": "InjecAgent",
+      "model_type": "GPT",
+      "model_name_env": "INJECAGENT_MODEL_NAME",
+      "api_key_env": "OPENAI_API_KEY",
+      "data_sha256": {
+        "data/test_cases_dh_base.json": "4DCC0540AD86EFBD1D0658B3B0EB50BB19FD89BA3853A343235B47C281C72C5D",
+        "data/test_cases_ds_base.json": "7959777711834B23E8CCA2F89717A8FD6CA92AC3A0A915E38FA563A2CF9CF8BD",
+        "data/test_cases_dh_enhanced.json": "B2E8EBD8A8D661ED8C8527396438F6583FC302880971FE0B5020295CE9AE7728",
+        "data/test_cases_ds_enhanced.json": "BBCEAF8CB4A8397B5081120D879808261756CC4B6F3200F4F887288616EF8530",
+        "data/tools.json": "BB45FFCF226E037381E8B62DFAD8EB503FCBA58DF480130F2B65F24AD61FD5F8",
+        "data/user_cases.jsonl": "6B681F0FD26597D98C0F853C1CEBC001B5507460C51BAF45DB2F628237049413"
+      },
+      "required_metadata": [
+        "model_id_and_revision",
+        "provider",
+        "setting",
+        "prompt_type",
+        "seed",
+        "user_case_split",
+        "attacker_case_split",
+        "defense_config",
+        "adapter_revision",
+        "workspace_snapshot_sha256"
+      ],
+      "result_status": "not_run",
+      "output_scope": "redacted InjecAgent JSONL results; no external tool side effects"
+    }
+  }
+}

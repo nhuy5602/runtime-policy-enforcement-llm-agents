@@ -723,7 +723,7 @@
     ]
   },
   "_reproducibility": {
-    "python_version": "3.12.14",
+    "python_version": "3.14.4",
     "fixture_schema": "runtime-policy-fixtures/v1",
     "suite_id": "reference-policy-guard-v1",
     "execution_semantics": {

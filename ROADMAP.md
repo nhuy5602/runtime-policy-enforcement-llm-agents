@@ -2,7 +2,7 @@
 
 ## Mục tiêu
 
-Xây dựng manuscript và research artifact **submission-ready** cho một venue hoặc tạp chí Scopus Q2 trở lên, với hướng làm việc hiện tại là **Runtime Policy Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse**. Đây là chuẩn chất lượng nội bộ, không phải cam kết được nhận: phân hạng Q2, phạm vi venue và phản biện độc lập đều nằm ngoài quyền kiểm soát của nhóm.
+Xây dựng manuscript và research artifact **submission-ready** cho một venue hoặc tạp chí Scopus Q2 trở lên. Sau R1 ngày 27 tháng 09 năm 2026, hướng làm việc là ứng viên **Security Regression Testing of Indirect Prompt-Injection Defenses under Versioned Agent Tool Contracts**; nó chưa phải contribution đã khóa. Semantic mediation fidelity chỉ còn là artifact stress/measurement của reference guard. Đây là chuẩn chất lượng nội bộ, không phải cam kết được nhận: phân hạng Q2, phạm vi venue và phản biện độc lập đều nằm ngoài quyền kiểm soát của nhóm.
 
 Repository này không lưu báo cáo tuần. Mọi workstream bên dưới chỉ phục vụ manuscript, benchmark và artifact tái lập của bài báo.
 
@@ -10,7 +10,7 @@ Repository này không lưu báo cáo tuần. Mọi workstream bên dưới ch�
 
 Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án phải chứng minh:
 
-1. Khoảng trống và đóng góp khác biệt rõ với CaMeL, Fides, Progent, AgentArmor, ClawGuard, ActGov và các defense liên quan.
+1. Khoảng trống và đóng góp khác biệt rõ với runtime PEP, AgentSpec, PACT, RAC, TraceGrant, CaMeL, Fides, Progent, AgentArmor, ClawGuard và ActGov.
 2. Threat model, policy semantics, baseline và oracle được định nghĩa trước và không thay đổi theo test case.
 3. Kết quả dựa trên LLM Agent và benchmark hoặc sandbox độc lập, không chỉ trên fixture policy tự tạo.
 4. Báo cáo đồng thời security, utility, overblocking, approval burden và runtime overhead, kèm số lượng case, khoảng tin cậy và failure analysis.
@@ -27,7 +27,7 @@ Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án ph�
 
 - Bảng related work gồm CaMeL, Fides, Progent, AgentArmor, ClawGuard, ActGov, AgentDojo, InjecAgent và các công trình gần.
 - Decision record về contribution hẹp. “Một runtime policy guard tại tool boundary” chỉ là reference implementation, không phải novelty.
-- Một trong các candidate contribution phải được chọn và đo được trước khi E2 bắt đầu: policy portability dưới tool-schema evolution, action canonicalization/alias handling, hoặc benchmark domain-specific SOC/OT với cross-channel injection.
+- Candidate contribution đang được audit là paired security-regression benchmark: cùng IPI case ở `v0 -> v1` contract migration, scored bằng harmful-effect oracle; không được khóa trước literature stop gate.
 - Research questions và hypotheses được operationalize.
 
 **Done khi:** mỗi claim novelty có ít nhất một đối chiếu related work và một đo lường hoặc artifact thực nghiệm tương ứng; R1 xác nhận claim không trùng đóng góp trực tiếp của công trình gần.
@@ -74,7 +74,9 @@ Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án ph�
 
 **Đầu ra**
 
-- So sánh B0, B1, B2, P và ablation trên cùng model/runtime/case.
+- So sánh B0–B6 và P0/P1/P2 trên cùng model/runtime/case; phase hiện tại
+  đã có B0, B1, B2, B4, P0, P1, P2 cùng bốn ablation offline. B3/B5/B6,
+  held-out drift và full LLM efficacy vẫn pending.
 - Metrics security/utility/overhead, paired statistics, confidence intervals, charts và failure cases.
 - Manuscript, bibliography, appendix, reproduction guide và artifact release.
 
@@ -124,15 +126,18 @@ Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án ph�
 
 ## Thứ tự thực hiện
 
-`E1 -> R1 -> E2 + E3 -> T1 -> E4 -> R2 -> E5 -> T2 -> R3`, với các review là cổng bắt buộc; không chuyển sang thí nghiệm tuyên bố efficacy khi R1 chưa chốt contribution.
+`E1 -> R1 -> E2 + E3 -> T1 -> E4 -> R2 -> E5 -> T2 -> R3`, với các review là
+cổng bắt buộc; R1 hiện **mở lại** và cấm full billable benchmark cho đến khi
+candidate có literature-audit record. Không được chuyển sang claim LLM efficacy
+khi chưa có full run, held-out migration và raw redacted traces.
 
 ## Trạng thái hiện tại
 
-- E1: đang có manuscript và related-work foundation; cần literature matrix hoàn chỉnh và quyết định contribution hẹp sau khi đối chiếu công trình 2025–2026.
+- E1: **mở lại**; generic runtime guard và semantic-mediation stress chỉ là baseline/artifact. Xem `paper/r1_reopening_20260927.md`.
 - E2: policy fixture sơ bộ có sẵn; approval lifecycle và episode semantics đã có component test; session/expiry/argument constraint chưa hiện thực.
 - E3: chưa khóa AgentDojo runtime, model và test split.
-- E4: component prototype có audit/effect oracle sơ bộ; chưa phải complete mediation hoặc integration với tool thật.
-- E5: mới có component validation; chưa có benchmark result để trả lời RQ1–RQ3.
+- E4: component prototype có P0/P1/P2, audit/effect oracle sơ bộ; chưa phải complete mediation hoặc integration với tool thật.
+- E5: trace-replay pilot đã đo PDER_schema/AFER_adapter; chưa có full LLM result để trả lời RQ1–RQ5.
 - R1–R3: audit ban đầu đã xác định các thiếu sót cần khắc phục.
 - T1: schema, episode replay, approval transaction, audit/effect invariant và mock-dispatch authorization đã có; cần integration tests trên tool adapter thật.
 - T2: GitHub Actions kiểm tra JSON và self-test; chưa có benchmark reproducibility run.

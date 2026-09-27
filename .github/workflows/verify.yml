@@ -26,3 +26,14 @@ jobs:
         run: |
           python experiments/policy_guard_sim.py --self-test --output /tmp/policy_guard_results.json
           python -m json.tool /tmp/policy_guard_results.json > /dev/null
+      - name: Run scorer and paired-statistics regression tests
+        run: |
+          python -m unittest discover -s experiments -p 'test_*.py' -v
+      - name: Run adapter attestation self test
+        run: |
+          python experiments/adapter_attestation.py --self-test --output /tmp/adapter_attestation.json
+          python -m json.tool /tmp/adapter_attestation.json > /dev/null
+      - name: Run locked benchmark split smoke test
+        run: |
+          python experiments/offline_benchmark_harness.py --self-test --split test \
+            --output-dir /tmp/benchmark_test --seed 20260926 --bootstrap 100
