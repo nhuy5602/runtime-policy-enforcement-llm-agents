@@ -80,13 +80,29 @@ chi phí một cách hợp lệ.
 Mức USD 10.00 được chia thành **tối đa USD 8.00 cho execution** và **USD 2.00
 dự phòng**. Với giá GPU hiện thời, USD 8.00 tương đương `8.00 / 2.72 = 50/17`
 GPU-hours trước disk/fee; phép tính này **không** là hard cap.
-Route `/runsync` trong runner hiện không gửi một trần USD theo job và billing
-theo bucket không phải bộ đo thời gian thực. Hơn nữa, khi proxy local hết
-timeout, nó chỉ ném lỗi sau khi polling `/status/{job_id}`; nó không gửi
-`/cancel/{job_id}`. Dừng proxy local vì vậy không chứng minh remote job đã
-dừng tính phí. Check thủ công trước/sau từng batch tuần tự chỉ giảm rủi ro,
-không thực thi một hard cap; nếu không thể quan sát billing hoặc tổng phát
-sinh chạm USD 8.00, dừng ngay và không gửi batch kế tiếp.
+Route `/run` trong AgentDojo proxy hiện không gửi một trần USD theo job và
+billing theo bucket không phải bộ đo thời gian thực. Proxy đã được sửa cục bộ
+để fsync ledger không chứa prompt/key (lưu `job_id`/request hash và metadata), yêu cầu
+`/cancel/{job_id}` khi hết hạn hoặc lỗi poll, và để launcher reconcile mọi job
+không terminal trước khi sang track kế tiếp hoặc thoát. Tuy nhiên đây vẫn không
+là hard cap: nếu POST submit hết hạn trước khi trả job ID, remote state là
+ambiguous và batch phải dừng, còn cơ chế cancel chưa được xác minh bằng một job
+thật ở endpoint đã xác nhận. Nếu fsync thất bại sau khi provider trả job ID,
+proxy cố gửi cancel ngay rồi khóa tiến trình local, nhưng crash giữa lúc provider
+nhận submit và lúc receipt được ghi bền vẫn là cửa sổ không thể loại bỏ bằng
+ledger local. Một terminal state sau cancel cũng có thể là `COMPLETED` hoặc
+`FAILED` do race, không chứng minh cancel đã dừng thực thi. Check billing
+trước/sau mỗi batch tuần tự chỉ giảm rủi ro; nếu không thể quan sát billing hoặc
+tổng phát sinh chạm USD 8.00, dừng ngay và không gửi batch kế tiếp.
+
+Nếu final JSONL record bị torn bởi crash, launcher không append đè lên nó: nó
+chỉ thử query/cancel các `job_id` hợp lệ trong prefix rồi dừng để điều tra thủ
+công. Trạng thái này không được phép mở một batch mới.
+
+Không có request-level USD ceiling hay TTL đã xác minh từ provider trong proxy
+này; timeout local chỉ kích hoạt poll/cancel và không tự ràng buộc lifecycle
+remote. Vì vậy không diễn giải bất kỳ unit test nào thành bằng chứng kiểm soát
+chi phí vận hành.
 
 Các điều kiện dừng bắt buộc khác:
 
@@ -106,9 +122,8 @@ thực thi công bằng, cụm thống kê và clean-room reproduction trong
 
 ## Quyết định hiện tại
 
-**Không chạy job billable.** Hiện chưa có hard operational stop cho remote
-job. Các blocker có thể giải bằng công việc local trước là `pilot_case_manifest`
-xác định, cặp contract migration trung lập, và cơ chế kiểm soát/cancel job có
-thể kiểm chứng. Sau khi chúng được kiểm thử, cần một xác nhận ngắn của người
-dùng cho chính endpoint `h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu
-tiên.
+**Không chạy job billable.** Cơ chế ledger/cancel đã có unit test local nhưng
+chưa phải bằng chứng vận hành trên endpoint, và `pilot_case_manifest` vẫn chưa
+được commit. Các blocker local tiếp theo là manifest population/arms có tính
+xác định và validator outcome; sau đó cần một xác nhận ngắn của người dùng cho
+chính endpoint `h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu tiên.

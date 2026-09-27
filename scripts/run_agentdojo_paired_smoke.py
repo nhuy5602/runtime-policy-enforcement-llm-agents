@@ -1,7 +1,7 @@
 """Run one reproducible AgentDojo baseline/attested smoke through Runpod.
 
 The caller injects RUNPOD_API_KEY through the environment. The script starts a
-dependency-free local /runsync bridge and executes the same pinned
+dependency-free local queue bridge with a durable job ledger and executes the same pinned
 user/injection task once without and once with the attestation adapter.  The
 key is never printed or written to the result manifest.
 """
@@ -21,6 +21,12 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from experiments.runpod_openai_proxy import ledger_summary, reconcile_ledger
+
+
 def resolve_runpod_key() -> str:
     """Read the caller-injected key without touching user configuration."""
 
@@ -149,6 +155,7 @@ def main() -> int:
     attested_log = ROOT / "qa" / f"agentdojo_smoke_attested_{args.run_label}.log"
     proxy_stdout = ROOT / "qa" / f"runpod_proxy_h5ec_smoke_{args.run_label}.stdout.log"
     proxy_stderr = ROOT / "qa" / f"runpod_proxy_h5ec_smoke_{args.run_label}.stderr.log"
+    proxy_ledger = ROOT / "qa" / f"runpod_proxy_h5ec_smoke_{args.run_label}.jobs.jsonl"
 
     key = resolve_runpod_key()
     env = os.environ.copy()
@@ -173,6 +180,10 @@ def main() -> int:
         "1800",
         "--model-id",
         args.model_id,
+        "--job-ledger",
+        str(proxy_ledger),
+        "--run-id",
+        args.run_label,
     ]
     proxy_stdout.parent.mkdir(parents=True, exist_ok=True)
     proxy = subprocess.Popen(
@@ -184,8 +195,26 @@ def main() -> int:
     )
     baseline_code: int | None = None
     attested_code: int | None = None
+    ledger_report: dict[str, Any] = {
+        "ledger": str(proxy_ledger),
+        "exists": proxy_ledger.exists(),
+        "job_count": 0,
+        "ambiguous_submissions": 0,
+        "torn_trailing_record": False,
+        "unreconciled_job_ids": [],
+        "all_jobs_terminal": False,
+    }
     error: str | None = None
     try:
+        # Reconcile a durable prior receipt before a benchmark client can submit.
+        # An ambiguous receipt fails closed here, before either study arm begins.
+        ledger_report = ledger_summary(proxy_ledger, endpoint_id=args.endpoint_id)
+        ledger_report = reconcile_ledger(
+            args.endpoint_id,
+            key,
+            proxy_ledger,
+            run_id=args.run_label,
+        )
         wait_for_proxy(f"http://127.0.0.1:{args.port}/health", args.proxy_ready_timeout)
         baseline_env = env.copy()
         for name in (
@@ -207,6 +236,14 @@ def main() -> int:
                 user_task=args.user_task,
                 injection_task=args.injection_task,
             )
+        if baseline_code != 0:
+            raise RuntimeError("baseline track failed; refusing to submit the attested track")
+        ledger_report = reconcile_ledger(
+            args.endpoint_id,
+            key,
+            proxy_ledger,
+            run_id=args.run_label,
+        )
 
         attested_env = env.copy()
         attested_env["AGENTDOJO_ATTESTATION_ALLOWLIST"] = args.attested_allowlist
@@ -230,9 +267,27 @@ def main() -> int:
             user_task=args.user_task,
             injection_task=args.injection_task,
         )
+        if attested_code != 0:
+            raise RuntimeError("attested track failed")
+        ledger_report = reconcile_ledger(
+            args.endpoint_id,
+            key,
+            proxy_ledger,
+            run_id=args.run_label,
+        )
     except Exception as exc:  # preserve a machine-readable short report
         error = f"{type(exc).__name__}: {exc}"
     finally:
+        try:
+            ledger_report = reconcile_ledger(
+                args.endpoint_id,
+                key,
+                proxy_ledger,
+                run_id=args.run_label,
+            )
+        except Exception as reconcile_error:
+            detail = f"{type(reconcile_error).__name__}: {reconcile_error}"
+            error = detail if error is None else f"{error}; reconciliation={detail}"
         if proxy.poll() is None:
             proxy.terminate()
             try:
@@ -265,10 +320,12 @@ def main() -> int:
             "log": str(attested_log),
         },
         "proxy": {
-            "transport": "runpod_runsync",
+            "transport": "runpod_run_status_cancel",
             "local_base_url": f"http://127.0.0.1:{args.port}/v1",
             "stdout": str(proxy_stdout),
             "stderr": str(proxy_stderr),
+            "job_ledger": str(proxy_ledger),
+            "ledger_summary": ledger_report,
         },
         "error": error,
         "result_status": (
@@ -280,6 +337,7 @@ def main() -> int:
         "non_claims": [
             "A successful process exit is not itself a security or efficacy score.",
             "This smoke covers one paired task only and is not a Q2 result.",
+            "A locally reconciled job ledger is not a provider-enforced USD spending cap.",
         ],
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)

@@ -11,6 +11,14 @@
   "health_url": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/health",
   "job_url": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/runsync",
   "api_style": "runsync_input_route",
+  "agentdojo_proxy_queue": {
+    "submit_url": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/run",
+    "status_url_template": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/status/{job_id}",
+    "cancel_url_template": "https://api.runpod.ai/v2/h5ec6v08cb8uc2/cancel/{job_id}",
+    "api_style": "run_input_route_status_cancel",
+    "job_ledger_schema": "runpod-job-ledger/v1",
+    "safety_note": "The proxy records job IDs and requests cancellation on timeout or poll failure; this is not a provider-enforced spending cap."
+  },
   "credential_env": "RUNPOD_API_KEY",
   "model": "qwen/qwen3-8b",
   "hub": {
@@ -49,6 +57,6 @@
     "runsync_route": "/v1/chat/completions",
     "reproducibility_note": "Record the serialized request and response metadata for every AgentDojo episode; endpoint defaults are not per-request controls."
   },
-  "scope_note": "The endpoint is a serverless queue. The documented /openai/v1 route is recorded but not yet validated by a tool-bearing completion for this endpoint; the local proxy uses the successful /runsync input.route=/v1/chat/completions fallback. Proposed tools execute only inside the pinned AgentDojo sandbox; no external side effects are claimed.",
+  "scope_note": "The endpoint is a serverless queue. The documented /openai/v1 route is recorded but not yet validated by a tool-bearing completion for this endpoint; the standalone trace runner retains the successful /runsync input.route=/v1/chat/completions fallback, while the AgentDojo proxy submits /run jobs and polls/cancels by ID. Proposed tools execute only inside the pinned AgentDojo sandbox; no external side effects are claimed.",
   "cost_guard": "No new endpoint was created for the paired smoke. Live invocation is billable at the observed $2.72/GPU-hour; health and worker logs are recorded before each run."
 }

@@ -177,8 +177,11 @@ $env:RUNPOD_API_KEY = "<paste locally; never commit or send in chat>"
 
 This endpoint is a `serverless_queue`. Its documented OpenAI-compatible route
 is `/openai/v1`; the local `experiments/runpod_openai_proxy.py` is the
-successful fallback for tool-bearing requests and sends them through `/runsync`
-with `input.route=/v1/chat/completions`. The deployed model is `qwen/qwen3-8b`,
+tool-bearing fallback. It submits a queue job to `/run` with
+`input.route=/v1/chat/completions`, logs no prompt or key (only job identity,
+request hash, and lifecycle metadata), polls `/status`, and requests
+`/cancel/<job-id>` on deadline or polling failure. The
+deployed model is `qwen/qwen3-8b`,
 with vLLM `ENABLE_AUTO_TOOL_CHOICE=true` and `TOOL_CALL_PARSER=hermes`. A
 completion is billable, so it is intentionally guarded:
 
@@ -210,8 +213,14 @@ reasoning trace before its JSON:
   -MaxOutputTokens 2048 -ConfirmBillable
 ```
 
-The `/runsync` bridge forwards the supplied request body to the worker's
-`/v1/chat/completions` route. The standalone trace runner can request
+The separate standalone trace runner's `/runsync` path forwards the supplied request body to the worker's
+`/v1/chat/completions` route. The AgentDojo queue proxy's local ledger is a
+recoverability control, not a Runpod-enforced dollar cap; an ambiguous submit
+without a job ID, or any unreconciled job receipt, blocks further submissions.
+The launcher reconciles old receipts before either arm begins. A terminal
+status observed after `/cancel` may be `COMPLETED` or `FAILED` due to a race;
+it does not prove that the cancellation request stopped execution. The
+standalone trace runner can request
 `chat_template_kwargs.enable_thinking=false`; the AgentDojo proxy does not
 inject sampling or thinking parameters, so every full run must archive its
 actual serialized request before those parameters are described as locked.
