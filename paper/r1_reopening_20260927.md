@@ -89,3 +89,12 @@ If a prior work is found with all three eligibility properties, pivot instead
 to a clearly labelled replication or to the SOC delayed-memory-poisoning
 candidate described in the Teacher review. Do not retroactively reinterpret a
 negative benchmark outcome as novelty.
+
+## Audit record
+
+The initial targeted screen is recorded in
+[`r1_targeted_literature_audit_20260927.md`](r1_targeted_literature_audit_20260927.md).
+It found no direct all-property overlap **within the screened source set**, but
+it is not a systematic review and therefore does **not** close R1 or authorize
+a novelty/"first" claim. An independent replay across the named indexes is
+still mandatory.

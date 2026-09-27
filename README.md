@@ -20,6 +20,11 @@ LLM benchmark and does not establish resistance to prompt injection in a real
 Agent. A generic runtime tool guard is a reference implementation, not the
 paper's novelty.
 
+The first targeted closest-prior screen is documented in
+[`paper/r1_targeted_literature_audit_20260927.md`](paper/r1_targeted_literature_audit_20260927.md).
+It is a reproducible screening artifact, not a systematic review; R1 remains
+open pending an independent replay of the search.
+
 ## Repository layout
 
 ```text
@@ -31,6 +36,7 @@ paper/
   claim_strategy_review.md Primary metric/RQ/Hypothesis strategy
   research_protocol.md     Threat model, RQs, protocol, and planned evaluation
   related_work_matrix.md   R1 novelty and overlap gate
+  r1_targeted_literature_audit_20260927.md  Search log and closest-prior screen
 experiments/
   policy_guard_sim.py      Offline policy-conformance simulator
   policy_guard_sim_results.json
