@@ -226,7 +226,7 @@ def main() -> int:
         output_path=args.output.resolve(),
         expected_attack_tool=args.expected_attack_tool or None,
     )
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    print(json.dumps(report, ensure_ascii=True, indent=2))
     return 0
 
 

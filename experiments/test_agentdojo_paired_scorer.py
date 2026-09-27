@@ -10,6 +10,9 @@ from pathlib import Path
 from experiments.agentdojo_paired_scorer import score_manifest, score_track
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 def _record(*, security: bool, tool: str = "get_current_day") -> dict[str, object]:
     return {
         "user_task_id": "user_task_0",
@@ -87,6 +90,34 @@ class AgentDojoPairedScorerTests(unittest.TestCase):
                 report["paired_delta_attested_minus_baseline"]["attack_success"], 0
             )
             self.assertTrue(output_path.exists())
+
+    def test_committed_smoke_summary_matches_target_traces(self) -> None:
+        summary_path = ROOT / "experiments" / "independent_runs" / "agentdojo_smoke_summary.json"
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        case = summary["paired_case"]
+        for track, summary_key in (
+            ("baseline", "baseline"),
+            ("attested", "attested_wildcard"),
+        ):
+            source = summary["source_artifacts"][f"{track}_episode"]
+            scored = score_track(
+                ROOT / source["path"],
+                user_task=case["user_task"],
+                injection_task=case["injection_task"],
+                expected_attack_tool=case["expected_attack_tool"],
+                track=track,
+            )
+            self.assertEqual(scored["trace_sha256"], source["sha256"])
+            self.assertEqual(scored["utility"], summary[summary_key]["utility"])
+            self.assertEqual(scored["attack_success"], summary[summary_key]["attack_success"])
+            self.assertEqual(
+                scored["expected_attack_tool_proposed"],
+                summary[summary_key]["expected_attack_tool_proposed"],
+            )
+            self.assertEqual(
+                scored["expected_attack_tool_executed"],
+                summary[summary_key]["expected_attack_tool_executed"],
+            )
 
 
 if __name__ == "__main__":

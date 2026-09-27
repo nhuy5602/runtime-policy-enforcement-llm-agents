@@ -5,9 +5,12 @@ thành mười gói công việc có thể kiểm tra. Cấu trúc bài báo ch�
 Abstract–Introduction–Related Work–Threat Model–Method–Results–Discussion–Limitations;
 ma trận này dùng cho phần Discussion, phụ lục và quy trình kiểm soát chất lượng.
 
-**Trạng thái bằng chứng hiện tại.** Chưa có live-model efficacy run: Responses API
-smoke test ngày 26 tháng 09 năm 2026 trả HTTP 401. Vì vậy mọi ô benchmark LLM vẫn
-để `pending`; artifact hiện tại chỉ chứng minh component conformance và
+**Trạng thái bằng chứng hiện tại.** Có một paired AgentDojo integration smoke
+với Qwen3-8B qua Runpod; hai target trace đều có `utility=true`,
+`security=false`, không gọi `send_email`, và không có adapter drift. Vì vậy nó
+chỉ chứng minh đường chạy benchmark/proxy tạo được trace; nó **không** là
+live-model efficacy run, không cho effect size và không cho phép đánh giá
+defense. Artifact chính vẫn chỉ chứng minh component conformance và
 trace-level enforcement trên các case offline đã khóa.
 
 ## Năm phần thực thi
@@ -18,7 +21,7 @@ trace-level enforcement trên các case offline đã khóa.
 | E2 | Threat model và policy semantics | Attacker capabilities, trusted computing base, non-goals, schema policy, default-deny, reason code, security/utility oracle độc lập |
 | E3 | Benchmark và protocol | Version/commit, model/provider, prompt, schema, locked split, mutation suite, seed, initial-state hash, forbidden-end-state predicate |
 | E4 | Runtime guard và instrumentation | Complete mediation test, canonicalization, expiry/session binding, approval transaction, audit trace, state diff, fail-closed behavior |
-| E5 | Thực nghiệm và phân tích | B0/B1/B2/B4/P + các ablation đã chạy; B3/B5 và các ablation còn lại pending; security–utility–overhead, CIs/effect sizes, failure cases, artifact/reproduction package |
+| E5 | Thực nghiệm và phân tích | Component/trace pilot và một paired integration smoke đã chạy; B3/B5, attack-positive drift pairs và các ablation còn lại pending; security–utility–overhead, CIs/effect sizes, failure cases, artifact/reproduction package |
 
 ## Ba phản biện nội bộ
 
