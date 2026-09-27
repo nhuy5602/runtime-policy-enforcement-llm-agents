@@ -35,7 +35,9 @@ def _load(path: Path) -> dict[str, Any]:
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """Hash UTF-8 artifact text after normalizing Git's CRLF checkout."""
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _target_path(output_dir: Path, user_task: str, injection_task: str) -> Path:

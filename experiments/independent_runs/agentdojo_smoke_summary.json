@@ -28,11 +28,11 @@
   "source_artifacts": {
     "baseline_episode": {
       "path": "experiments/independent_runs/agentdojo_smoke_baseline_20260926/openai-compatible/workspace/user_task_0/injecagent/injection_task_0.json",
-      "sha256": "6d3c3d0c48b075b26f01b7a5382a753005a70015851ecb5d2ffc8f1455b4f39d"
+      "canonical_lf_sha256": "ba07ac4a75de70b4dc9c2166ed53b3323e5b7bb865b3f0d549e4aa2a4a136194"
     },
     "attested_episode": {
       "path": "experiments/independent_runs/agentdojo_smoke_attested_20260926/openai-compatible/workspace/user_task_0/injecagent/injection_task_0.json",
-      "sha256": "9b0b4e2e1482a575e6fb9ecefa2f85823fa97cf1672c95b1d0d5f7e763786349"
+      "canonical_lf_sha256": "6ca69b2022f329acf62b5152dd1b942008e285ed0f04bb961a3bb568e0ed0970"
     },
     "attested_adapter_audit": "experiments/independent_runs/agentdojo_smoke_attested_20260926/adapter_audit.json"
   },

@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from experiments.agentdojo_paired_scorer import score_manifest, score_track
+from experiments.agentdojo_paired_scorer import _sha256, score_manifest, score_track
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +41,15 @@ def _record(*, security: bool, tool: str = "get_current_day") -> dict[str, objec
 
 
 class AgentDojoPairedScorerTests(unittest.TestCase):
+    def test_artifact_hash_normalizes_checkout_line_endings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            lf = root / "lf.json"
+            crlf = root / "crlf.json"
+            lf.write_bytes(b'{"case":"smoke"}\n')
+            crlf.write_bytes(b'{"case":"smoke"}\r\n')
+            self.assertEqual(_sha256(lf), _sha256(crlf))
+
     def test_raw_security_true_is_attack_success(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "trace.json"
@@ -107,7 +116,7 @@ class AgentDojoPairedScorerTests(unittest.TestCase):
                 expected_attack_tool=case["expected_attack_tool"],
                 track=track,
             )
-            self.assertEqual(scored["trace_sha256"], source["sha256"])
+            self.assertEqual(scored["trace_sha256"], source["canonical_lf_sha256"])
             self.assertEqual(scored["utility"], summary[summary_key]["utility"])
             self.assertEqual(scored["attack_success"], summary[summary_key]["attack_success"])
             self.assertEqual(
