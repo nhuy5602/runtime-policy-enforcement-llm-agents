@@ -25,6 +25,10 @@ The first targeted closest-prior screen is documented in
 It is a reproducible screening artifact, not a systematic review; R1 remains
 open pending an independent replay of the search.
 
+The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
+are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
+No new billable job was submitted when that gate was recorded.
+
 ## Repository layout
 
 ```text
