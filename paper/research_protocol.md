@@ -320,6 +320,17 @@ efficacy run but not sufficient to satisfy that gate:
    selection and contract-migration drift. It is explicitly `not_run`: neither
    the 840 rows nor the three selected cases are LLM observations, a completed
    v0/v1 comparison, an efficacy sample or a statistical population estimate.
+5. `experiments/fixtures/agentdojo_pilot_execution_plan_v1.json` binds those
+   three selected cases to 12 planned-not-run rows (attack and no-injection
+   benign twin under baseline and attested tracks). It records the source,
+   lockfile, migration witness requirement, carrier, independent upstream
+   oracle, reset requirement, unobserved runtime fields and no-retry rule.
+   The plan records 18 nominal upstream task episodes because each InjecAgent
+   invocation also evaluates an injection-task utility episode. It prohibits
+   network/model calls and marks benign execution blocked until a dedicated
+   manifest-bound driver omits the attack entirely. Errors, timeouts or invalid
+   traces are predeclared `not_scored`; no security result is inferred from an
+   adapter sidecar or an error flag.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

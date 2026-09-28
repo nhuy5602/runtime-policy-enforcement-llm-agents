@@ -49,11 +49,13 @@ experiments/
   test_live_trace_scorer.py Regression tests for causal live scoring
   adapter_attestation.py    Staged adapter/state attestation harness
   agentdojo_contract_migration.py  Fail-closed v0-to-v1 name-only registry control
+  agentdojo_pilot_execution_plan.py  No-billable, manifest-bound pilot preflight
   benchmark_outputs/       198-case offline trace benchmark, CSV/JSON/Markdown/SVG
   openai_trace_runner.py   Optional live post-LLM trace generator with carrier/prompt hashes; no tool execution
   live_trace_output.json   Last generic live-track status
   live_trace_runpod_*      Runpod traces, including realistic seven-case pilot
   fixtures/
+    agentdojo_pilot_*_v1.json  Pinned feasibility population and execution plan
     policy_v1.json         Versioned capabilities and static allowlist
     cases_v1.json          Versioned calls and security/utility oracles
     split_v1.json          Locked development/test source-component split
@@ -263,6 +265,21 @@ current paired-smoke launcher is deliberately **not** a generic executor for
 these selected rows; a run-bound case/arm driver, independent outcome adapter,
 and a renewed endpoint/cost confirmation remain required before a billable
 episode.
+
+The companion preflight plan is separately reproducible and makes no model,
+network, proxy, credential, or sandbox call:
+
+```powershell
+python experiments/agentdojo_pilot_execution_plan.py --verify
+```
+
+It locks 12 unexecuted invocations (3 selected cases × attack/benign twin ×
+baseline/attested) and records 18 nominal upstream task episodes: every
+InjecAgent invocation contains an additional standalone injection-task utility
+episode. It deliberately marks every benign-twin execution as blocked because
+the current generic runner always enables InjecAgent; omitting only
+`--injection-task` would broaden the attack set rather than produce a benign
+twin. This is a preflight artifact, not a successful run or cost estimate.
 
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo

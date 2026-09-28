@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | A pinned, outcome-blind manifest now enumerates 840 carrier-visible AgentDojo/InjecAgent candidates and deterministically selects three feasibility rows, but it is `not_run`; the historical one-task smoke has no tracked full matrix | **Fail** | A run-bound manifest/driver, snapshot, adapter, scorer, split, budget and redacted traces for a preregistered episode population |
+| Independent benchmark | A pinned manifest and a 12-row no-billable execution plan now fix three feasibility cases, carriers, arms and 18 nominal upstream task episodes; all rows remain `not_run`, and benign execution is explicitly blocked pending a dedicated driver | **Fail** | A run-bound driver, snapshot, independent oracle adapter, scorer, split, budget and redacted traces for a preregistered episode population |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -83,6 +83,18 @@ feasibility set. A valid later analysis still needs a run-bound driver,
 independent episode definition and clustering plan, executable fair baselines,
 an attack-positive end-to-end matrix, and model replication. Any manuscript
 sentence that calls this artifact a benchmark result should be rejected.
+
+The new execution plan is also accepted only as a preflight artifact. It
+correctly refuses to treat a generic InjecAgent CLI call with a missing
+`--injection-task` as a benign twin, and it reserves error/timeout/invalid
+traces as `not_scored`. It still does not provide a driver, a frozen non-wildcard
+attestation policy, a completed oracle result, or a fair comparison.
+
+**Round-specific teacher audit:** this plan contributes reproducibility, not
+novelty. Methodologically it fixes planned invocation/task-episode cardinality
+and prevents a false benign control; statistically it creates zero independent
+observations; ethically it performs zero external actions. It therefore cannot
+support an efficacy, prevention, causal, cost-control, or Q2-readiness claim.
 
 ## Short reviewer report
 

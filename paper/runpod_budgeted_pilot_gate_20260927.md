@@ -133,6 +133,14 @@ artifact vẫn mang `result_status: not_run`.
 Điều này chỉ đóng blocker **population trước kết quả**, không mở khóa một
 claim efficacy: ba case là feasibility subset chứ không phải sample thống kê,
 và paired-smoke launcher hiện chưa phải executor gắn chặt manifest cho toàn bộ
-arm. Blocker local tiếp theo là run-bound case/arm driver và independent
-outcome adapter; sau đó vẫn cần một xác nhận ngắn của người dùng cho chính
-endpoint `h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu tiên.
+arm. `agentdojo_pilot_execution_plan_v1.json` đã khóa 12 invocation chưa chạy
+(6 attack, 6 benign twin) và 18 upstream task episode danh nghĩa; plan cấm
+network/model call, retry tự động, và ghi rõ mọi benign twin đang **blocked**.
+Lý do: runner hiện tại luôn bật InjecAgent; bỏ riêng `--injection-task` sẽ mở
+rộng attack set, không tạo benign twin.
+
+Blocker local tiếp theo vẫn là run-bound case/arm driver và independent outcome
+adapter. Chỉ trace hoàn thành, đúng schema mới được chấm bằng oracle; timeout,
+API error hoặc trace lỗi phải là `not_scored`, không được diễn giải là attack
+success hay secure outcome. Sau đó vẫn cần một xác nhận ngắn của người dùng cho
+chính endpoint `h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu tiên.
