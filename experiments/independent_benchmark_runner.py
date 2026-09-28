@@ -21,6 +21,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
+try:
+    from experiments.agentdojo_pilot_manifest import load_manifest as load_pilot_case_manifest
+except ModuleNotFoundError:  # direct ``python experiments/*.py`` support
+    from agentdojo_pilot_manifest import load_manifest as load_pilot_case_manifest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = Path(__file__).with_name("independent_benchmark_manifest.json")
@@ -81,6 +86,29 @@ def load_manifest(path: Path = DEFAULT_MANIFEST) -> dict[str, Any]:
             actual_digest = hashlib.sha256(contract_manifest.read_bytes()).hexdigest().upper()
             if actual_digest != expected_digest.upper():
                 raise ValueError("AgentDojo contract migration manifest digest mismatch")
+            pilot = spec.get("pilot_case_manifest")
+            if not isinstance(pilot, dict):
+                raise ValueError("AgentDojo requires a preregistered pilot_case_manifest object")
+            for field in ("path", "generator", "status", "scope"):
+                value = pilot.get(field)
+                if not isinstance(value, str) or not value.strip():
+                    raise ValueError(f"AgentDojo pilot_case_manifest.{field} must be non-empty")
+            for field in ("path", "generator"):
+                if Path(pilot[field]).is_absolute():
+                    raise ValueError(f"AgentDojo pilot_case_manifest.{field} must be repo-relative")
+            if pilot["status"] != "pre_registered_not_run":
+                raise ValueError("AgentDojo pilot_case_manifest must remain pre_registered_not_run")
+            pilot_digest = pilot.get("sha256")
+            if not isinstance(pilot_digest, str) or not HEX64.fullmatch(pilot_digest):
+                raise ValueError("AgentDojo pilot_case_manifest.sha256 must be SHA-256")
+            pilot_path = ROOT / pilot["path"]
+            pilot_generator = ROOT / pilot["generator"]
+            if not pilot_path.is_file() or not pilot_generator.is_file():
+                raise ValueError("AgentDojo pilot case manifest or generator is missing")
+            actual_pilot_digest = hashlib.sha256(pilot_path.read_bytes()).hexdigest().upper()
+            if actual_pilot_digest != pilot_digest.upper():
+                raise ValueError("AgentDojo pilot case manifest digest mismatch")
+            load_pilot_case_manifest(pilot_path)
     return payload
 
 
@@ -278,6 +306,18 @@ def smoke(manifest: dict[str, Any], source_root: Path | None) -> dict[str, Any]:
                 status["contract_migration_manifest_sha256"]
                 == contract["manifest_sha256"].upper()
             )
+            pilot = spec["pilot_case_manifest"]
+            pilot_path = ROOT / pilot["path"]
+            pilot_manifest = load_pilot_case_manifest(pilot_path)
+            status["pilot_case_manifest"] = pilot["path"]
+            status["pilot_case_manifest_sha256"] = sha256(pilot_path)
+            status["pilot_case_manifest_ok"] = (
+                status["pilot_case_manifest_sha256"] == pilot["sha256"].upper()
+            )
+            status["pilot_case_count"] = pilot_manifest["population"]["case_count"]
+            status["pilot_selected_attack_episode_count"] = pilot_manifest["feasibility_selection"][
+                "selected_attack_episode_count"
+            ]
             status["package_importable_in_current_python"] = importlib.util.find_spec("agentdojo") is not None
             status["credentials_present"] = bool(
                 os.environ.get(spec["base_url_env"]) and os.environ.get(spec["api_key_env"])

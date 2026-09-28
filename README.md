@@ -243,6 +243,27 @@ tracks completed with 100% utility and 0% injection security, so it is
 evidence of end-to-end execution and a reproducible failure case—not a Q2
 efficacy result.
 
+Before any new billable feasibility episode, verify the separately committed,
+outcome-blind population artifact. It enumerates 840 carrier-visible
+AgentDojo/InjecAgent candidates at the pinned source commit and selects three
+single-carrier feasibility cases by a fixed hash rule. It contains no model
+outputs or outcome labels, and the selected three cases are neither an efficacy
+sample nor a population estimate:
+
+```powershell
+python experiments/agentdojo_pilot_manifest.py --verify
+$agentDojo = Join-Path $benchRoot "agentdojo"
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_pilot_manifest.py `
+  --verify --source $agentDojo
+```
+
+`independent_benchmark_runner.py --smoke` validates the manifest digest and
+its contract-migration dependency before reporting the benchmark pin. The
+current paired-smoke launcher is deliberately **not** a generic executor for
+these selected rows; a run-bound case/arm driver, independent outcome adapter,
+and a renewed endpoint/cost confirmation remain required before a billable
+episode.
+
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
 serializes its tool schemas. It migrates all 24 pinned Workspace function names

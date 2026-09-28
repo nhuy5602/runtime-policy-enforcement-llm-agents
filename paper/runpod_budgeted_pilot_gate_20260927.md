@@ -123,7 +123,16 @@ thực thi công bằng, cụm thống kê và clean-room reproduction trong
 ## Quyết định hiện tại
 
 **Không chạy job billable.** Cơ chế ledger/cancel đã có unit test local nhưng
-chưa phải bằng chứng vận hành trên endpoint, và `pilot_case_manifest` vẫn chưa
-được commit. Các blocker local tiếp theo là manifest population/arms có tính
-xác định và validator outcome; sau đó cần một xác nhận ngắn của người dùng cho
-chính endpoint `h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu tiên.
+chưa phải bằng chứng vận hành trên endpoint. Artifact
+`experiments/fixtures/agentdojo_pilot_case_manifest_v1.json` hiện khóa 840
+candidate `workspace`/`injecagent` có carrier nhìn thấy được ở source commit
+đã pin, rồi chọn xác định ba case single-carrier theo hash seed. Validator kiểm
+tra digest, thứ tự, pin, oracle không phụ thuộc guard và cardinality; toàn bộ
+artifact vẫn mang `result_status: not_run`.
+
+Điều này chỉ đóng blocker **population trước kết quả**, không mở khóa một
+claim efficacy: ba case là feasibility subset chứ không phải sample thống kê,
+và paired-smoke launcher hiện chưa phải executor gắn chặt manifest cho toàn bộ
+arm. Blocker local tiếp theo là run-bound case/arm driver và independent
+outcome adapter; sau đó vẫn cần một xác nhận ngắn của người dùng cho chính
+endpoint `h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu tiên.

@@ -43,6 +43,13 @@
         "audit_env": "AGENTDOJO_CONTRACT_AUDIT_PATH",
         "scope": "name-only, semantics-preserving Workspace registry control; not a security result"
       },
+      "pilot_case_manifest": {
+        "path": "experiments/fixtures/agentdojo_pilot_case_manifest_v1.json",
+        "sha256": "C2E0083FD8926FFB58CAB2030EB52177A73931F27D6C1E80D917A23CC1990B25",
+        "generator": "experiments/agentdojo_pilot_manifest.py",
+        "status": "pre_registered_not_run",
+        "scope": "840 pinned carrier-visible InjecAgent candidates; three deterministic feasibility cases only, not an efficacy sample or population estimate"
+      },
       "required_metadata": [
         "model_id_and_revision",
         "provider",

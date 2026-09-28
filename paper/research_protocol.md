@@ -310,6 +310,16 @@ efficacy run but not sufficient to satisfy that gate:
    0/4, CTS is 3/3, and FBR is 0/3 for this descriptive pilot; C0/C1 execute
    1/4 forbidden effects. These numbers are not population estimates and do
    not establish AgentDojo/InjecAgent efficacy.
+4. `experiments/fixtures/agentdojo_pilot_case_manifest_v1.json` freezes an
+   outcome-blind AgentDojo v1.2.2 Workspace/InjecAgent feasibility population:
+   840 carrier-visible candidate triples, each with a source-bound carrier,
+   benign twin identifier, migration-family control and upstream independent
+   harmful-effect oracle. A fixed SHA-256 rule chooses three eligible
+   single-carrier cases spanning calendar event creation, Drive deletion and
+   email egress. The generator/validator rejects source-pin, row-digest,
+   selection and contract-migration drift. It is explicitly `not_run`: neither
+   the 840 rows nor the three selected cases are LLM observations, a completed
+   v0/v1 comparison, an efficacy sample or a statistical population estimate.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

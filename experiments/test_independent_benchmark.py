@@ -31,6 +31,13 @@ class IndependentBenchmarkManifestTests(unittest.TestCase):
         self.assertTrue(report["benchmarks"]["agentdojo"]["adapter_module_exists"])
         self.assertTrue(report["benchmarks"]["agentdojo"]["contract_migration_module_exists"])
         self.assertTrue(report["benchmarks"]["agentdojo"]["contract_migration_manifest_ok"])
+        self.assertTrue(report["benchmarks"]["agentdojo"]["pilot_case_manifest_ok"])
+        self.assertEqual(report["benchmarks"]["agentdojo"]["pilot_case_count"], 840)
+        self.assertEqual(report["benchmarks"]["agentdojo"]["pilot_selected_attack_episode_count"], 3)
+        self.assertEqual(
+            manifest["benchmarks"]["agentdojo"]["pilot_case_manifest"]["status"],
+            "pre_registered_not_run",
+        )
         self.assertEqual(
             manifest["benchmarks"]["agentdojo"]["environment"]["lockfile_sha256"],
             "2B67DA5479A37727CBDCB39C57A9070F9264F3350237173B3EAE21CC12ED215A",
