@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | A pinned manifest and a 12-row no-billable execution plan fixed three feasibility cases, but a source-only oracle qualification rejects one selected email case under its exact injected state. The historical plan is now blocked; no LLM row has run. | **Fail** | A new outcome-blind, oracle-qualified selection; then a run-bound driver, snapshot, independent oracle adapter, scorer, split, budget and redacted traces for its preregistered episode population |
+| Independent benchmark | V1 is blocked after source-only qualification rejected one email case. A separate v2 source-qualified census retains all 60 structural rows, hash-selects three from 29 qualified single-carrier rows, and records task-3 oracle under-detection. No LLM row has run. | **Fail** | A run-bound driver, true benign control, independent monotone outcome adapter, snapshot, scorer, split, budget and redacted traces for the v2 preregistered population |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -57,6 +57,12 @@ proves an implementation invariant, not the corresponding scientific claim.
    flag as a secure result. The two remaining qualifying cases are still not
    an executable sample, efficacy evidence, or a licence to replace the third
    case by hand.
+8. V2 is a transparent prospective amendment, not a retroactive repair: it
+   retains the failed v1 pool, censes every structural candidate before a
+   derived-seed selection, and labels task-3 email-content-exfiltration as a
+   changed threat family. Its predicate can under-detect duplicate or
+   extra-recipient sends, so the artifact validates only canonical AgentDojo
+   predicate satisfaction—not broad exfiltration prevention.
 
 ## Reviewer questions that remain unanswered
 
@@ -110,6 +116,13 @@ ground-truth calibration is useful validation of the benchmark measurement
 instrument, but it does not evaluate an LLM or the proposed guard. A new
 pre-registered, oracle-qualified selection must precede any endpoint use.
 
+**V2-selection teacher audit:** accept the census and derived-seed selection
+as a reproducibility repair, but reject claims that it restores the old plan,
+validates a security defense, or measures an LLM. The task-3 predicate is not
+monotone: a duplicate/extra-recipient harmful send can return `false`. Before
+an efficacy paper, add an independent monotone post-effect/canary oracle and
+execute a paired, reset-verified model matrix through a dedicated driver.
+
 ## Short reviewer report
 
 **Verdict:** progress, not Q2-plausible.
@@ -122,6 +135,7 @@ no tracked runner manifest, and no external benchmark/model matrix.
 integration evidence, and rejected it as a security-efficacy result.
 **Tests:** manuscript consistency checks and artifact-path checks pass; no new
 LLM or billable Runpod job was submitted by this review.
-**Next step:** run the independent benchmark through the same attested
-dispatcher, then compute paired/clustered intervals and closest-prior
-comparisons before drafting a final manuscript.
+**Next step:** implement a v2 manifest-bound driver, true benign control and
+independent monotone post-effect/canary oracle; only then run the paired,
+reset-verified model matrix and compute clustered intervals/closest-prior
+comparisons.

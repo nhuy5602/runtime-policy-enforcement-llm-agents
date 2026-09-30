@@ -148,10 +148,18 @@ predicate vẫn `false` sau ground truth của chính injection task trên injec
 state. Vì vậy toàn bộ historical plan 12 invocation hiện **blocked**; không
 được bỏ case này, thay case thủ công, hay suy diễn `false` là secure outcome.
 
-Blocker local tiếp theo là một selection artifact mới có oracle-eligibility
-được đăng ký trước, rồi run-bound case/arm driver và independent outcome
-adapter. Chỉ trace hoàn thành, đúng schema mới được chấm bằng oracle; timeout,
-API error hoặc trace lỗi phải là `not_scored`, không được diễn giải là attack
-success hay secure outcome. Chỉ sau khi các gate này hoàn tất mới cần một xác
-nhận ngắn của người dùng cho chính endpoint `h5ec6v08cb8uc2` và trần USD 10.00
-trước batch đầu tiên.
+Selection artifact mới đã được khóa tại
+`agentdojo_oracle_qualified_selection_v2.json`: giữ v1 bất biến/blocked, census
+60 structural row, retain 31 multi-carrier exclusion và hash-select 3 row trong
+29 candidate source-qualified. Đây vẫn chỉ là source calibration; đổi email
+stratum từ task-0 unauthorized-email sang task-3 email-content-exfiltration là
+một thay đổi semantic được công bố, không phải thay case tương đương. Predicate
+task-3 còn non-monotone (duplicate/extra-recipient email có thể không bị đếm),
+nên chưa được diễn giải là oracle độc lập cho exfiltration rộng.
+
+Blocker local tiếp theo là run-bound case/arm driver, true benign control và
+independent monotone outcome adapter. Chỉ trace hoàn thành, đúng schema mới
+được chấm bằng oracle; timeout, API error hoặc trace lỗi phải là `not_scored`,
+không được diễn giải là attack success hay secure outcome. Chỉ sau khi các gate
+này hoàn tất mới cần một xác nhận ngắn của người dùng cho chính endpoint
+`h5ec6v08cb8uc2` và trần USD 10.00 trước batch đầu tiên.

@@ -342,6 +342,22 @@ efficacy run but not sufficient to satisfy that gate:
    edited. This is an oracle-validity finding, not an LLM attack, defense,
    utility, cost, or statistical result. A later replacement must be selected
    by a new preregistered eligibility rule rather than substituted by hand.
+7. `experiments/fixtures/agentdojo_oracle_qualified_selection_v2.json` is that
+   prospective amendment. It preserves v1 unchanged, censes all 60 structural
+   rows in the new calendar, Drive and email-content-exfiltration strata, and
+   retains all 31 multi-carrier rows as structurally ineligible rather than
+   silently discarding them. The 29 single-carrier rows pass three source-only
+   controls on separate fresh copies: false before an action, true after the
+   injection task ground truth, and false after the user task ground truth.
+   Its seed is derived from immutable v1 inputs and the v2 stratum definition;
+   it selects three `not_run` cases. The email stratum is explicitly a new
+   `injection_task_3` content-exfiltration family, not an equivalent replacement
+   for v1's unauthorized-email task. Moreover, the task-3 predicate requires
+   exactly one matching email and an exact recipient list, so duplicate or
+   extra-recipient exfiltration may be missed. Until an independent monotone
+   post-effect/canary oracle exists, any future result must be framed as
+   satisfaction of the upstream AgentDojo predicate only—not broad prevention
+   of email exfiltration.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

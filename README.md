@@ -304,6 +304,29 @@ artifact with a stated oracle-eligibility rule, rather than a manual case
 substitution. This calibration is neither an LLM result nor a defense-efficacy
 result.
 
+That replacement is now frozen separately in
+`experiments/fixtures/agentdojo_oracle_qualified_selection_v2.json`. It keeps
+v1 immutable and blocked, censes every structural candidate in the amended
+calendar, Drive, and email-content-exfiltration strata, and chooses one row per
+stratum from source-qualified rows with a seed derived only from immutable v1
+inputs and the v2 stratum specification:
+
+```powershell
+python experiments/agentdojo_oracle_qualified_selection_v2.py --verify
+$agentDojo = Join-Path $benchRoot "agentdojo"
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_oracle_qualified_selection_v2.py `
+  --verify --source $agentDojo
+```
+
+The census contains 60 structural rows (29 source-qualified single-carrier
+rows) and retains all multi-carrier exclusions. The v1 email `injection_task_0`
+pool has zero qualifying single-carrier rows; v2 therefore declares—not
+conceals—a new task-3 **email-content-exfiltration** threat family. Its exact
+AgentDojo predicate is non-monotone (duplicate or extra-recipient email can
+evade it), so it supports only canonical-predicate calibration, never a claim
+of complete exfiltration detection or defense efficacy. V2 is not an executor:
+a new manifest-bound driver and a true benign control are still required.
+
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
 serializes its tool schemas. It migrates all 24 pinned Workspace function names
