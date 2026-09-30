@@ -331,6 +331,17 @@ efficacy run but not sufficient to satisfy that gate:
    manifest-bound driver omits the attack entirely. Errors, timeouts or invalid
    traces are predeclared `not_scored`; no security result is inferred from an
    adapter sidecar or an error flag.
+6. `experiments/fixtures/agentdojo_pilot_oracle_qualification_v1.json` then
+   source-qualifies the three selected attack cases on their exact injected
+   pre-states. It makes zero model, provider, network or remote-job calls; its
+   only local actions are the pinned injection tasks' deterministic ground
+   truth tool calls. Two predicates pass the negative/positive-control rule,
+   but the selected `user_task_18`/`injection_task_0` email case remains false
+   even after its own ground truth under the exact injected state. The original
+   12-row plan is therefore **blocked**, not partially executed or silently
+   edited. This is an oracle-validity finding, not an LLM attack, defense,
+   utility, cost, or statistical result. A later replacement must be selected
+   by a new preregistered eligibility rule rather than substituted by hand.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

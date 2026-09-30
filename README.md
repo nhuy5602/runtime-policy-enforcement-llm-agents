@@ -281,6 +281,29 @@ the current generic runner always enables InjecAgent; omitting only
 `--injection-task` would broaden the attack set rather than produce a benign
 twin. This is a preflight artifact, not a successful run or cost estimate.
 
+The historical three-case plan is now additionally **blocked** by a
+source-only harmful-effect-oracle qualification. It materializes each exact
+injected pre-state from the pinned source, verifies that the upstream predicate
+is false before any local action, and then exercises only that injection task's
+deterministic ground truth. No model, endpoint, proxy, network request, or
+Runpod job is involved:
+
+```powershell
+python experiments/agentdojo_pilot_oracle_qualification.py --verify
+$agentDojo = Join-Path $benchRoot "agentdojo"
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_pilot_oracle_qualification.py `
+  --verify --source $agentDojo
+```
+
+Two cases qualify, but the selected email case
+`user_task_18`/`injection_task_0` fails the positive control on its own
+InjecAgent-injected state: its upstream predicate remains false even after the
+local injection-task ground truth. It must not be scheduled or interpreted as
+a secure outcome. A future replacement needs a new outcome-blind selection
+artifact with a stated oracle-eligibility rule, rather than a manual case
+substitution. This calibration is neither an LLM result nor a defense-efficacy
+result.
+
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
 serializes its tool schemas. It migrates all 24 pinned Workspace function names

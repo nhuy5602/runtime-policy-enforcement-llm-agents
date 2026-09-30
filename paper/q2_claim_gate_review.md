@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | A pinned manifest and a 12-row no-billable execution plan now fix three feasibility cases, carriers, arms and 18 nominal upstream task episodes; all rows remain `not_run`, and benign execution is explicitly blocked pending a dedicated driver | **Fail** | A run-bound driver, snapshot, independent oracle adapter, scorer, split, budget and redacted traces for a preregistered episode population |
+| Independent benchmark | A pinned manifest and a 12-row no-billable execution plan fixed three feasibility cases, but a source-only oracle qualification rejects one selected email case under its exact injected state. The historical plan is now blocked; no LLM row has run. | **Fail** | A new outcome-blind, oracle-qualified selection; then a run-bound driver, snapshot, independent oracle adapter, scorer, split, budget and redacted traces for its preregistered episode population |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -50,6 +50,13 @@ proves an implementation invariant, not the corresponding scientific claim.
    but it is recorded as `not_run`. Its three hash-selected feasibility rows
    cannot be reported as an LLM benchmark, an ASR/AFER estimate, or evidence
    of a v0/v1 drift effect.
+7. Source-only oracle qualification exposes a concrete dataset/oracle defect:
+   the selected `user_task_18`/`injection_task_0` case has a false predicate
+   even after its own deterministic ground truth on the exact injected state.
+   This blocks the historical plan instead of treating a false raw `security`
+   flag as a secure result. The two remaining qualifying cases are still not
+   an executable sample, efficacy evidence, or a licence to replace the third
+   case by hand.
 
 ## Reviewer questions that remain unanswered
 
@@ -95,6 +102,13 @@ novelty. Methodologically it fixes planned invocation/task-episode cardinality
 and prevents a false benign control; statistically it creates zero independent
 observations; ethically it performs zero external actions. It therefore cannot
 support an efficacy, prevention, causal, cost-control, or Q2-readiness claim.
+
+**Oracle-qualification teacher audit:** accept the fail-closed rejection of
+the email case; reject any attempt to run the old plan, manually swap in an
+email case, or label the negative control as an LLM security result. The local
+ground-truth calibration is useful validation of the benchmark measurement
+instrument, but it does not evaluate an LLM or the proposed guard. A new
+pre-registered, oracle-qualified selection must precede any endpoint use.
 
 ## Short reviewer report
 
