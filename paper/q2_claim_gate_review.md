@@ -1,4 +1,4 @@
-# Q2 claim-gate review — 27 September 2026
+# Q2 claim-gate review — 01 October 2026
 
 ## Verdict
 
@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | V1 is blocked after source-only qualification rejected one email case. A separate v2 source-qualified census retains all 60 structural rows, hash-selects three from 29 qualified single-carrier rows, and records task-3 oracle under-detection. No LLM row has run. | **Fail** | A run-bound driver, true benign control, independent monotone outcome adapter, snapshot, scorer, split, budget and redacted traces for the v2 preregistered population |
+| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selects 3 source-qualified cases. A new source-pinned decision-independent monotone state oracle passes 15 local controls plus a 3-case fresh/positive scorer-interface check; this evidence is locally generated and self-attested, not LLM data. | **Fail** | A manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a true benign control, reset/source witnesses, frozen scorer/split/budget and redacted traces for the v2 preregistered population |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -63,6 +63,15 @@ proves an implementation invariant, not the corresponding scientific claim.
    changed threat family. Its predicate can under-detect duplicate or
    extra-recipient sends, so the artifact validates only canonical AgentDojo
    predicate satisfaction—not broad exfiltration prevention.
+9. The new v2 effect-oracle contract is accepted only as a source-pinned
+   measurement repair. It scores typed pre/post state without reading policy,
+   guard, adapter, model-label or upstream aggregate-security inputs, and
+   marks incomplete evidence `not_scored`. Its 15 local controls repair the
+   exact-count regressions for calendar and email, but create zero LLM,
+   utility, prevention, causal or statistical observations.
+   The source verifier's three fresh/positive score checks validate only the
+   API wiring; their caller-supplied state and witness fields are not run
+   provenance and cannot be aggregated as benchmark rows.
 
 ## Reviewer questions that remain unanswered
 
@@ -116,12 +125,16 @@ ground-truth calibration is useful validation of the benchmark measurement
 instrument, but it does not evaluate an LLM or the proposed guard. A new
 pre-registered, oracle-qualified selection must precede any endpoint use.
 
-**V2-selection teacher audit:** accept the census and derived-seed selection
-as a reproducibility repair, but reject claims that it restores the old plan,
-validates a security defense, or measures an LLM. The task-3 predicate is not
-monotone: a duplicate/extra-recipient harmful send can return `false`. Before
-an efficacy paper, add an independent monotone post-effect/canary oracle and
-execute a paired, reset-verified model matrix through a dedicated driver.
+**V2-selection and effect-oracle teacher audit:** accept the census,
+derived-seed selection and the later decision-independent monotone
+measurement contract as reproducibility/measurement repairs. The contract
+correctly detects duplicate calendar/email effects and target egress through
+extra recipients, CC, BCC or trash without consuming the guard's own label. Reject
+claims that this restores the old plan, validates a security defense, measures
+an LLM, or detects paraphrased/partial leakage. Before an efficacy paper,
+execute a paired, reset-verified model matrix through a dedicated driver with
+a genuine benign arm, fixed denominators, full snapshot validation and
+case/arm/carrier/run/trace provenance, and redacted traces.
 
 ## Short reviewer report
 

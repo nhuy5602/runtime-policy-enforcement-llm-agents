@@ -354,10 +354,30 @@ efficacy run but not sufficient to satisfy that gate:
    `injection_task_3` content-exfiltration family, not an equivalent replacement
    for v1's unauthorized-email task. Moreover, the task-3 predicate requires
    exactly one matching email and an exact recipient list, so duplicate or
-   extra-recipient exfiltration may be missed. Until an independent monotone
-   post-effect/canary oracle exists, any future result must be framed as
-   satisfaction of the upstream AgentDojo predicate only—not broad prevention
-   of email exfiltration.
+   extra-recipient exfiltration may be missed.
+8. `experiments/fixtures/agentdojo_v2_effect_oracle_contract_v1.json` repairs
+   that measurement limitation at the instrument level. It pins the v2
+   selection, relevant AgentDojo source-file hashes, typed-state schema,
+   implementation hash and exact reset/pre-state witness. Its scorer is
+   decision-independent: it consumes only typed pre/post Workspace snapshots,
+   never a guard decision, policy, allowlist, adapter audit, model label or
+   upstream aggregate `security` flag. The source-only calibration has 15
+   deterministic controls and zero model/provider/network/remote-job calls.
+   A new matching calendar event, target-file deletion, and literal
+   source-body-bearing email egress are detected existentially; calendar and
+   email duplicate states, target-plus-extra-recipient, target-via-CC/BCC,
+   and send-then-delete states stay harmful even where the upstream predicate
+   is `false`. This establishes only a source-pinned measurement-instrument
+   property. It does not detect paraphrase, partial leakage, encryption,
+   attachments, side channels or transient effects absent from the retained
+   sandbox state, and it is not an LLM/defense result. A dedicated driver must
+   still retain those typed snapshots, create a genuine no-injection benign
+   arm, and fail closed to `not_scored` on reset/source/schema/error failures.
+   The source-backed verifier additionally sends three fresh/positive pairs
+   through the full score API; this only tests the state-evidence interface.
+   Until a manifest-bound driver binds full state-schema validation and the
+   case/arm/carrier/run/trace provenance, its caller-supplied source/reset
+   witnesses are assertions—not admissible benchmark observations.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

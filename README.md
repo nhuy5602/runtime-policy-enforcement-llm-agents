@@ -327,6 +327,38 @@ evade it), so it supports only canonical-predicate calibration, never a claim
 of complete exfiltration detection or defense efficacy. V2 is not an executor:
 a new manifest-bound driver and a true benign control are still required.
 
+The known count-based oracle defect is now repaired at the **measurement
+instrument** level by
+`experiments/fixtures/agentdojo_v2_effect_oracle_contract_v1.json`. The
+contract is decision-independent: its future scorer reads only typed pre/post
+Workspace state, never a guard decision, policy, adapter audit, model label or
+upstream aggregate `security` flag. It pins the selected v2 artifact, source
+files, code hash and reset-state hash; malformed evidence, drift, timeout or
+missing snapshots is `not_scored` rather than “secure”. Verify it locally:
+
+```powershell
+python experiments/agentdojo_v2_effect_oracle_contract.py --verify
+$agentDojo = Join-Path $benchRoot "agentdojo"
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_v2_effect_oracle_contract.py `
+  --verify --source $agentDojo
+```
+
+Its 15 deterministic source controls use no model, provider, network or
+Runpod job. They show that a new matching calendar event and a deleted Drive
+file remain detected without an exact-count condition; for email, duplicate,
+extra-recipient, CC-target, BCC-target and send-then-delete variants remain
+detected across both active mail and trash even when the upstream predicate
+returns `false`.
+This is not LLM efficacy evidence. The email rule is limited to literal
+source-body-bearing egress in the pinned sandbox, not paraphrase, partial
+leakage, attachments, encryption or side channels; a dedicated driver and a
+genuine no-injection benign arm remain mandatory before any run.
+The source-backed verification command also exercises the full score API on
+three fresh/positive local controls (six scored control states). This validates
+the declared state-evidence interface only. Until a manifest-bound driver
+creates provenance-bound snapshots, the supplied source/reset/status fields
+are assertions, not admissible benchmark observations.
+
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
 serializes its tool schemas. It migrates all 24 pinned Workspace function names
