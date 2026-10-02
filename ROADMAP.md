@@ -53,7 +53,7 @@ Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án ph�
 - AgentDojo version/commit, model/provider, prompt, tool schema, seed và sampling rule được khóa trước.
 - Locked test split và mutation suite cho paraphrase, encoding, role-play, instruction splitting và tool-output injection.
 - Case manifest chứa attack carrier, initial state, forbidden end-state oracle và task-success oracle.
-- Manifest ghép cặp `v0`/`v1` buộc cùng case, genuine no-injection benign arm, defense, model configuration, seed, reset và oracle; có counterbalance order và không thay case khi `not_scored`.
+- Manifest ghép cặp `v0`/`v1` buộc cùng case, planned no-injection benign arm, defense, model configuration, seed, reset và oracle; có counterbalance order và không thay case khi `not_scored`. Arm này chỉ thành control hợp lệ khi initial state và utility oracle riêng được version/pin.
 
 **Done khi:** một người khác có thể tải đúng benchmark, chạy cùng command và nhận được cùng tập episode.
 
@@ -136,7 +136,7 @@ khi chưa có full run, held-out migration và raw redacted traces.
 
 - E1: **mở lại**; generic runtime guard và semantic-mediation stress chỉ là baseline/artifact. Xem `paper/r1_reopening_20260927.md`.
 - E2: policy fixture sơ bộ có sẵn; approval lifecycle và episode semantics đã có component test; session/expiry/argument constraint chưa hiện thực.
-- E3: v2 source-qualified selection, effect oracle và paired `v0`/`v1` preflight đã khóa 6 paired units/12 planned episodes; model revision, task-scoped D1 policy và driver giữ typed state vẫn pending, nên chưa có benchmark run.
+- E3: v2 source-qualified selection, effect oracle, paired `v0`/`v1` preflight và result-bundle contract đã khóa 6 paired units/12 planned episodes; contract fail-closed fixed denominator/self-consistency và recompute attack endpoint, nhưng chưa chứng minh runtime provenance/capture và còn phơi bày thiếu arm-specific no-injection state + executable utility oracle. Model revision, versioned benign amendment, task-scoped D1 policy và driver giữ typed state vẫn pending, nên chưa có benchmark run.
 - E4: component prototype có P0/P1/P2, audit/effect oracle sơ bộ; chưa phải complete mediation hoặc integration với tool thật.
 - E5: trace-replay pilot đã đo PDER_schema/AFER_adapter; chưa có full LLM result để trả lời RQ1–RQ5.
 - R1–R3: audit ban đầu đã xác định các thiếu sót cần khắc phục.

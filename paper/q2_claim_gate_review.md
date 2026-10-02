@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selects 3 source-qualified cases. A source-pinned decision-independent monotone state oracle passes 15 local controls plus a 3-case fresh/positive scorer-interface check; a new counterbalanced v0/v1 preflight locks 6 pairs with true benign controls. All of this is locally generated/self-attested, not LLM data; no typed-state driver exists yet. | **Fail** | A manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a true benign control, reset/source witnesses, frozen scorer/split/budget and redacted traces for the v2 preregistered population |
+| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selects 3 source-qualified cases. A source-pinned decision-independent monotone state oracle passes 15 local controls plus a 3-case fresh/positive scorer-interface check; a counterbalanced v0/v1 preflight locks 6 pairs and a new fail-closed result-bundle contract fixes the denominator and recomputes attack endpoints. The contract exposes that the planned benign rows lack an arm-specific no-injection pre-state and executable utility oracle, so they are intentionally unscorable. All of this is locally generated/self-attested, not LLM data; no typed-state driver exists yet. | **Fail** | A manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a versioned benign-state/utility-oracle amendment, reset/source witnesses, frozen scorer/split/budget and redacted traces for the v2 preregistered population |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -33,7 +33,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 the migration and therefore could not measure a `v0 -> v1` regression. The new
 [`agentdojo_paired_v0_v1_execution_manifest.py`](../experiments/agentdojo_paired_v0_v1_execution_manifest.py)
 and locked fixture enumerate six immutable units (three attack and three
-genuine no-injection benign controls), each with exactly one counterbalanced
+planned no-injection benign rows), each with exactly one counterbalanced
 `v0` and `v1` sibling. They bind case, carrier/no-carrier construction, D0,
 model-configuration metadata, seed, reset/pre-state evidence, registry witness
 and the decision-independent effect oracle. The generator makes zero model,
@@ -155,6 +155,23 @@ an LLM, or detects paraphrased/partial leakage. Before an efficacy paper,
 execute a paired, reset-verified model matrix through a dedicated driver with
 a genuine benign arm, fixed denominators, full snapshot validation and
 case/arm/carrier/run/trace provenance, and redacted traces.
+
+**Result-bundle-contract teacher audit — 02 October 2026:** accept the new
+validator as a necessary pre-execution claim-control and reproducibility
+repair. It makes a future runner preserve the fixed 12-episode denominator;
+rejects missing,
+duplicate, retry, metadata, registry, carrier, model/request and trace
+evidence-consistency failures; recomputes native registry roots and
+independently recomputes attack endpoints rather than accepting a runner
+score. Reject any claimed benign result: the current
+manifest's pre-state hash is bound to injected attack state, while the claimed
+no-injection state and utility scorer are not pinned. The validator therefore
+returns `benign_initial_state_not_pinned` until a prospective versioned
+amendment supplies both. It emits transition counts only; with D0, three
+attack pairs and no real execution, it cannot support defense efficacy,
+statistics, population inference or Q2 readiness. Its hashes are
+self-consistency checks over caller-supplied JSON, not proof of runtime
+provenance, InjecAgent materialization or endpoint execution.
 
 ## Short reviewer report
 

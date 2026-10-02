@@ -279,10 +279,10 @@ không xuất hiện ở `v0` nhưng xuất hiện ở `v1`, được chấm t�
 bằng oracle độc lập với guard.
 
 [`experiments/agentdojo_paired_v0_v1_execution_manifest.py`](../experiments/agentdojo_paired_v0_v1_execution_manifest.py)
-và fixture tương ứng đã khóa sáu unit outcome-blind (ba attack và ba genuine
+và fixture tương ứng đã khóa sáu unit outcome-blind (ba attack và ba planned
 no-injection benign) thành 12 episode `v0`/`v1` được counterbalance. Artifact
-này buộc invariant case/arm/defense/model/seed, registry witness, reset evidence
-và trace provenance. Nó chưa gọi AgentDojo hay model; D0 hiện chỉ là unmodified
+này buộc invariant case/arm/defense/model/seed, registry/reset/trace evidence
+requirements. Nó chưa gọi AgentDojo hay model; D0 hiện chỉ là unmodified
 pipeline reference, không phải IPI defense và không tạo một claim efficacy.
 
 P0/P1/P2, `AFER`, `PDER_schema`, `SMF`, `BDP` và trace-replay vẫn là
@@ -396,6 +396,30 @@ efficacy run but not sufficient to satisfy that gate:
    Until a manifest-bound driver binds full state-schema validation and the
    case/arm/carrier/run/trace provenance, its caller-supplied source/reset
    witnesses are assertions—not admissible benchmark observations.
+9. `experiments/agentdojo_paired_result_bundle.py` is a no-network,
+   fail-closed **pre-execution result-acceptance contract** for a *future*
+   result bundle. It preserves
+   all 12 planned rows in the denominator; cross-checks the manifest digest,
+   immutable episode fields, no-retry rule and caller-supplied
+   model/request/trace/carrier evidence; recomputes v0/v1 registry descriptor
+   roots; and recomputes an attack endpoint only through
+   `score_attack_episode`. It does not trust a
+   runner-supplied harm label. It emits only the four paired attack transitions
+   (`00`, `01`, `10`, `11`) and explicit `not_scored` reasons, with a hard-coded
+   descriptive-only claim tier. The current benign rows inherit the effect
+   oracle's **injected attack** pre-state hash and do not pin either an
+   arm-specific no-injection state or an executable utility oracle. The
+   acceptance contract therefore
+   rejects every benign endpoint as `benign_initial_state_not_pinned` (and
+   records `benign_utility_oracle_not_pinned`) until a versioned manifest
+   amendment supplies both bindings. This is a reproducibility/claim-control
+   instrument, not a completed run, a defense comparison, a population
+   estimate, or Q2 evidence. The request/trace/carrier hashes establish only
+   self-consistency of caller-supplied JSON: they do not prove that AgentDojo,
+   InjecAgent or a model endpoint produced it. A future driver must capture
+   source-pinned injection/reset events, full serialized tool schemas and
+   prompts, and immutable runtime trace artifacts before these fields become
+   admissible run provenance.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

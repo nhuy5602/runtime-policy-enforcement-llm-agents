@@ -32,10 +32,18 @@ course-style synthesis as a novelty gate or an LLM evaluation.
 
 The next protocol artifact freezes the missing paired `v0`/`v1` factor rather
 than comparing two post-migration tracks: [`experiments/agentdojo_paired_v0_v1_execution_manifest.py`](experiments/agentdojo_paired_v0_v1_execution_manifest.py)
-and its fixture define six counterbalanced pairs with real-carrier and genuine
-no-injection arms. It performs zero model or tool execution and is not a
-benchmark result; a typed-state driver and a task-scoped D1 policy remain
-required before any efficacy claim.
+and its fixture define six counterbalanced pairs with a required real-carrier
+attack arm and planned
+no-injection arms. [`experiments/agentdojo_paired_result_bundle.py`](experiments/agentdojo_paired_result_bundle.py)
+now fail-closes any future result whose caller-supplied manifest, registry,
+carrier/model/trace evidence is internally inconsistent, and recomputes the
+harmful-effect endpoint independently. Those checks do not themselves prove
+runtime provenance or carrier materialization. The contract also exposes a
+current design defect: the manifest does not pin an arm-specific
+no-injection initial state or executable utility oracle, so benign rows are
+intentionally unscorable. These artifacts perform zero model or tool execution
+and are not benchmark results; a typed-state driver, a versioned benign-state
+amendment and a task-scoped D1 policy remain required before any efficacy claim.
 
 The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
 are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
@@ -64,6 +72,7 @@ experiments/
   agentdojo_contract_migration.py  Fail-closed v0-to-v1 name-only registry control
   agentdojo_pilot_execution_plan.py  No-billable, manifest-bound pilot preflight
   agentdojo_paired_v0_v1_execution_manifest.py  Counterbalanced v0/v1 paired preflight
+  agentdojo_paired_result_bundle.py  Fail-closed future-result acceptance and paired transition report
   fixtures/agentdojo_paired_v0_v1_execution_manifest_v1.json  Locked 12-episode plan
   benchmark_outputs/       198-case offline trace benchmark, CSV/JSON/Markdown/SVG
   openai_trace_runner.py   Optional live post-LLM trace generator with carrier/prompt hashes; no tool execution

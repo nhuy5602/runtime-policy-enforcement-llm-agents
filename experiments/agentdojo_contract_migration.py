@@ -135,22 +135,27 @@ def _registry_witness(entries: Mapping[str, Any], contract: Mapping[str, Any]) -
     reverse = {v1: v0 for v0, v1 in mapping.items()}
     semantic_rows = []
     exposed_rows = []
+    exposed_hash_rows = []
     for name, function in entries.items():
         canonical_name = reverse.get(name, name)
         semantic = _semantic_descriptor(function)
         semantic_rows.append({"canonical_name": canonical_name, "descriptor": semantic})
-        exposed_rows.append(
-            {
-                "exposed_name": name,
-                "canonical_name": canonical_name,
-                "semantic_sha256": sha256_text(canonical_json(semantic)),
-            }
-        )
+        hash_row = {
+            "exposed_name": name,
+            "canonical_name": canonical_name,
+            "semantic_sha256": sha256_text(canonical_json(semantic)),
+        }
+        # Preserve the historic exposed-registry digest while retaining the
+        # descriptor that lets a later result-bundle verifier recompute both
+        # semantic and exposed roots from native runtime evidence.
+        exposed_hash_rows.append(hash_row)
+        exposed_rows.append({**hash_row, "semantic_descriptor": semantic})
     semantic_rows.sort(key=lambda row: row["canonical_name"])
     exposed_rows.sort(key=lambda row: row["exposed_name"])
+    exposed_hash_rows.sort(key=lambda row: row["exposed_name"])
     return {
         "semantic_registry_sha256": sha256_text(canonical_json(semantic_rows)),
-        "exposed_registry_sha256": sha256_text(canonical_json(exposed_rows)),
+        "exposed_registry_sha256": sha256_text(canonical_json(exposed_hash_rows)),
         "tool_count": len(exposed_rows),
         "tools": exposed_rows,
     }

@@ -87,7 +87,24 @@ class AgentDojoContractMigrationTests(unittest.TestCase):
             witness["before"]["semantic_registry_sha256"],
             witness["after"]["semantic_registry_sha256"],
         )
+        self.assertIn("semantic_descriptor", witness["before"]["tools"][0])
+        self.assertIn("semantic_descriptor", witness["after"]["tools"][0])
         self.assertEqual(migration.apply_contract_to_runtime(runtime, self.contract), witness)
+
+    def test_native_witness_is_accepted_by_the_paired_result_contract(self):
+        from experiments.agentdojo_paired_result_bundle import _registry_issue
+        from experiments.agentdojo_paired_v0_v1_execution_manifest import DEFAULT_OUTPUT, load_manifest
+
+        manifest = load_manifest(DEFAULT_OUTPUT)
+        pair_id = next(row["pair_id"] for row in manifest["episodes"] if row["arm"] == "attack")
+        plans = {row["contract"]["version"]: row for row in manifest["episodes"] if row["pair_id"] == pair_id}
+        runtime = self._v0_runtime()
+        native_v0 = migration._registry_witness(runtime.functions, self.contract)
+        v0_issue, _ = _registry_issue({}, plans["v0"], registry_value=native_v0, version="v0")
+        self.assertIsNone(v0_issue)
+        native_v1 = migration.apply_contract_to_runtime(runtime, self.contract)["after"]
+        v1_issue, _ = _registry_issue({}, plans["v1"], registry_value=native_v1, version="v1")
+        self.assertIsNone(v1_issue)
 
     def test_incomplete_or_unwitnessed_registry_is_rejected(self):
         incomplete = self._v0_runtime()
