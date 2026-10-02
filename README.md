@@ -25,6 +25,11 @@ The first targeted closest-prior screen is documented in
 It is a reproducible screening artifact, not a systematic review; R1 remains
 open pending an independent replay of the search.
 
+A concise three-paper primary-source synthesis was added on 02 October 2026:
+[`paper/literature_update_20261002.md`](paper/literature_update_20261002.md).
+It applies the literature result to the active scope without treating the
+course-style synthesis as a novelty gate or an LLM evaluation.
+
 The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
 are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
 No new billable job was submitted when that gate was recorded.
@@ -41,6 +46,7 @@ paper/
   research_protocol.md     Threat model, RQs, protocol, and planned evaluation
   related_work_matrix.md   R1 novelty and overlap gate
   r1_targeted_literature_audit_20260927.md  Search log and closest-prior screen
+  literature_update_20261002.md  Three-paper primary-source scope update
 experiments/
   policy_guard_sim.py      Offline policy-conformance simulator
   policy_guard_sim_results.json

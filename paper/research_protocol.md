@@ -22,6 +22,16 @@ stop gate trong `paper/r1_reopening_20260927.md`; protocol này không claim
 “first runtime policy guard”, “first post-call contract”, “first drift
 benchmark” hoặc “provably secure”.
 
+## Cập nhật tài liệu gốc ngày 02 tháng 10 năm 2026
+
+Tổng hợp ngắn ba nguồn primary về AgentDojo, CaMeL và Progent được lưu tại
+[`literature_update_20261002.md`](literature_update_20261002.md). Artifact này
+xác nhận benchmark IPI động, capability/data-control separation, runtime
+privilege enforcement và policy update đã có công trình gần. Vì vậy protocol
+giữ phạm vi là **paired security-regression measurement**, không phải đề xuất
+một guard mới. Tổng hợp này không đóng cổng R1 và không thay thế replay độc
+lập của literature stop gate.
+
 ## Luận điểm nghiên cứu
 
 LLM Agent có thể vẫn bị ảnh hưởng bởi nội dung không đáng tin cậy. Nghiên cứu
