@@ -267,20 +267,28 @@ không gọi LLM. Kết quả đo enforcement boundary, không phải efficacy c
 Các tỷ lệ, numerator/denominator và hash được tái tạo bằng lệnh trong README;
 `wall_clock_ms` chỉ là chẩn đoán không quyết định và có thể thay đổi giữa máy.
 
-## Đóng góp được định vị
+## Candidate contribution và ranh giới bằng chứng
 
-Nghiên cứu không claim phát minh capability, least privilege, information-flow
-control, runtime policy enforcement hoặc post-call contracts. Đóng góp được
-khóa ở dạng extension/replication:
+**R1 vẫn mở; contribution chưa được khóa.** Nghiên cứu không đề xuất guard,
+capability, policy language, canonicalization hay post-effect verification mới.
+Candidate có thể bị bác bỏ là một **paired security-regression evaluation** của
+IPI defenses đã có: cùng task, IPI carrier, model configuration, initial state,
+reset protocol và defense; chỉ tool contract chuyển có kiểm soát từ `v0` sang
+`v1`. Endpoint chính là harmful-effect regression theo cặp, tức effect gây hại
+không xuất hiện ở `v0` nhưng xuất hiện ở `v1`, được chấm từ state sau thực thi
+bằng oracle độc lập với guard.
 
-1. protocol paired để replay cùng action qua schema/alias/adapter drift;
-2. metric `AFER_uncond`, `AFER_cond`, `PDER_schema`, `SMF` và `BDP` với
-   forbidden-effect oracle độc lập;
-3. ablation P0/P1/P2 tách canonicalization khỏi post-call verification;
-4. báo cáo đồng thời security, utility, approval burden, latency và failure
-   cases;
-5. artifact tái lập có manifest, hash, self-test và trạng thái pending rõ ràng
-   cho full LLM efficacy.
+[`experiments/agentdojo_paired_v0_v1_execution_manifest.py`](../experiments/agentdojo_paired_v0_v1_execution_manifest.py)
+và fixture tương ứng đã khóa sáu unit outcome-blind (ba attack và ba genuine
+no-injection benign) thành 12 episode `v0`/`v1` được counterbalance. Artifact
+này buộc invariant case/arm/defense/model/seed, registry witness, reset evidence
+và trace provenance. Nó chưa gọi AgentDojo hay model; D0 hiện chỉ là unmodified
+pipeline reference, không phải IPI defense và không tạo một claim efficacy.
+
+P0/P1/P2, `AFER`, `PDER_schema`, `SMF`, `BDP` và trace-replay vẫn là
+diagnostic/component artifacts. Chúng không thay thế real-agent paired
+evaluation, không phải contribution cơ chế mới và không được dùng làm primary
+endpoint cho security-regression trước khi có một v0/v1 sibling pair hợp lệ.
 
 ## Tài liệu tham khảo ban đầu
 

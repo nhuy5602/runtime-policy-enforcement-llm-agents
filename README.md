@@ -30,6 +30,13 @@ A concise three-paper primary-source synthesis was added on 02 October 2026:
 It applies the literature result to the active scope without treating the
 course-style synthesis as a novelty gate or an LLM evaluation.
 
+The next protocol artifact freezes the missing paired `v0`/`v1` factor rather
+than comparing two post-migration tracks: [`experiments/agentdojo_paired_v0_v1_execution_manifest.py`](experiments/agentdojo_paired_v0_v1_execution_manifest.py)
+and its fixture define six counterbalanced pairs with real-carrier and genuine
+no-injection arms. It performs zero model or tool execution and is not a
+benchmark result; a typed-state driver and a task-scoped D1 policy remain
+required before any efficacy claim.
+
 The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
 are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
 No new billable job was submitted when that gate was recorded.
@@ -38,8 +45,8 @@ No new billable job was submitted when that gate was recorded.
 
 ```text
 paper/
-  manuscript.md            Scientific report draft
-  q2_ready_report.md       Consolidated Q2-readiness report (E1-E5, R1-R3, P1-P2)
+  manuscript.md            Archived mechanism-pilot draft, not the locked paper
+  q2_ready_report.md       Archived drift dossier; protocol remains the current scope source
   peer_review_matrix.md    Internal review matrix and Q2 gates
   novelty_pivot_memo.md    Closest-prior review and drift-focused pivot
   claim_strategy_review.md Primary metric/RQ/Hypothesis strategy
@@ -56,6 +63,8 @@ experiments/
   adapter_attestation.py    Staged adapter/state attestation harness
   agentdojo_contract_migration.py  Fail-closed v0-to-v1 name-only registry control
   agentdojo_pilot_execution_plan.py  No-billable, manifest-bound pilot preflight
+  agentdojo_paired_v0_v1_execution_manifest.py  Counterbalanced v0/v1 paired preflight
+  fixtures/agentdojo_paired_v0_v1_execution_manifest_v1.json  Locked 12-episode plan
   benchmark_outputs/       198-case offline trace benchmark, CSV/JSON/Markdown/SVG
   openai_trace_runner.py   Optional live post-LLM trace generator with carrier/prompt hashes; no tool execution
   live_trace_output.json   Last generic live-track status

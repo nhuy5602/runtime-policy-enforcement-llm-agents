@@ -1,4 +1,4 @@
-# Q2 claim-gate review — 01 October 2026
+# Q2 claim-gate review — 02 October 2026
 
 ## Verdict
 
@@ -17,15 +17,35 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selects 3 source-qualified cases. A new source-pinned decision-independent monotone state oracle passes 15 local controls plus a 3-case fresh/positive scorer-interface check; this evidence is locally generated and self-attested, not LLM data. | **Fail** | A manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a true benign control, reset/source witnesses, frozen scorer/split/budget and redacted traces for the v2 preregistered population |
+| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selects 3 source-qualified cases. A source-pinned decision-independent monotone state oracle passes 15 local controls plus a 3-case fresh/positive scorer-interface check; a new counterbalanced v0/v1 preflight locks 6 pairs with true benign controls. All of this is locally generated/self-attested, not LLM data; no typed-state driver exists yet. | **Fail** | A manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a true benign control, reset/source witnesses, frozen scorer/split/budget and redacted traces for the v2 preregistered population |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
-| Statistics | Synthetic case-level bootstrap is explicitly descriptive; no paired test, cluster bootstrap or mixed-effects analysis for an independent episode population | **Fail** | Pre-register unit of analysis, source-template clustering, paired CI/test, model/task random effects, multiplicity correction and missing-run handling |
+| Statistics | Synthetic case-level bootstrap is explicitly descriptive. The new manifest pre-registers a v0/v1 pair unit and no-replacement `not_scored` policy, but there is still no independent episode population, paired result, cluster bootstrap or mixed-effects analysis. | **Fail** | Pre-register unit of analysis, source-template clustering, paired CI/test, model/task random effects, multiplicity correction and missing-run handling |
 | Reproducibility | Pinned source/lock metadata, self-tests and two target traces exist; the historical one-episode runner manifest/logs are ignored and no full-run environment or main table is reproducible | **Partial** | One clean-room command reproducing main tables from a pinned environment and archived trace manifest |
 | IMRaD/results integration | `paper/q2_ready_report.md` separates protocol from pilot, but E5 still contains planned tables and synthetic “baseline” rows that can be misread as LLM results | **Partial** | Keep protocol/pilot labels in title, abstract, tables and conclusion; replace pending cells only from run-linked results |
 
 ## Corrections applied to the manuscript
+
+### Paired-design correction — 02 October 2026
+
+**Student action.** The old pilot plan compared two tracks only after applying
+the migration and therefore could not measure a `v0 -> v1` regression. The new
+[`agentdojo_paired_v0_v1_execution_manifest.py`](../experiments/agentdojo_paired_v0_v1_execution_manifest.py)
+and locked fixture enumerate six immutable units (three attack and three
+genuine no-injection benign controls), each with exactly one counterbalanced
+`v0` and `v1` sibling. They bind case, carrier/no-carrier construction, D0,
+model-configuration metadata, seed, reset/pre-state evidence, registry witness
+and the decision-independent effect oracle. The generator makes zero model,
+network, sandbox, tool, or remote-job calls.
+
+**Teacher verdict.** Accept this as a preregistration and reproducibility
+correction; reject it as efficacy evidence. The current `D0` is explicitly an
+unmodified-pipeline reference, the model revision and sampling controls remain
+unobserved, and no driver yet captures the required typed pre/post states. A
+completed paired run must preserve those evidence fields and a separately
+frozen task-scoped D1 policy before it can support a defense-comparison or
+security-regression result.
 
 1. The one-episode AgentDojo smoke is summarized only from the two committed
    target traces in `experiments/independent_runs/agentdojo_smoke_summary.json`.
