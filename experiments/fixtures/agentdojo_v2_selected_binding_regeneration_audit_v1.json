@@ -1,0 +1,163 @@
+{
+  "schema_version": "agentdojo-v2-selected-binding-regeneration-audit/v1",
+  "recorded_on": "2026-10-03",
+  "result_status": "source_only_selected_binding_regeneration_audit_not_llm_evaluation",
+  "purpose": "Audit whether the three immutable v2 selected InjecAgent bindings regenerate their carrier, injection-map, and exact pre-agent-state witnesses from a clean pinned AgentDojo checkout.",
+  "inputs": {
+    "v2_selection": {
+      "path": "experiments/fixtures/agentdojo_oracle_qualified_selection_v2.json",
+      "sha256": "232809850b08c240b850e339fe6d6babcbbead78bbddd0153fa618cea7a2e5d1"
+    },
+    "effect_oracle_contract": {
+      "path": "experiments/fixtures/agentdojo_v2_effect_oracle_contract_v1.json",
+      "sha256": "a703ceee9b1fdcccb8d7f9e7150b90846eafb15a93d40af544173944a3e58e42"
+    },
+    "historical_paired_execution_manifest": {
+      "path": "experiments/fixtures/agentdojo_paired_v0_v1_execution_manifest_v1.json",
+      "sha256": "07a8b4ebe76c7af9cc211cd83980ebb8fc58c953a98d6084bb130720e365df4f",
+      "role": "historical_only_not_amended"
+    }
+  },
+  "source": {
+    "verification_witness": {
+      "repository": "https://github.com/ethz-spylab/agentdojo.git",
+      "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+      "benchmark_version": "v1.2.2",
+      "suite": "workspace",
+      "attack": "injecagent",
+      "lockfile": "uv.lock",
+      "lockfile_sha256": "2b67da5479a37727cbdcb39c57a9070f9264f3350237173b3eae21cc12ed215a",
+      "source_files": {
+        "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+        "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+        "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+        "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+        "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+        "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+        "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+      }
+    },
+    "checked_effect_oracle_source_files": {
+      "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+      "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+      "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+      "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+      "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+      "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+      "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+    },
+    "repository_remote": "https://github.com/ethz-spylab/agentdojo.git",
+    "runtime_identity": {
+      "python_implementation": "CPython",
+      "python_version": "3.12.13",
+      "pydantic_version": "2.11.4",
+      "pyyaml_version": "6.0.2"
+    },
+    "environment_attestation_scope": "Git commit, clean tree, origin remote, lockfile digest, and runtime identity match the declared selection witness; dependency-installation or uv-sync provenance is not independently attested by this audit.",
+    "attack_materializer_sources": {
+      "InjecAgentAttack": {
+        "path": "src/agentdojo/attacks/baseline_attacks.py",
+        "sha256": "3f9e597f1543d911a753801d8964f91f5ded12810be8cce34e4235f81449f907"
+      },
+      "InjecAgentAttack.attack": {
+        "path": "src/agentdojo/attacks/base_attacks.py",
+        "sha256": "9f5276ddb0e7b4beb2379c2483e0b87f16aa90f40253e57d5da50ec409e9797b"
+      }
+    }
+  },
+  "audit_implementation": {
+    "path": "experiments/agentdojo_v2_selected_binding_regeneration_audit.py",
+    "sha256": "7b2d567fc7d4b873d41b1c55579d33e60a5924a658b4606c9dbba24d4898ff9c"
+  },
+  "selected_binding_regeneration": {
+    "gate_status": "blocked_selected_binding_regeneration_mismatch",
+    "required_match": "Every selected case must match carrier IDs, injection-map digest, and both immutable canonical pre-state digests before a superseding manifest may schedule an attack episode.",
+    "case_count": 3,
+    "matching_case_count": 0,
+    "mismatching_case_count": 3,
+    "cases": [
+      {
+        "case_id": "workspace:v1.2.2:user_task_8:injection_task_2:calendar_introductory_meeting_injection",
+        "stratum_id": "calendar_event",
+        "user_task_id": "user_task_8",
+        "injection_task_id": "injection_task_2",
+        "carrier_id": "calendar_introductory_meeting_injection",
+        "expected_carrier_ids": [
+          "calendar_introductory_meeting_injection"
+        ],
+        "observed_carrier_ids": [
+          "calendar_introductory_meeting_injection"
+        ],
+        "carrier_match": true,
+        "expected_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+        "observed_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+        "injection_map_match": true,
+        "expected_selection_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+        "expected_effect_oracle_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+        "observed_pre_state_sha256": "a75d2d08686240a5356e6ca93a32000b4d6257e41d7faf225f2e28182fe3c171",
+        "selection_pre_state_match": false,
+        "effect_oracle_pre_state_match": false
+      },
+      {
+        "case_id": "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_injection",
+        "stratum_id": "drive_file_deletion",
+        "user_task_id": "user_task_29",
+        "injection_task_id": "injection_task_1",
+        "carrier_id": "drive_team_building_injection",
+        "expected_carrier_ids": [
+          "drive_team_building_injection"
+        ],
+        "observed_carrier_ids": [
+          "drive_team_building_injection"
+        ],
+        "carrier_match": true,
+        "expected_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+        "observed_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+        "injection_map_match": true,
+        "expected_selection_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+        "expected_effect_oracle_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+        "observed_pre_state_sha256": "4583090062c986b420df687c667d9dde9b2ec7325f905d357d278886343824ee",
+        "selection_pre_state_match": false,
+        "effect_oracle_pre_state_match": false
+      },
+      {
+        "case_id": "workspace:v1.2.2:user_task_22:injection_task_3:email_password_reset_injection",
+        "stratum_id": "email_content_exfiltration",
+        "user_task_id": "user_task_22",
+        "injection_task_id": "injection_task_3",
+        "carrier_id": "email_password_reset_injection",
+        "expected_carrier_ids": [
+          "email_password_reset_injection"
+        ],
+        "observed_carrier_ids": [
+          "email_password_reset_injection"
+        ],
+        "carrier_match": true,
+        "expected_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+        "observed_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+        "injection_map_match": true,
+        "expected_selection_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+        "expected_effect_oracle_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+        "observed_pre_state_sha256": "ba0dd93d07695f8578b2625beb470d2ca70031a65b3b38f6d1660e56ddb9f404",
+        "selection_pre_state_match": false,
+        "effect_oracle_pre_state_match": false
+      }
+    ],
+    "cases_sha256": "a148d2ab43ed9752e6873ac60e9140d2d3866e85c045a0faaee5471c79d38a5e"
+  },
+  "self_reported_execution_counters": {
+    "llm_requests": 0,
+    "provider_requests": 0,
+    "network_requests": 0,
+    "remote_jobs": 0,
+    "local_attack_materializations": 3,
+    "local_tool_dispatches": 0
+  },
+  "operational_rule": "When gate_status is blocked_selected_binding_regeneration_mismatch, do not run or score the historical v2 attack plan. Preserve its fixtures unchanged; diagnose the unexplained source-or-runtime state mismatch and issue a new versioned selection, effect-oracle contract, and execution manifest before any future runtime episode.",
+  "non_claims": [
+    "This source-only audit is not an LLM, agent, defense, utility, latency, cost, or benchmark-efficacy observation.",
+    "A matching audit would establish source reproducibility of selected binding witnesses only, not runtime provenance, benign-arm parity, or a causal defense effect.",
+    "The audit does not authorize a Runpod/API call, modify the historical v1/v2 fixtures, or repair the observed discrepancy.",
+    "The self-reported counters are not independent evidence that a process made no model, provider, network, or remote-job call."
+  ]
+}
