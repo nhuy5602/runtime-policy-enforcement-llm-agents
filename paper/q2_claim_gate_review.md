@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selected 3 source-qualified cases; its decision-independent monotone state oracle has 15 local controls plus a 3-case fresh/positive scorer-interface check. However, a selected-binding regeneration audit finds the same carrier/injection-map digests but different canonical injected pre-state hashes for all 3 selected rows under a clean source checkout with the recorded runtime identity. The audit records, but does not independently attest, dependency-installation/lockfile-sync provenance; it cannot diagnose whether the mismatch is source or serialization-environment drift. The historical v2 selection, oracle contract, paired preflight and result-bundle design are therefore blocked rather than executable. Planned benign rows also lack an arm-specific no-injection pre-state and executable utility oracle. All evidence is local/source-only, not LLM data. | **Fail** | Diagnose the regeneration mismatch and issue new versioned selection/effect-oracle/manifest artifacts; then provide a manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a versioned benign-state/utility-oracle amendment, reset/source witnesses, frozen scorer/split/budget and redacted traces |
+| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selected 3 source-qualified cases; its decision-independent monotone state oracle has 15 local controls plus a 3-case fresh/positive scorer-interface check. The 03 October selected-binding fixture recorded a three-case pre-state mismatch, but a preserved 05 October adjudication runs three freshly started processes over all three cases (9 trials) and reproduces every frozen carrier, injection-map and pre-state witness in one recorded environment. Its package manifest does not independently attest the dependency-installation/build path. Thus the prior mismatch observation is contradicted, not explained or deleted. This clears only that narrow assertion: planned benign rows still lack an arm-specific no-injection state and executable utility oracle, and there is no manifest-bound driver, reset/trace provenance, fair baseline, or LLM evidence. | **Fail** | Provide a manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a versioned benign-state/utility-oracle amendment, reset/source witnesses, frozen scorer/split/budget, fair baselines and redacted traces; then execute the independent model matrix |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -156,21 +156,31 @@ execute a paired, reset-verified model matrix through a dedicated driver with
 a genuine benign arm, fixed denominators, full snapshot validation and
 case/arm/carrier/run/trace provenance, and redacted traces.
 
-**Selected-binding regeneration teacher audit — 03 October 2026:** accept the
-new versioned audit as a necessary reproducibility correction and reject any
-attempt to execute, score, or silently re-hash the historical v2 attack plan.
-On a clean checkout at the declared AgentDojo commit and matching recorded
-runtime identity, all three selected rows recreate the expected single carrier
-and injection-map digest but none recreates its frozen canonical pre-agent
-state. This is an unexplained regeneration mismatch—not evidence that the
-benchmark, LLM, attack, or defense succeeded or failed—and it may reflect
-source or dependency-serialization drift because lockfile synchronization is
-not independently attested. The student must preserve the historical
-artifacts, diagnose the mismatch, and issue a new versioned selection,
-effect-oracle contract and execution manifest before acquiring runtime
-observations. The teacher also
-rejects treating a synthetic/state-only audit or a tiny pilot as LLM efficacy,
+**Historical selected-binding regeneration teacher audit — 03 October 2026
+(superseded as a current mismatch claim):** the preserved audit fixture
+recorded a three-case mismatch and the then-current teacher review rejected
+execution, scoring, or silent re-hashing of the historical v2 plan. That
+fixture is retained rather than edited, but its mismatch conclusion must now
+be read with the 05 October adjudication below; it is not a current empirical
+finding. Neither the historical fixture nor the correction is LLM efficacy,
 statistics, novelty, or Q2 evidence.
+
+**Selected-binding regeneration adjudication — 05 October 2026:** the teacher
+rejects continuing to present the 03 October mismatch record as a current
+empirical blocker. A new immutable adjudication retains that older fixture
+unchanged, records its digest and status, and starts three fresh Python
+processes that each rebuild all three selected bindings. All nine trials match
+both frozen pre-state witnesses as well as the carrier and injection-map
+digests; the artifact captures source/data/import provenance, interpreter
+digest, normalized distribution manifest, locale/timezone and the observed
+seed policy, but not an independently attested dependency-install/build path.
+Accept this only as a narrow correction: it contradicts the old
+observation in one captured environment, but does not establish its cause,
+historical-environment equivalence, general determinism, benchmark validity,
+or any LLM/defense/utility result. The historical execution plan remains
+unauthorized because its independent benign arm, executable utility oracle,
+manifest-bound driver, reset/trace provenance, fair baselines and other
+scientific gates remain open.
 
 **Result-bundle-contract teacher audit — 02 October 2026:** accept the new
 validator as a necessary pre-execution claim-control and reproducibility

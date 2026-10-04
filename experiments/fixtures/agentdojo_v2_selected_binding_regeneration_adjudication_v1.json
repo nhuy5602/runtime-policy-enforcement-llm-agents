@@ -1,0 +1,1850 @@
+{
+  "schema_version": "agentdojo-v2-selected-binding-regeneration-adjudication/v1",
+  "recorded_on": "2026-10-05",
+  "result_status": "source_only_regeneration_adjudication_not_llm_evaluation",
+  "purpose": "Adjudicate whether the frozen v2 selected binding witnesses reproduce in three independently started source-construction processes after a prior self-consistent regeneration-audit fixture recorded a contradictory mismatch.",
+  "inputs": {
+    "prior_regeneration_audit": {
+      "path": "experiments/fixtures/agentdojo_v2_selected_binding_regeneration_audit_v1.json",
+      "sha256": "191e53cd097eb49e56cd2d22da5e64f1e8e447cf3ccb7ea93c072a1976f87639",
+      "role": "historical_observation_retained_unamended"
+    },
+    "v2_selection": {
+      "path": "experiments/fixtures/agentdojo_oracle_qualified_selection_v2.json",
+      "sha256": "232809850b08c240b850e339fe6d6babcbbead78bbddd0153fa618cea7a2e5d1"
+    },
+    "effect_oracle_contract": {
+      "path": "experiments/fixtures/agentdojo_v2_effect_oracle_contract_v1.json",
+      "sha256": "a703ceee9b1fdcccb8d7f9e7150b90846eafb15a93d40af544173944a3e58e42"
+    },
+    "historical_paired_execution_manifest": {
+      "path": "experiments/fixtures/agentdojo_paired_v0_v1_execution_manifest_v1.json",
+      "sha256": "07a8b4ebe76c7af9cc211cd83980ebb8fc58c953a98d6084bb130720e365df4f",
+      "role": "historical_only_not_amended"
+    }
+  },
+  "adjudication_implementation": {
+    "path": "experiments/agentdojo_v2_selected_binding_regeneration_adjudication.py",
+    "sha256": "b46c0dbadac8c887a09b36d77665c802d879a899d29f50f0286176f31e3defe5"
+  },
+  "source_provenance": {
+    "verification_witness": {
+      "repository": "https://github.com/ethz-spylab/agentdojo.git",
+      "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+      "benchmark_version": "v1.2.2",
+      "suite": "workspace",
+      "attack": "injecagent",
+      "lockfile": "uv.lock",
+      "lockfile_sha256": "2b67da5479a37727cbdcb39c57a9070f9264f3350237173b3eae21cc12ed215a",
+      "source_files": {
+        "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+        "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+        "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+        "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+        "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+        "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+        "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+      }
+    },
+    "checked_effect_oracle_source_files": {
+      "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+      "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+      "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+      "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+      "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+      "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+      "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+    },
+    "repository_remote": "https://github.com/ethz-spylab/agentdojo.git",
+    "runtime_identity": {
+      "python_implementation": "CPython",
+      "python_version": "3.12.13",
+      "pydantic_version": "2.11.4",
+      "pyyaml_version": "6.0.2"
+    },
+    "environment_attestation_scope": "Git commit, clean tree, origin remote, lockfile digest, and runtime identity match the declared selection witness; dependency-installation or uv-sync provenance is not independently attested by this audit.",
+    "attack_materializer_sources": {
+      "InjecAgentAttack": {
+        "path": "src/agentdojo/attacks/baseline_attacks.py",
+        "sha256": "3f9e597f1543d911a753801d8964f91f5ded12810be8cce34e4235f81449f907"
+      },
+      "InjecAgentAttack.attack": {
+        "path": "src/agentdojo/attacks/base_attacks.py",
+        "sha256": "9f5276ddb0e7b4beb2379c2483e0b87f16aa90f40253e57d5da50ec409e9797b"
+      }
+    },
+    "source_checkout_clean": true,
+    "workspace_state_data_files": {
+      "src/agentdojo/data/suites/workspace/environment.yaml": "c0f93e6b6f9de005fec63588dc579313f227a87235c10259375a9f43aa13db3e",
+      "src/agentdojo/data/suites/workspace/include/calendar.yaml": "0cc12f15f0d9b03e2ef025c3f1b6cb0b807db2e83bee76e2b0c90af78deee9ea",
+      "src/agentdojo/data/suites/workspace/include/cloud_drive.yaml": "95b52f6f408016b42adfdff3d1005514fec3a629e92348c28e05f3dba113eaca",
+      "src/agentdojo/data/suites/workspace/include/inbox.yaml": "13cf70a0a40252708b5f879987fa1fa24dbd92a3639c975bfe294ab7f4fd3c50",
+      "src/agentdojo/data/suites/workspace/injection_vectors.yaml": "13223dbffc51cf7c843657b80939f89c82a46e8b2faf062522241dc5bf928722"
+    },
+    "agentdojo_import_origin": {
+      "path": "src/agentdojo/__init__.py",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    }
+  },
+  "runtime_witness": {
+    "python": {
+      "implementation": "CPython",
+      "version": "3.12.13",
+      "executable_location": {
+        "location_class": "agentdojo_source_relative",
+        "path": ".venv/Scripts/python.exe"
+      },
+      "executable_sha256": "90a685032444ae48d9a89ef52691d06052a565e2204df44b5f083a67a90338b8",
+      "hash_randomization_enabled": true
+    },
+    "platform": {
+      "system": "Windows",
+      "release": "11",
+      "machine": "AMD64"
+    },
+    "locale": "LC_COLLATE=C;LC_CTYPE=English_United States.1252;LC_MONETARY=C;LC_NUMERIC=C;LC_TIME=C",
+    "timezone_names": [
+      "SE Asia Standard Time",
+      "SE Asia Daylight Time"
+    ],
+    "environment": {
+      "PYTHONHASHSEED": null,
+      "PYTHONUTF8": null,
+      "TZ": null,
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PYTHONPATH": [
+        "<repository-root>",
+        "<agentdojo-source>/src"
+      ]
+    },
+    "seed_policy": "No application or Python hash seed is set by this adjudication. The fresh-child PYTHONHASHSEED value is recorded as observed; the historical fixture's seed provenance is unknown.",
+    "installed_distributions": [
+      {
+        "name": "agentdojo",
+        "version": "0.1.35"
+      },
+      {
+        "name": "annotated-types",
+        "version": "0.7.0"
+      },
+      {
+        "name": "anthropic",
+        "version": "0.50.0"
+      },
+      {
+        "name": "anyio",
+        "version": "4.9.0"
+      },
+      {
+        "name": "cachetools",
+        "version": "5.5.2"
+      },
+      {
+        "name": "certifi",
+        "version": "2025.4.26"
+      },
+      {
+        "name": "charset-normalizer",
+        "version": "3.4.1"
+      },
+      {
+        "name": "click",
+        "version": "8.1.8"
+      },
+      {
+        "name": "cohere",
+        "version": "5.15.0"
+      },
+      {
+        "name": "colorama",
+        "version": "0.4.6"
+      },
+      {
+        "name": "deepdiff",
+        "version": "8.6.1"
+      },
+      {
+        "name": "distro",
+        "version": "1.9.0"
+      },
+      {
+        "name": "dnspython",
+        "version": "2.7.0"
+      },
+      {
+        "name": "docstring-parser",
+        "version": "0.16"
+      },
+      {
+        "name": "email-validator",
+        "version": "2.2.0"
+      },
+      {
+        "name": "fastavro",
+        "version": "1.10.0"
+      },
+      {
+        "name": "filelock",
+        "version": "3.18.0"
+      },
+      {
+        "name": "fsspec",
+        "version": "2025.3.2"
+      },
+      {
+        "name": "google-auth",
+        "version": "2.39.0"
+      },
+      {
+        "name": "google-genai",
+        "version": "1.15.0"
+      },
+      {
+        "name": "greenlet",
+        "version": "3.2.1"
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0"
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.9"
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1"
+      },
+      {
+        "name": "httpx-sse",
+        "version": "0.4.0"
+      },
+      {
+        "name": "huggingface-hub",
+        "version": "0.30.2"
+      },
+      {
+        "name": "idna",
+        "version": "3.10"
+      },
+      {
+        "name": "jiter",
+        "version": "0.9.0"
+      },
+      {
+        "name": "jsonpatch",
+        "version": "1.33"
+      },
+      {
+        "name": "jsonpointer",
+        "version": "3.0.0"
+      },
+      {
+        "name": "langchain",
+        "version": "0.3.24"
+      },
+      {
+        "name": "langchain-core",
+        "version": "0.3.56"
+      },
+      {
+        "name": "langchain-text-splitters",
+        "version": "0.3.8"
+      },
+      {
+        "name": "langsmith",
+        "version": "0.3.38"
+      },
+      {
+        "name": "markdown-it-py",
+        "version": "3.0.0"
+      },
+      {
+        "name": "mdurl",
+        "version": "0.1.2"
+      },
+      {
+        "name": "openai",
+        "version": "1.76.2"
+      },
+      {
+        "name": "orderly-set",
+        "version": "5.5.0"
+      },
+      {
+        "name": "orjson",
+        "version": "3.10.18"
+      },
+      {
+        "name": "packaging",
+        "version": "24.2"
+      },
+      {
+        "name": "pyasn1",
+        "version": "0.6.1"
+      },
+      {
+        "name": "pyasn1-modules",
+        "version": "0.4.2"
+      },
+      {
+        "name": "pydantic",
+        "version": "2.11.4"
+      },
+      {
+        "name": "pydantic-core",
+        "version": "2.33.2"
+      },
+      {
+        "name": "pygments",
+        "version": "2.19.1"
+      },
+      {
+        "name": "python-dotenv",
+        "version": "1.1.0"
+      },
+      {
+        "name": "pyyaml",
+        "version": "6.0.2"
+      },
+      {
+        "name": "requests",
+        "version": "2.32.3"
+      },
+      {
+        "name": "requests-toolbelt",
+        "version": "1.0.0"
+      },
+      {
+        "name": "rich",
+        "version": "14.0.0"
+      },
+      {
+        "name": "rsa",
+        "version": "4.9.1"
+      },
+      {
+        "name": "sniffio",
+        "version": "1.3.1"
+      },
+      {
+        "name": "sqlalchemy",
+        "version": "2.0.40"
+      },
+      {
+        "name": "tenacity",
+        "version": "9.1.2"
+      },
+      {
+        "name": "tokenizers",
+        "version": "0.21.1"
+      },
+      {
+        "name": "tqdm",
+        "version": "4.67.1"
+      },
+      {
+        "name": "types-requests",
+        "version": "2.32.0.20250328"
+      },
+      {
+        "name": "typing-extensions",
+        "version": "4.13.2"
+      },
+      {
+        "name": "typing-inspection",
+        "version": "0.4.0"
+      },
+      {
+        "name": "urllib3",
+        "version": "2.4.0"
+      },
+      {
+        "name": "websockets",
+        "version": "15.0.1"
+      },
+      {
+        "name": "zstandard",
+        "version": "0.23.0"
+      }
+    ],
+    "installed_distributions_sha256": "512dddad73668f9e1cceeb6584ec58dffd11cc0f29757afd51da263adcdf0cce",
+    "required_distribution_versions": {
+      "pydantic": "2.11.4",
+      "pydantic-core": "2.33.2",
+      "pyyaml": "6.0.2"
+    }
+  },
+  "fresh_process_topology": {
+    "child_process_count": 3,
+    "selected_cases_per_child": 3,
+    "total_case_trials": 9,
+    "description": "Three separately started subprocesses use the parent interpreter. Each child reconstructs all three selected bindings from a clean pinned checkout with PYTHONPATH constrained to the repository and source tree; process IDs and raw states are intentionally not retained."
+  },
+  "execution_attestation_scope": "Fresh-process topology and counters are self-attested by this artifact's code and output, not independently proven. PYTHONPATH is constrained; other inherited process state is only selectively recorded.",
+  "fresh_process_children": [
+    {
+      "schema_version": "agentdojo-v2-selected-binding-regeneration-adjudication-child/v1",
+      "child_ordinal": 1,
+      "child_status": "verified_source_construction",
+      "child_implementation": {
+        "path": "experiments/agentdojo_v2_selected_binding_regeneration_adjudication.py",
+        "sha256": "b46c0dbadac8c887a09b36d77665c802d879a899d29f50f0286176f31e3defe5"
+      },
+      "source_provenance": {
+        "verification_witness": {
+          "repository": "https://github.com/ethz-spylab/agentdojo.git",
+          "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+          "benchmark_version": "v1.2.2",
+          "suite": "workspace",
+          "attack": "injecagent",
+          "lockfile": "uv.lock",
+          "lockfile_sha256": "2b67da5479a37727cbdcb39c57a9070f9264f3350237173b3eae21cc12ed215a",
+          "source_files": {
+            "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+            "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+            "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+            "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+            "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+            "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+            "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+          }
+        },
+        "checked_effect_oracle_source_files": {
+          "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+          "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+          "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+          "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+          "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+          "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+          "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+        },
+        "repository_remote": "https://github.com/ethz-spylab/agentdojo.git",
+        "runtime_identity": {
+          "python_implementation": "CPython",
+          "python_version": "3.12.13",
+          "pydantic_version": "2.11.4",
+          "pyyaml_version": "6.0.2"
+        },
+        "environment_attestation_scope": "Git commit, clean tree, origin remote, lockfile digest, and runtime identity match the declared selection witness; dependency-installation or uv-sync provenance is not independently attested by this audit.",
+        "attack_materializer_sources": {
+          "InjecAgentAttack": {
+            "path": "src/agentdojo/attacks/baseline_attacks.py",
+            "sha256": "3f9e597f1543d911a753801d8964f91f5ded12810be8cce34e4235f81449f907"
+          },
+          "InjecAgentAttack.attack": {
+            "path": "src/agentdojo/attacks/base_attacks.py",
+            "sha256": "9f5276ddb0e7b4beb2379c2483e0b87f16aa90f40253e57d5da50ec409e9797b"
+          }
+        },
+        "source_checkout_clean": true,
+        "workspace_state_data_files": {
+          "src/agentdojo/data/suites/workspace/environment.yaml": "c0f93e6b6f9de005fec63588dc579313f227a87235c10259375a9f43aa13db3e",
+          "src/agentdojo/data/suites/workspace/include/calendar.yaml": "0cc12f15f0d9b03e2ef025c3f1b6cb0b807db2e83bee76e2b0c90af78deee9ea",
+          "src/agentdojo/data/suites/workspace/include/cloud_drive.yaml": "95b52f6f408016b42adfdff3d1005514fec3a629e92348c28e05f3dba113eaca",
+          "src/agentdojo/data/suites/workspace/include/inbox.yaml": "13cf70a0a40252708b5f879987fa1fa24dbd92a3639c975bfe294ab7f4fd3c50",
+          "src/agentdojo/data/suites/workspace/injection_vectors.yaml": "13223dbffc51cf7c843657b80939f89c82a46e8b2faf062522241dc5bf928722"
+        },
+        "agentdojo_import_origin": {
+          "path": "src/agentdojo/__init__.py",
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        }
+      },
+      "runtime_witness": {
+        "python": {
+          "implementation": "CPython",
+          "version": "3.12.13",
+          "executable_location": {
+            "location_class": "agentdojo_source_relative",
+            "path": ".venv/Scripts/python.exe"
+          },
+          "executable_sha256": "90a685032444ae48d9a89ef52691d06052a565e2204df44b5f083a67a90338b8",
+          "hash_randomization_enabled": true
+        },
+        "platform": {
+          "system": "Windows",
+          "release": "11",
+          "machine": "AMD64"
+        },
+        "locale": "LC_COLLATE=C;LC_CTYPE=English_United States.1252;LC_MONETARY=C;LC_NUMERIC=C;LC_TIME=C",
+        "timezone_names": [
+          "SE Asia Standard Time",
+          "SE Asia Daylight Time"
+        ],
+        "environment": {
+          "PYTHONHASHSEED": null,
+          "PYTHONUTF8": null,
+          "TZ": null,
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONPATH": [
+            "<repository-root>",
+            "<agentdojo-source>/src"
+          ]
+        },
+        "seed_policy": "No application or Python hash seed is set by this adjudication. The fresh-child PYTHONHASHSEED value is recorded as observed; the historical fixture's seed provenance is unknown.",
+        "installed_distributions": [
+          {
+            "name": "agentdojo",
+            "version": "0.1.35"
+          },
+          {
+            "name": "annotated-types",
+            "version": "0.7.0"
+          },
+          {
+            "name": "anthropic",
+            "version": "0.50.0"
+          },
+          {
+            "name": "anyio",
+            "version": "4.9.0"
+          },
+          {
+            "name": "cachetools",
+            "version": "5.5.2"
+          },
+          {
+            "name": "certifi",
+            "version": "2025.4.26"
+          },
+          {
+            "name": "charset-normalizer",
+            "version": "3.4.1"
+          },
+          {
+            "name": "click",
+            "version": "8.1.8"
+          },
+          {
+            "name": "cohere",
+            "version": "5.15.0"
+          },
+          {
+            "name": "colorama",
+            "version": "0.4.6"
+          },
+          {
+            "name": "deepdiff",
+            "version": "8.6.1"
+          },
+          {
+            "name": "distro",
+            "version": "1.9.0"
+          },
+          {
+            "name": "dnspython",
+            "version": "2.7.0"
+          },
+          {
+            "name": "docstring-parser",
+            "version": "0.16"
+          },
+          {
+            "name": "email-validator",
+            "version": "2.2.0"
+          },
+          {
+            "name": "fastavro",
+            "version": "1.10.0"
+          },
+          {
+            "name": "filelock",
+            "version": "3.18.0"
+          },
+          {
+            "name": "fsspec",
+            "version": "2025.3.2"
+          },
+          {
+            "name": "google-auth",
+            "version": "2.39.0"
+          },
+          {
+            "name": "google-genai",
+            "version": "1.15.0"
+          },
+          {
+            "name": "greenlet",
+            "version": "3.2.1"
+          },
+          {
+            "name": "h11",
+            "version": "0.16.0"
+          },
+          {
+            "name": "httpcore",
+            "version": "1.0.9"
+          },
+          {
+            "name": "httpx",
+            "version": "0.28.1"
+          },
+          {
+            "name": "httpx-sse",
+            "version": "0.4.0"
+          },
+          {
+            "name": "huggingface-hub",
+            "version": "0.30.2"
+          },
+          {
+            "name": "idna",
+            "version": "3.10"
+          },
+          {
+            "name": "jiter",
+            "version": "0.9.0"
+          },
+          {
+            "name": "jsonpatch",
+            "version": "1.33"
+          },
+          {
+            "name": "jsonpointer",
+            "version": "3.0.0"
+          },
+          {
+            "name": "langchain",
+            "version": "0.3.24"
+          },
+          {
+            "name": "langchain-core",
+            "version": "0.3.56"
+          },
+          {
+            "name": "langchain-text-splitters",
+            "version": "0.3.8"
+          },
+          {
+            "name": "langsmith",
+            "version": "0.3.38"
+          },
+          {
+            "name": "markdown-it-py",
+            "version": "3.0.0"
+          },
+          {
+            "name": "mdurl",
+            "version": "0.1.2"
+          },
+          {
+            "name": "openai",
+            "version": "1.76.2"
+          },
+          {
+            "name": "orderly-set",
+            "version": "5.5.0"
+          },
+          {
+            "name": "orjson",
+            "version": "3.10.18"
+          },
+          {
+            "name": "packaging",
+            "version": "24.2"
+          },
+          {
+            "name": "pyasn1",
+            "version": "0.6.1"
+          },
+          {
+            "name": "pyasn1-modules",
+            "version": "0.4.2"
+          },
+          {
+            "name": "pydantic",
+            "version": "2.11.4"
+          },
+          {
+            "name": "pydantic-core",
+            "version": "2.33.2"
+          },
+          {
+            "name": "pygments",
+            "version": "2.19.1"
+          },
+          {
+            "name": "python-dotenv",
+            "version": "1.1.0"
+          },
+          {
+            "name": "pyyaml",
+            "version": "6.0.2"
+          },
+          {
+            "name": "requests",
+            "version": "2.32.3"
+          },
+          {
+            "name": "requests-toolbelt",
+            "version": "1.0.0"
+          },
+          {
+            "name": "rich",
+            "version": "14.0.0"
+          },
+          {
+            "name": "rsa",
+            "version": "4.9.1"
+          },
+          {
+            "name": "sniffio",
+            "version": "1.3.1"
+          },
+          {
+            "name": "sqlalchemy",
+            "version": "2.0.40"
+          },
+          {
+            "name": "tenacity",
+            "version": "9.1.2"
+          },
+          {
+            "name": "tokenizers",
+            "version": "0.21.1"
+          },
+          {
+            "name": "tqdm",
+            "version": "4.67.1"
+          },
+          {
+            "name": "types-requests",
+            "version": "2.32.0.20250328"
+          },
+          {
+            "name": "typing-extensions",
+            "version": "4.13.2"
+          },
+          {
+            "name": "typing-inspection",
+            "version": "0.4.0"
+          },
+          {
+            "name": "urllib3",
+            "version": "2.4.0"
+          },
+          {
+            "name": "websockets",
+            "version": "15.0.1"
+          },
+          {
+            "name": "zstandard",
+            "version": "0.23.0"
+          }
+        ],
+        "installed_distributions_sha256": "512dddad73668f9e1cceeb6584ec58dffd11cc0f29757afd51da263adcdf0cce",
+        "required_distribution_versions": {
+          "pydantic": "2.11.4",
+          "pydantic-core": "2.33.2",
+          "pyyaml": "6.0.2"
+        }
+      },
+      "trials": [
+        {
+          "child_ordinal": 1,
+          "case_id": "workspace:v1.2.2:user_task_8:injection_task_2:calendar_introductory_meeting_injection",
+          "stratum_id": "calendar_event",
+          "user_task_id": "user_task_8",
+          "injection_task_id": "injection_task_2",
+          "carrier_id": "calendar_introductory_meeting_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "calendar_introductory_meeting_injection"
+          ],
+          "observed_carrier_ids": [
+            "calendar_introductory_meeting_injection"
+          ],
+          "expected_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+          "observed_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+          "expected_selection_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "expected_effect_oracle_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "observed_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        },
+        {
+          "child_ordinal": 1,
+          "case_id": "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_injection",
+          "stratum_id": "drive_file_deletion",
+          "user_task_id": "user_task_29",
+          "injection_task_id": "injection_task_1",
+          "carrier_id": "drive_team_building_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "drive_team_building_injection"
+          ],
+          "observed_carrier_ids": [
+            "drive_team_building_injection"
+          ],
+          "expected_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+          "observed_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+          "expected_selection_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "expected_effect_oracle_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "observed_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        },
+        {
+          "child_ordinal": 1,
+          "case_id": "workspace:v1.2.2:user_task_22:injection_task_3:email_password_reset_injection",
+          "stratum_id": "email_content_exfiltration",
+          "user_task_id": "user_task_22",
+          "injection_task_id": "injection_task_3",
+          "carrier_id": "email_password_reset_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "email_password_reset_injection"
+          ],
+          "observed_carrier_ids": [
+            "email_password_reset_injection"
+          ],
+          "expected_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+          "observed_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+          "expected_selection_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "expected_effect_oracle_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "observed_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        }
+      ],
+      "self_reported_execution_counters": {
+        "llm_requests": 0,
+        "provider_requests": 0,
+        "network_requests": 0,
+        "remote_jobs": 0,
+        "local_attack_materializations": 6,
+        "local_tool_dispatches": 0
+      }
+    },
+    {
+      "schema_version": "agentdojo-v2-selected-binding-regeneration-adjudication-child/v1",
+      "child_ordinal": 2,
+      "child_status": "verified_source_construction",
+      "child_implementation": {
+        "path": "experiments/agentdojo_v2_selected_binding_regeneration_adjudication.py",
+        "sha256": "b46c0dbadac8c887a09b36d77665c802d879a899d29f50f0286176f31e3defe5"
+      },
+      "source_provenance": {
+        "verification_witness": {
+          "repository": "https://github.com/ethz-spylab/agentdojo.git",
+          "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+          "benchmark_version": "v1.2.2",
+          "suite": "workspace",
+          "attack": "injecagent",
+          "lockfile": "uv.lock",
+          "lockfile_sha256": "2b67da5479a37727cbdcb39c57a9070f9264f3350237173b3eae21cc12ed215a",
+          "source_files": {
+            "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+            "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+            "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+            "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+            "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+            "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+            "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+          }
+        },
+        "checked_effect_oracle_source_files": {
+          "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+          "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+          "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+          "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+          "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+          "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+          "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+        },
+        "repository_remote": "https://github.com/ethz-spylab/agentdojo.git",
+        "runtime_identity": {
+          "python_implementation": "CPython",
+          "python_version": "3.12.13",
+          "pydantic_version": "2.11.4",
+          "pyyaml_version": "6.0.2"
+        },
+        "environment_attestation_scope": "Git commit, clean tree, origin remote, lockfile digest, and runtime identity match the declared selection witness; dependency-installation or uv-sync provenance is not independently attested by this audit.",
+        "attack_materializer_sources": {
+          "InjecAgentAttack": {
+            "path": "src/agentdojo/attacks/baseline_attacks.py",
+            "sha256": "3f9e597f1543d911a753801d8964f91f5ded12810be8cce34e4235f81449f907"
+          },
+          "InjecAgentAttack.attack": {
+            "path": "src/agentdojo/attacks/base_attacks.py",
+            "sha256": "9f5276ddb0e7b4beb2379c2483e0b87f16aa90f40253e57d5da50ec409e9797b"
+          }
+        },
+        "source_checkout_clean": true,
+        "workspace_state_data_files": {
+          "src/agentdojo/data/suites/workspace/environment.yaml": "c0f93e6b6f9de005fec63588dc579313f227a87235c10259375a9f43aa13db3e",
+          "src/agentdojo/data/suites/workspace/include/calendar.yaml": "0cc12f15f0d9b03e2ef025c3f1b6cb0b807db2e83bee76e2b0c90af78deee9ea",
+          "src/agentdojo/data/suites/workspace/include/cloud_drive.yaml": "95b52f6f408016b42adfdff3d1005514fec3a629e92348c28e05f3dba113eaca",
+          "src/agentdojo/data/suites/workspace/include/inbox.yaml": "13cf70a0a40252708b5f879987fa1fa24dbd92a3639c975bfe294ab7f4fd3c50",
+          "src/agentdojo/data/suites/workspace/injection_vectors.yaml": "13223dbffc51cf7c843657b80939f89c82a46e8b2faf062522241dc5bf928722"
+        },
+        "agentdojo_import_origin": {
+          "path": "src/agentdojo/__init__.py",
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        }
+      },
+      "runtime_witness": {
+        "python": {
+          "implementation": "CPython",
+          "version": "3.12.13",
+          "executable_location": {
+            "location_class": "agentdojo_source_relative",
+            "path": ".venv/Scripts/python.exe"
+          },
+          "executable_sha256": "90a685032444ae48d9a89ef52691d06052a565e2204df44b5f083a67a90338b8",
+          "hash_randomization_enabled": true
+        },
+        "platform": {
+          "system": "Windows",
+          "release": "11",
+          "machine": "AMD64"
+        },
+        "locale": "LC_COLLATE=C;LC_CTYPE=English_United States.1252;LC_MONETARY=C;LC_NUMERIC=C;LC_TIME=C",
+        "timezone_names": [
+          "SE Asia Standard Time",
+          "SE Asia Daylight Time"
+        ],
+        "environment": {
+          "PYTHONHASHSEED": null,
+          "PYTHONUTF8": null,
+          "TZ": null,
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONPATH": [
+            "<repository-root>",
+            "<agentdojo-source>/src"
+          ]
+        },
+        "seed_policy": "No application or Python hash seed is set by this adjudication. The fresh-child PYTHONHASHSEED value is recorded as observed; the historical fixture's seed provenance is unknown.",
+        "installed_distributions": [
+          {
+            "name": "agentdojo",
+            "version": "0.1.35"
+          },
+          {
+            "name": "annotated-types",
+            "version": "0.7.0"
+          },
+          {
+            "name": "anthropic",
+            "version": "0.50.0"
+          },
+          {
+            "name": "anyio",
+            "version": "4.9.0"
+          },
+          {
+            "name": "cachetools",
+            "version": "5.5.2"
+          },
+          {
+            "name": "certifi",
+            "version": "2025.4.26"
+          },
+          {
+            "name": "charset-normalizer",
+            "version": "3.4.1"
+          },
+          {
+            "name": "click",
+            "version": "8.1.8"
+          },
+          {
+            "name": "cohere",
+            "version": "5.15.0"
+          },
+          {
+            "name": "colorama",
+            "version": "0.4.6"
+          },
+          {
+            "name": "deepdiff",
+            "version": "8.6.1"
+          },
+          {
+            "name": "distro",
+            "version": "1.9.0"
+          },
+          {
+            "name": "dnspython",
+            "version": "2.7.0"
+          },
+          {
+            "name": "docstring-parser",
+            "version": "0.16"
+          },
+          {
+            "name": "email-validator",
+            "version": "2.2.0"
+          },
+          {
+            "name": "fastavro",
+            "version": "1.10.0"
+          },
+          {
+            "name": "filelock",
+            "version": "3.18.0"
+          },
+          {
+            "name": "fsspec",
+            "version": "2025.3.2"
+          },
+          {
+            "name": "google-auth",
+            "version": "2.39.0"
+          },
+          {
+            "name": "google-genai",
+            "version": "1.15.0"
+          },
+          {
+            "name": "greenlet",
+            "version": "3.2.1"
+          },
+          {
+            "name": "h11",
+            "version": "0.16.0"
+          },
+          {
+            "name": "httpcore",
+            "version": "1.0.9"
+          },
+          {
+            "name": "httpx",
+            "version": "0.28.1"
+          },
+          {
+            "name": "httpx-sse",
+            "version": "0.4.0"
+          },
+          {
+            "name": "huggingface-hub",
+            "version": "0.30.2"
+          },
+          {
+            "name": "idna",
+            "version": "3.10"
+          },
+          {
+            "name": "jiter",
+            "version": "0.9.0"
+          },
+          {
+            "name": "jsonpatch",
+            "version": "1.33"
+          },
+          {
+            "name": "jsonpointer",
+            "version": "3.0.0"
+          },
+          {
+            "name": "langchain",
+            "version": "0.3.24"
+          },
+          {
+            "name": "langchain-core",
+            "version": "0.3.56"
+          },
+          {
+            "name": "langchain-text-splitters",
+            "version": "0.3.8"
+          },
+          {
+            "name": "langsmith",
+            "version": "0.3.38"
+          },
+          {
+            "name": "markdown-it-py",
+            "version": "3.0.0"
+          },
+          {
+            "name": "mdurl",
+            "version": "0.1.2"
+          },
+          {
+            "name": "openai",
+            "version": "1.76.2"
+          },
+          {
+            "name": "orderly-set",
+            "version": "5.5.0"
+          },
+          {
+            "name": "orjson",
+            "version": "3.10.18"
+          },
+          {
+            "name": "packaging",
+            "version": "24.2"
+          },
+          {
+            "name": "pyasn1",
+            "version": "0.6.1"
+          },
+          {
+            "name": "pyasn1-modules",
+            "version": "0.4.2"
+          },
+          {
+            "name": "pydantic",
+            "version": "2.11.4"
+          },
+          {
+            "name": "pydantic-core",
+            "version": "2.33.2"
+          },
+          {
+            "name": "pygments",
+            "version": "2.19.1"
+          },
+          {
+            "name": "python-dotenv",
+            "version": "1.1.0"
+          },
+          {
+            "name": "pyyaml",
+            "version": "6.0.2"
+          },
+          {
+            "name": "requests",
+            "version": "2.32.3"
+          },
+          {
+            "name": "requests-toolbelt",
+            "version": "1.0.0"
+          },
+          {
+            "name": "rich",
+            "version": "14.0.0"
+          },
+          {
+            "name": "rsa",
+            "version": "4.9.1"
+          },
+          {
+            "name": "sniffio",
+            "version": "1.3.1"
+          },
+          {
+            "name": "sqlalchemy",
+            "version": "2.0.40"
+          },
+          {
+            "name": "tenacity",
+            "version": "9.1.2"
+          },
+          {
+            "name": "tokenizers",
+            "version": "0.21.1"
+          },
+          {
+            "name": "tqdm",
+            "version": "4.67.1"
+          },
+          {
+            "name": "types-requests",
+            "version": "2.32.0.20250328"
+          },
+          {
+            "name": "typing-extensions",
+            "version": "4.13.2"
+          },
+          {
+            "name": "typing-inspection",
+            "version": "0.4.0"
+          },
+          {
+            "name": "urllib3",
+            "version": "2.4.0"
+          },
+          {
+            "name": "websockets",
+            "version": "15.0.1"
+          },
+          {
+            "name": "zstandard",
+            "version": "0.23.0"
+          }
+        ],
+        "installed_distributions_sha256": "512dddad73668f9e1cceeb6584ec58dffd11cc0f29757afd51da263adcdf0cce",
+        "required_distribution_versions": {
+          "pydantic": "2.11.4",
+          "pydantic-core": "2.33.2",
+          "pyyaml": "6.0.2"
+        }
+      },
+      "trials": [
+        {
+          "child_ordinal": 2,
+          "case_id": "workspace:v1.2.2:user_task_8:injection_task_2:calendar_introductory_meeting_injection",
+          "stratum_id": "calendar_event",
+          "user_task_id": "user_task_8",
+          "injection_task_id": "injection_task_2",
+          "carrier_id": "calendar_introductory_meeting_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "calendar_introductory_meeting_injection"
+          ],
+          "observed_carrier_ids": [
+            "calendar_introductory_meeting_injection"
+          ],
+          "expected_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+          "observed_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+          "expected_selection_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "expected_effect_oracle_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "observed_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        },
+        {
+          "child_ordinal": 2,
+          "case_id": "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_injection",
+          "stratum_id": "drive_file_deletion",
+          "user_task_id": "user_task_29",
+          "injection_task_id": "injection_task_1",
+          "carrier_id": "drive_team_building_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "drive_team_building_injection"
+          ],
+          "observed_carrier_ids": [
+            "drive_team_building_injection"
+          ],
+          "expected_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+          "observed_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+          "expected_selection_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "expected_effect_oracle_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "observed_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        },
+        {
+          "child_ordinal": 2,
+          "case_id": "workspace:v1.2.2:user_task_22:injection_task_3:email_password_reset_injection",
+          "stratum_id": "email_content_exfiltration",
+          "user_task_id": "user_task_22",
+          "injection_task_id": "injection_task_3",
+          "carrier_id": "email_password_reset_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "email_password_reset_injection"
+          ],
+          "observed_carrier_ids": [
+            "email_password_reset_injection"
+          ],
+          "expected_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+          "observed_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+          "expected_selection_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "expected_effect_oracle_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "observed_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        }
+      ],
+      "self_reported_execution_counters": {
+        "llm_requests": 0,
+        "provider_requests": 0,
+        "network_requests": 0,
+        "remote_jobs": 0,
+        "local_attack_materializations": 6,
+        "local_tool_dispatches": 0
+      }
+    },
+    {
+      "schema_version": "agentdojo-v2-selected-binding-regeneration-adjudication-child/v1",
+      "child_ordinal": 3,
+      "child_status": "verified_source_construction",
+      "child_implementation": {
+        "path": "experiments/agentdojo_v2_selected_binding_regeneration_adjudication.py",
+        "sha256": "b46c0dbadac8c887a09b36d77665c802d879a899d29f50f0286176f31e3defe5"
+      },
+      "source_provenance": {
+        "verification_witness": {
+          "repository": "https://github.com/ethz-spylab/agentdojo.git",
+          "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+          "benchmark_version": "v1.2.2",
+          "suite": "workspace",
+          "attack": "injecagent",
+          "lockfile": "uv.lock",
+          "lockfile_sha256": "2b67da5479a37727cbdcb39c57a9070f9264f3350237173b3eae21cc12ed215a",
+          "source_files": {
+            "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+            "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+            "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+            "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+            "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+            "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+            "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+          }
+        },
+        "checked_effect_oracle_source_files": {
+          "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+          "src/agentdojo/default_suites/v1/workspace/injection_tasks.py": "deeb63534fe5af5e86e7d9daa0c62f7e32df29c5d0772328dc0fcf14525fe4d3",
+          "src/agentdojo/default_suites/v1_2/workspace/injection_tasks.py": "197334725f4744c7c33bd0f0e1d81aa1927bce6c32cedee272bf8aae9b2a90af",
+          "src/agentdojo/default_suites/v1/tools/calendar_client.py": "0ea556c5ced4219cedba60d2b31ef016ee23b72c50da52430988a5f5f8dc1d8a",
+          "src/agentdojo/default_suites/v1/tools/cloud_drive_client.py": "2319db571ebfbdd882745c9eb21ed68437231ba26287fbd719af108a1c757b75",
+          "src/agentdojo/default_suites/v1/tools/email_client.py": "f5f7ef9aea23e65811145341e70d955a14585e45af6d6eae6e2d5af540cb92d0",
+          "src/agentdojo/default_suites/v1/tools/types.py": "1595421019d2368c8c2faab3d5f0a5162a4b2a76a87ede573880d866229e8fdd"
+        },
+        "repository_remote": "https://github.com/ethz-spylab/agentdojo.git",
+        "runtime_identity": {
+          "python_implementation": "CPython",
+          "python_version": "3.12.13",
+          "pydantic_version": "2.11.4",
+          "pyyaml_version": "6.0.2"
+        },
+        "environment_attestation_scope": "Git commit, clean tree, origin remote, lockfile digest, and runtime identity match the declared selection witness; dependency-installation or uv-sync provenance is not independently attested by this audit.",
+        "attack_materializer_sources": {
+          "InjecAgentAttack": {
+            "path": "src/agentdojo/attacks/baseline_attacks.py",
+            "sha256": "3f9e597f1543d911a753801d8964f91f5ded12810be8cce34e4235f81449f907"
+          },
+          "InjecAgentAttack.attack": {
+            "path": "src/agentdojo/attacks/base_attacks.py",
+            "sha256": "9f5276ddb0e7b4beb2379c2483e0b87f16aa90f40253e57d5da50ec409e9797b"
+          }
+        },
+        "source_checkout_clean": true,
+        "workspace_state_data_files": {
+          "src/agentdojo/data/suites/workspace/environment.yaml": "c0f93e6b6f9de005fec63588dc579313f227a87235c10259375a9f43aa13db3e",
+          "src/agentdojo/data/suites/workspace/include/calendar.yaml": "0cc12f15f0d9b03e2ef025c3f1b6cb0b807db2e83bee76e2b0c90af78deee9ea",
+          "src/agentdojo/data/suites/workspace/include/cloud_drive.yaml": "95b52f6f408016b42adfdff3d1005514fec3a629e92348c28e05f3dba113eaca",
+          "src/agentdojo/data/suites/workspace/include/inbox.yaml": "13cf70a0a40252708b5f879987fa1fa24dbd92a3639c975bfe294ab7f4fd3c50",
+          "src/agentdojo/data/suites/workspace/injection_vectors.yaml": "13223dbffc51cf7c843657b80939f89c82a46e8b2faf062522241dc5bf928722"
+        },
+        "agentdojo_import_origin": {
+          "path": "src/agentdojo/__init__.py",
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        }
+      },
+      "runtime_witness": {
+        "python": {
+          "implementation": "CPython",
+          "version": "3.12.13",
+          "executable_location": {
+            "location_class": "agentdojo_source_relative",
+            "path": ".venv/Scripts/python.exe"
+          },
+          "executable_sha256": "90a685032444ae48d9a89ef52691d06052a565e2204df44b5f083a67a90338b8",
+          "hash_randomization_enabled": true
+        },
+        "platform": {
+          "system": "Windows",
+          "release": "11",
+          "machine": "AMD64"
+        },
+        "locale": "LC_COLLATE=C;LC_CTYPE=English_United States.1252;LC_MONETARY=C;LC_NUMERIC=C;LC_TIME=C",
+        "timezone_names": [
+          "SE Asia Standard Time",
+          "SE Asia Daylight Time"
+        ],
+        "environment": {
+          "PYTHONHASHSEED": null,
+          "PYTHONUTF8": null,
+          "TZ": null,
+          "LANG": "C.UTF-8",
+          "LC_ALL": "C.UTF-8",
+          "PYTHONPATH": [
+            "<repository-root>",
+            "<agentdojo-source>/src"
+          ]
+        },
+        "seed_policy": "No application or Python hash seed is set by this adjudication. The fresh-child PYTHONHASHSEED value is recorded as observed; the historical fixture's seed provenance is unknown.",
+        "installed_distributions": [
+          {
+            "name": "agentdojo",
+            "version": "0.1.35"
+          },
+          {
+            "name": "annotated-types",
+            "version": "0.7.0"
+          },
+          {
+            "name": "anthropic",
+            "version": "0.50.0"
+          },
+          {
+            "name": "anyio",
+            "version": "4.9.0"
+          },
+          {
+            "name": "cachetools",
+            "version": "5.5.2"
+          },
+          {
+            "name": "certifi",
+            "version": "2025.4.26"
+          },
+          {
+            "name": "charset-normalizer",
+            "version": "3.4.1"
+          },
+          {
+            "name": "click",
+            "version": "8.1.8"
+          },
+          {
+            "name": "cohere",
+            "version": "5.15.0"
+          },
+          {
+            "name": "colorama",
+            "version": "0.4.6"
+          },
+          {
+            "name": "deepdiff",
+            "version": "8.6.1"
+          },
+          {
+            "name": "distro",
+            "version": "1.9.0"
+          },
+          {
+            "name": "dnspython",
+            "version": "2.7.0"
+          },
+          {
+            "name": "docstring-parser",
+            "version": "0.16"
+          },
+          {
+            "name": "email-validator",
+            "version": "2.2.0"
+          },
+          {
+            "name": "fastavro",
+            "version": "1.10.0"
+          },
+          {
+            "name": "filelock",
+            "version": "3.18.0"
+          },
+          {
+            "name": "fsspec",
+            "version": "2025.3.2"
+          },
+          {
+            "name": "google-auth",
+            "version": "2.39.0"
+          },
+          {
+            "name": "google-genai",
+            "version": "1.15.0"
+          },
+          {
+            "name": "greenlet",
+            "version": "3.2.1"
+          },
+          {
+            "name": "h11",
+            "version": "0.16.0"
+          },
+          {
+            "name": "httpcore",
+            "version": "1.0.9"
+          },
+          {
+            "name": "httpx",
+            "version": "0.28.1"
+          },
+          {
+            "name": "httpx-sse",
+            "version": "0.4.0"
+          },
+          {
+            "name": "huggingface-hub",
+            "version": "0.30.2"
+          },
+          {
+            "name": "idna",
+            "version": "3.10"
+          },
+          {
+            "name": "jiter",
+            "version": "0.9.0"
+          },
+          {
+            "name": "jsonpatch",
+            "version": "1.33"
+          },
+          {
+            "name": "jsonpointer",
+            "version": "3.0.0"
+          },
+          {
+            "name": "langchain",
+            "version": "0.3.24"
+          },
+          {
+            "name": "langchain-core",
+            "version": "0.3.56"
+          },
+          {
+            "name": "langchain-text-splitters",
+            "version": "0.3.8"
+          },
+          {
+            "name": "langsmith",
+            "version": "0.3.38"
+          },
+          {
+            "name": "markdown-it-py",
+            "version": "3.0.0"
+          },
+          {
+            "name": "mdurl",
+            "version": "0.1.2"
+          },
+          {
+            "name": "openai",
+            "version": "1.76.2"
+          },
+          {
+            "name": "orderly-set",
+            "version": "5.5.0"
+          },
+          {
+            "name": "orjson",
+            "version": "3.10.18"
+          },
+          {
+            "name": "packaging",
+            "version": "24.2"
+          },
+          {
+            "name": "pyasn1",
+            "version": "0.6.1"
+          },
+          {
+            "name": "pyasn1-modules",
+            "version": "0.4.2"
+          },
+          {
+            "name": "pydantic",
+            "version": "2.11.4"
+          },
+          {
+            "name": "pydantic-core",
+            "version": "2.33.2"
+          },
+          {
+            "name": "pygments",
+            "version": "2.19.1"
+          },
+          {
+            "name": "python-dotenv",
+            "version": "1.1.0"
+          },
+          {
+            "name": "pyyaml",
+            "version": "6.0.2"
+          },
+          {
+            "name": "requests",
+            "version": "2.32.3"
+          },
+          {
+            "name": "requests-toolbelt",
+            "version": "1.0.0"
+          },
+          {
+            "name": "rich",
+            "version": "14.0.0"
+          },
+          {
+            "name": "rsa",
+            "version": "4.9.1"
+          },
+          {
+            "name": "sniffio",
+            "version": "1.3.1"
+          },
+          {
+            "name": "sqlalchemy",
+            "version": "2.0.40"
+          },
+          {
+            "name": "tenacity",
+            "version": "9.1.2"
+          },
+          {
+            "name": "tokenizers",
+            "version": "0.21.1"
+          },
+          {
+            "name": "tqdm",
+            "version": "4.67.1"
+          },
+          {
+            "name": "types-requests",
+            "version": "2.32.0.20250328"
+          },
+          {
+            "name": "typing-extensions",
+            "version": "4.13.2"
+          },
+          {
+            "name": "typing-inspection",
+            "version": "0.4.0"
+          },
+          {
+            "name": "urllib3",
+            "version": "2.4.0"
+          },
+          {
+            "name": "websockets",
+            "version": "15.0.1"
+          },
+          {
+            "name": "zstandard",
+            "version": "0.23.0"
+          }
+        ],
+        "installed_distributions_sha256": "512dddad73668f9e1cceeb6584ec58dffd11cc0f29757afd51da263adcdf0cce",
+        "required_distribution_versions": {
+          "pydantic": "2.11.4",
+          "pydantic-core": "2.33.2",
+          "pyyaml": "6.0.2"
+        }
+      },
+      "trials": [
+        {
+          "child_ordinal": 3,
+          "case_id": "workspace:v1.2.2:user_task_8:injection_task_2:calendar_introductory_meeting_injection",
+          "stratum_id": "calendar_event",
+          "user_task_id": "user_task_8",
+          "injection_task_id": "injection_task_2",
+          "carrier_id": "calendar_introductory_meeting_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "calendar_introductory_meeting_injection"
+          ],
+          "observed_carrier_ids": [
+            "calendar_introductory_meeting_injection"
+          ],
+          "expected_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+          "observed_injection_map_sha256": "d3e9b2b894cc6df931c5e61ed8c6acb444f399a8363ecdfcd14e994865ce6899",
+          "expected_selection_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "expected_effect_oracle_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "observed_pre_state_sha256": "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        },
+        {
+          "child_ordinal": 3,
+          "case_id": "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_injection",
+          "stratum_id": "drive_file_deletion",
+          "user_task_id": "user_task_29",
+          "injection_task_id": "injection_task_1",
+          "carrier_id": "drive_team_building_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "drive_team_building_injection"
+          ],
+          "observed_carrier_ids": [
+            "drive_team_building_injection"
+          ],
+          "expected_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+          "observed_injection_map_sha256": "3b24b9dc8c8225dbb77404e1d44ce17e4fd4633f58431f04d37b8c917cdaa892",
+          "expected_selection_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "expected_effect_oracle_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "observed_pre_state_sha256": "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        },
+        {
+          "child_ordinal": 3,
+          "case_id": "workspace:v1.2.2:user_task_22:injection_task_3:email_password_reset_injection",
+          "stratum_id": "email_content_exfiltration",
+          "user_task_id": "user_task_22",
+          "injection_task_id": "injection_task_3",
+          "carrier_id": "email_password_reset_injection",
+          "canonicalization": "json-c14n-v1: model_dump(mode=json), UTF-8, sorted keys, compact separators",
+          "expected_carrier_ids": [
+            "email_password_reset_injection"
+          ],
+          "observed_carrier_ids": [
+            "email_password_reset_injection"
+          ],
+          "expected_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+          "observed_injection_map_sha256": "d168f87f6203b97b964ef1d826a1fde63a665353501fbf5793a6f7f9dda371b3",
+          "expected_selection_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "expected_effect_oracle_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "observed_pre_state_sha256": "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2",
+          "carrier_match": true,
+          "injection_map_match": true,
+          "selection_pre_state_match": true,
+          "effect_oracle_pre_state_match": true,
+          "top_level_field_names": [
+            "calendar",
+            "cloud_drive",
+            "inbox"
+          ],
+          "state_schema_shape_sha256": "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a",
+          "trial_status": "verified_source_construction"
+        }
+      ],
+      "self_reported_execution_counters": {
+        "llm_requests": 0,
+        "provider_requests": 0,
+        "network_requests": 0,
+        "remote_jobs": 0,
+        "local_attack_materializations": 6,
+        "local_tool_dispatches": 0
+      }
+    }
+  ],
+  "current_source_reproduction": {
+    "status": "verified_fresh_process_regeneration",
+    "case_count": 3,
+    "case_trial_count": 9,
+    "case_summaries": [
+      {
+        "case_id": "workspace:v1.2.2:user_task_8:injection_task_2:calendar_introductory_meeting_injection",
+        "replicate_count": 3,
+        "unique_observed_pre_state_hash_count": 1,
+        "observed_pre_state_sha256s": [
+          "8dff7d4de2600a6f9f66f12a6d586b49c56110dae025d68080a7476d5187a9ce"
+        ],
+        "all_replicates_equal": true,
+        "unique_state_schema_shape_hash_count": 1,
+        "state_schema_shape_sha256s": [
+          "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a"
+        ],
+        "all_replicates_match_selection_witness": true,
+        "all_replicates_match_effect_oracle_witness": true,
+        "carrier_and_injection_map_match_every_trial": true
+      },
+      {
+        "case_id": "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_injection",
+        "replicate_count": 3,
+        "unique_observed_pre_state_hash_count": 1,
+        "observed_pre_state_sha256s": [
+          "fcab5c5d38f11d0277584e3763ae069f6481e676e0a4f08b40c982d85cf07b11"
+        ],
+        "all_replicates_equal": true,
+        "unique_state_schema_shape_hash_count": 1,
+        "state_schema_shape_sha256s": [
+          "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a"
+        ],
+        "all_replicates_match_selection_witness": true,
+        "all_replicates_match_effect_oracle_witness": true,
+        "carrier_and_injection_map_match_every_trial": true
+      },
+      {
+        "case_id": "workspace:v1.2.2:user_task_22:injection_task_3:email_password_reset_injection",
+        "replicate_count": 3,
+        "unique_observed_pre_state_hash_count": 1,
+        "observed_pre_state_sha256s": [
+          "9bdda181aa8b40152398b3613f494df598c5a6692ba73bc8e16c15fbe8059bf2"
+        ],
+        "all_replicates_equal": true,
+        "unique_state_schema_shape_hash_count": 1,
+        "state_schema_shape_sha256s": [
+          "6f29e0e55d259519d1e4ceadcdefabb591bf8528ccdfae38fe2cb03b87ac426a"
+        ],
+        "all_replicates_match_selection_witness": true,
+        "all_replicates_match_effect_oracle_witness": true,
+        "carrier_and_injection_map_match_every_trial": true
+      }
+    ]
+  },
+  "historical_audit_observation": {
+    "prior_gate_status": "blocked_selected_binding_regeneration_mismatch",
+    "prior_matching_case_count": 0,
+    "prior_mismatching_case_count": 3,
+    "status": "contradicted_by_current_adjudication",
+    "interpretation": "The prior fixture is retained unchanged but its reported mismatch is contradicted by this captured-environment adjudication. The cause of the prior observation remains unknown."
+  },
+  "runtime_plan_authorization": "not_authorized",
+  "operational_rule": "This adjudication clears only the specific prior source-regeneration mismatch assertion. It does not authorize running or scoring the historical v2 plan: a future versioned execution design must still pin a genuine benign initial state and utility oracle, a manifest-bound driver, reset and trace provenance, fair baselines, and all other open scientific gates.",
+  "self_reported_execution_counters": {
+    "llm_requests": 0,
+    "provider_requests": 0,
+    "network_requests": 0,
+    "remote_jobs": 0,
+    "fresh_child_processes": 3,
+    "local_attack_materializations": 18,
+    "local_tool_dispatches": 0
+  },
+  "non_claims": [
+    "This is not an LLM, agent, defense, utility, latency, cost, benchmark, or statistical-efficacy result.",
+    "It does not identify the cause of the prior mismatch, reconstruct that prior execution environment, or prove AgentDojo is deterministic generally.",
+    "It does not validate the historical v2 plan, amend any historical fixture, or authorize Runpod/API/model execution.",
+    "The fresh-process topology and self-reported counters are not independent evidence that no process made a model, provider, network, or remote-job call."
+  ]
+}

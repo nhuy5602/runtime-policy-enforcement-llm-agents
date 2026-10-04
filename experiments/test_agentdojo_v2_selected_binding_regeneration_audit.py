@@ -1,4 +1,9 @@
-"""Regression checks for the selected-binding source-regeneration gate."""
+"""Regression checks for the retained historical selected-binding audit fixture.
+
+The fixture is internally self-consistent. Its source-regeneration conclusion
+is deliberately adjudicated separately, so this test must not call it a
+reproducible current block.
+"""
 
 from __future__ import annotations
 
@@ -20,7 +25,7 @@ class AgentDojoV2SelectedBindingRegenerationAuditTests(unittest.TestCase):
     def setUp(self) -> None:
         self.audit = load_audit(DEFAULT_OUTPUT)
 
-    def test_fixture_records_a_reproducible_fail_closed_block_not_an_llm_result(self) -> None:
+    def test_historical_fixture_remains_self_consistent_and_not_an_llm_result(self) -> None:
         report = validate_audit(self.audit)
         self.assertEqual(report["gate_status"], BLOCKED_STATUS)
         self.assertEqual(report["case_count"], 3)

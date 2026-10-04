@@ -73,9 +73,11 @@ experiments/
   agentdojo_pilot_execution_plan.py  No-billable, manifest-bound pilot preflight
   agentdojo_paired_v0_v1_execution_manifest.py  Counterbalanced v0/v1 paired preflight
   agentdojo_paired_result_bundle.py  Fail-closed future-result acceptance and paired transition report
-  agentdojo_v2_selected_binding_regeneration_audit.py  Source reproducibility gate for frozen v2 attack bindings
+  agentdojo_v2_selected_binding_regeneration_audit.py  Retained historical source-regeneration observation
+  agentdojo_v2_selected_binding_regeneration_adjudication.py  Fresh-process correction of that observation
   fixtures/agentdojo_paired_v0_v1_execution_manifest_v1.json  Locked 12-episode plan
-  fixtures/agentdojo_v2_selected_binding_regeneration_audit_v1.json  Recorded blocked source-regeneration witness
+  fixtures/agentdojo_v2_selected_binding_regeneration_audit_v1.json  Retained contradicted historical witness
+  fixtures/agentdojo_v2_selected_binding_regeneration_adjudication_v1.json  Nine-trial source-only adjudication
   benchmark_outputs/       198-case offline trace benchmark, CSV/JSON/Markdown/SVG
   openai_trace_runner.py   Optional live post-LLM trace generator with carrier/prompt hashes; no tool execution
   live_trace_output.json   Last generic live-track status
@@ -385,28 +387,35 @@ the declared state-evidence interface only. Until a manifest-bound driver
 creates provenance-bound snapshots, the supplied source/reset/status fields
 are assertions, not admissible benchmark observations.
 
-More importantly, the frozen v2 selection/effect-oracle pre-state witnesses
-currently **do not regenerate** under a clean checkout and a runtime whose
-recorded Python/Pydantic/PyYAML identity matches the selection. The versioned audit
-`experiments/fixtures/agentdojo_v2_selected_binding_regeneration_audit_v1.json`
-records that all three selected rows retain their declared carrier and
-injection-map digest, but none retains its canonical injected pre-state hash.
-It therefore blocks the historical v2 attack plan rather than rewriting those
-fixtures or treating the measurement repair as executable. Reproduce the
-finding locally with no model or remote call:
+The prior 03 October v2 selected-binding audit fixture remains preserved,
+but its claimed all-case pre-state mismatch is now a **contradicted historical
+observation**, not a current benchmark finding. The correction in
+`experiments/fixtures/agentdojo_v2_selected_binding_regeneration_adjudication_v1.json`
+starts three separate processes, each reconstructing all three selected
+bindings. In one recorded local runtime environment with incomplete
+installation/build provenance, all nine trials reproduce
+the frozen carrier, injection-map, and canonical pre-state witnesses. It also
+records workspace-data hashes, AgentDojo import origin, Python executable and
+digest, package manifest, locale/timezone, and seed policy. It preserves the
+older fixture unchanged and does not assert why it differed; package names and
+versions do not independently attest a particular `uv sync` or build.
+
+Re-execute the correction locally with no model or remote call:
 
 ```powershell
 $agentDojo = Join-Path $benchRoot "agentdojo"
-& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_v2_selected_binding_regeneration_audit.py `
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_v2_selected_binding_regeneration_adjudication.py `
   --verify --source $agentDojo
 ```
 
-`source_regeneration_match: true` means the **blocked audit finding** itself
-reproduced; it does not mean the frozen pre-state witnesses matched. A future
-run must first diagnose the unexplained source-or-runtime mismatch and issue
-new versioned selection, effect-oracle, and execution-manifest artifacts. The
-audit records the lockfile digest and runtime identity but does not attest that
-the local virtual environment was produced by a particular `uv sync` command.
+`source_reexecution_match: true` means the complete nine-trial source-only
+adjudication reproduced in that same captured environment. It clears only the
+specific prior mismatch assertion. It is not an LLM, defense, utility,
+benchmark, or statistical result; it neither explains the older fixture nor
+authorizes the historical v2 runtime plan. That plan remains unexecutable
+until a future versioned design supplies its genuine no-injection initial
+state and utility oracle, manifest-bound driver, reset/trace provenance, fair
+baselines, and the remaining scientific gates.
 
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
