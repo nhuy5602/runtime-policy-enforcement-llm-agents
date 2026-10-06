@@ -64,6 +64,15 @@ the reversible v1-to-v0 name map, preserves arguments, and requires a digest
 witness retaining both raw and canonical traces. Its v1 checks are synthetic
 renamings of local ground-truth traces, not a v1 runtime or LLM observation.
 
+The next prospective preregistration is
+[experiments/agentdojo_paired_v2_execution_manifest.py](experiments/agentdojo_paired_v2_execution_manifest.py).
+It fixes twelve unexecuted episodes: three attack pairs and three distinct
+no-InjecAgent default-control utility pairs, each crossed over v0/v1 with a
+balanced order. The manifest binds both contracts and requires raw/canonical
+trace witnesses for default-control v1 records. It is still only a plan: a v2
+result-bundle validator and a provenance-capturing driver are intentionally
+absent, and no model call is authorized.
+
 The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
 are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
 No new billable job was submitted when that gate was recorded.
