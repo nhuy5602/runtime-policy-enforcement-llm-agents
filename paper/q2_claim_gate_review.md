@@ -17,7 +17,7 @@ proves an implementation invariant, not the corresponding scientific claim.
 | Q2 gate | Current evidence | Verdict | Required evidence before acceptance |
 |---|---|---|---|
 | Novelty boundary | Targeted closest-prior screen in `paper/r1_targeted_literature_audit_20260927.md`; generic runtime enforcement is explicitly not claimed as new | **Partial** | Independent replay across the named indexes, then a measurable difference or a clearly labelled replication/negative result |
-| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selected 3 source-qualified cases; its decision-independent monotone state oracle has 15 local controls plus a 3-case fresh/positive scorer-interface check. The 03 October selected-binding fixture recorded a three-case pre-state mismatch, but a preserved 05 October adjudication runs three freshly started processes over all three cases (9 trials) and reproduces every frozen carrier, injection-map and pre-state witness in one recorded environment. Its package manifest does not independently attest the dependency-installation/build path. Thus the prior mismatch observation is contradicted, not explained or deleted. This clears only that narrow assertion: planned benign rows still lack an arm-specific no-injection state and executable utility oracle, and there is no manifest-bound driver, reset/trace provenance, fair baseline, or LLM evidence. | **Fail** | Provide a manifest-bound driver with full snapshot/schema and case/arm/carrier/run/trace provenance, a versioned benign-state/utility-oracle amendment, reset/source witnesses, frozen scorer/split/budget, fair baselines and redacted traces; then execute the independent model matrix |
+| Independent benchmark | V1 remains blocked. V2 retains all 60 structural rows and selected 3 source-qualified cases; its decision-independent monotone state oracle has 15 local controls plus a 3-case fresh/positive scorer-interface check. The 03 October selected-binding fixture recorded a three-case pre-state mismatch, but a preserved 05 October adjudication runs three freshly started processes over all three cases (9 trials) and reproduces every frozen carrier, injection-map and pre-state witness in one recorded environment. Its package manifest does not independently attest the dependency-installation/build path. A separate prospective 06 October contract now pins the no-InjecAgent default-carrier initial state and calls the actual upstream utility dispatcher with terminal output and function trace; it uses six deterministic source-only controls. The control retains default carrier text, so it is not a generic benign or carrier-absent arm; v1 is unchanged and no manifest-bound driver, reset/trace provenance, fair baseline, or LLM evidence exists. | **Fail** | Create a new manifest/result-bundle v2 and manifest-bound driver consuming the default-control contract, with full snapshot/schema and case/arm/carrier/run/trace provenance, reset/source witnesses, frozen scorer/split/budget, fair baselines and redacted traces; then execute the independent model matrix |
 | End-to-end LLM efficacy | One paired Qwen3-8B AgentDojo episode completed: both tracks have `utility=true`, `security=false`, and no target `send_email`; no drift, held-out templates, attack-success pair, or independent model | **Fail** | ≥3 model snapshots (≥1 open-weight), realistic carrier, same cases across executable configurations, and drift-aware test results |
 | Adapter/state attestation | `experiments/adapter_attestation.py` plus one wildcard-attested integration trace; its process-level sidecar is not an attack oracle and no target attack reached the adapter | **Partial** | Execute a least-privilege attestation in an attack-positive end-to-end benchmark and demonstrate that no irreversible effect crosses before verification; otherwise claim only staged-transaction conformance |
 | Fair baselines | Synthetic rows B0/B1/B2/B4 are trace transformations; B3/B5/B6 and external systems are not executed | **Fail** | Implement and freeze executable closest-prior baseline(s) with identical model, prompt, tools, budget and reset protocol |
@@ -199,6 +199,19 @@ statistics, population inference or Q2 readiness. Its hashes are
 self-consistency checks over caller-supplied JSON, not proof of runtime
 provenance, InjecAgent materialization or endpoint execution.
 
+**No-InjecAgent default-control teacher audit — 06 October 2026:** accept the
+new contract only as a prospective measurement repair. It correctly replaces
+the unsound phrase “carrier absent” with a source-pinned default-carrier
+control, preserves the historical v1 artifacts, and calls the actual
+TaskSuite utility dispatcher instead of trusting a runner Boolean. Its six
+source-only controls establish neither benign LLM utility nor defense efficacy:
+the password-reset default may itself be untrusted-looking, positive
+GroundTruthPipeline traces are not model behavior, post-state variability is
+not frozen, and no run/trace/reset provenance exists. Reject model, security,
+statistical, ethical-safety, novelty, or Q2-readiness claims until a manifest
+v2 driver captures those conditions and a fair executable model matrix is
+completed.
+
 ## Short reviewer report
 
 **Verdict:** progress, not Q2-plausible.
@@ -211,7 +224,8 @@ no tracked runner manifest, and no external benchmark/model matrix.
 integration evidence, and rejected it as a security-efficacy result.
 **Tests:** manuscript consistency checks and artifact-path checks pass; no new
 LLM or billable Runpod job was submitted by this review.
-**Next step:** implement a v2 manifest-bound driver, true benign control and
-independent monotone post-effect/canary oracle; only then run the paired,
+**Next step:** implement a v2 manifest-bound driver consuming the qualified
+no-InjecAgent default-carrier control, then bind an independent monotone
+post-effect/canary oracle; only then run the paired,
 reset-verified model matrix and compute clustered intervals/closest-prior
 comparisons.

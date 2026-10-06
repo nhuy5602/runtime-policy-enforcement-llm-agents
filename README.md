@@ -39,11 +39,22 @@ now fail-closes any future result whose caller-supplied manifest, registry,
 carrier/model/trace evidence is internally inconsistent, and recomputes the
 harmful-effect endpoint independently. Those checks do not themselves prove
 runtime provenance or carrier materialization. The contract also exposes a
-current design defect: the manifest does not pin an arm-specific
-no-injection initial state or executable utility oracle, so benign rows are
-intentionally unscorable. These artifacts perform zero model or tool execution
-and are not benchmark results; a typed-state driver, a versioned benign-state
+current design defect: the historical manifest does not pin an arm-specific
+no-injection initial state or executable utility oracle, so its benign rows
+are intentionally unscorable. These artifacts perform zero model or tool
+execution and are not benchmark results; a typed-state driver, a versioned
 amendment and a task-scoped D1 policy remain required before any efficacy claim.
+
+The prospective repair for that missing instrument is
+[experiments/agentdojo_v2_no_injecagent_default_control_contract.py](experiments/agentdojo_v2_no_injecagent_default_control_contract.py)
+and its immutable fixture. It establishes a source-pinned
+no-InjecAgent default-carrier control for the three v2 cases and invokes the
+actual AgentDojo user-utility dispatcher on both terminal output and a typed
+function trace. Crucially, the empty input map to AgentDojo still expands to
+nonempty default carrier content. The control therefore isolates replacement by
+InjecAgent; it is not a carrier-absent or semantically benign arm. It has six
+deterministic source-only calibration controls, no LLM/provider/network/remote
+job, and does not alter the historical v1 manifest or result bundle.
 
 The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
 are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
@@ -416,6 +427,21 @@ authorizes the historical v2 runtime plan. That plan remains unexecutable
 until a future versioned design supplies its genuine no-injection initial
 state and utility oracle, manifest-bound driver, reset/trace provenance, fair
 baselines, and the remaining scientific gates.
+
+The prospective default-control repair is reproducible from the same pinned
+source environment:
+
+~~~powershell
+$agentDojo = Join-Path $benchRoot "agentdojo"
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_v2_no_injecagent_default_control_contract.py `
+  --verify --source $agentDojo
+~~~
+
+The verified report must show source_regeneration_match: true and three
+scored negative/positive source controls. This only qualifies the initial-state
+and utility-oracle instrument for a future manifest v2. It retains default
+carrier content, stores no raw carrier text/output/trace in Git, cannot prove
+runtime provenance, and is not permission to execute a model or Runpod job.
 
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo
