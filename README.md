@@ -56,6 +56,14 @@ InjecAgent; it is not a carrier-absent or semantically benign arm. It has six
 deterministic source-only calibration controls, no LLM/provider/network/remote
 job, and does not alter the historical v1 manifest or result bundle.
 
+The follow-up
+[experiments/agentdojo_v2_utility_trace_normalization_contract.py](experiments/agentdojo_v2_utility_trace_normalization_contract.py)
+closes a compatibility blocker before any v2 manifest is written: v1 changes
+exposed tool names whereas the utility scorer accepts canonical names. It pins
+the reversible v1-to-v0 name map, preserves arguments, and requires a digest
+witness retaining both raw and canonical traces. Its v1 checks are synthetic
+renamings of local ground-truth traces, not a v1 runtime or LLM observation.
+
 The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
 are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
 No new billable job was submitted when that gate was recorded.
@@ -442,6 +450,13 @@ scored negative/positive source controls. This only qualifies the initial-state
 and utility-oracle instrument for a future manifest v2. It retains default
 carrier content, stores no raw carrier text/output/trace in Git, cannot prove
 runtime provenance, and is not permission to execute a model or Runpod job.
+
+Verify the required v0/v1 trace-name compatibility before a future v2 driver:
+
+~~~powershell
+& "$agentDojo\.venv\Scripts\python.exe" experiments/agentdojo_v2_utility_trace_normalization_contract.py `
+  --verify --source $agentDojo
+~~~
 
 Both paired tracks now load the reviewed
 `experiments/fixtures/agentdojo_contract_v0_to_v1.json` before AgentDojo

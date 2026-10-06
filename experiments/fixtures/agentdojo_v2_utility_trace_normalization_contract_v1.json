@@ -1,0 +1,242 @@
+{
+  "schema_version": "agentdojo-v2-utility-trace-normalization-contract/v1",
+  "recorded_on": "2026-10-06",
+  "result_status": "source_only_trace_normalization_calibration_not_llm_evaluation",
+  "purpose": "Source-pinned canonicalization of renamed v0/v1 tool traces before the selected AgentDojo no-InjecAgent default-control utility scorer.",
+  "inputs": {
+    "default_control_contract": {
+      "path": "experiments/fixtures/agentdojo_v2_no_injecagent_default_control_contract_v1.json",
+      "sha256": "d899663f6b3fa239ef4045c5e32dead535585785f0087c713634f4bfbd07a26e"
+    },
+    "tool_contract": {
+      "path": "experiments/fixtures/agentdojo_contract_v0_to_v1.json",
+      "sha256": "226e162e2b31425d612f95c937cc938cefc208dd3c97ea20552264c800a0b2f8",
+      "digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188"
+    }
+  },
+  "source_verification_witness": {
+    "repository": "https://github.com/ethz-spylab/agentdojo.git",
+    "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+    "benchmark_version": "v1.2.2",
+    "suite": "workspace",
+    "arm_id": "no_injecagent_default_control",
+    "control_construction": "user_task.init_environment(suite.load_and_inject_default_environment({}))",
+    "source_files": {
+      "src/agentdojo/agent_pipeline/ground_truth_pipeline.py": "e92f71a3a63332523f589d229c38b774a01676898deafceeaedfeb555a41b245",
+      "src/agentdojo/base_tasks.py": "6e288eaa9119d0ca506d6cf6d08c6db54a68bed23a11c545a2325c7b6ae05d0b",
+      "src/agentdojo/data/suites/workspace/injection_vectors.yaml": "13223dbffc51cf7c843657b80939f89c82a46e8b2faf062522241dc5bf928722",
+      "src/agentdojo/default_suites/v1/workspace/task_suite.py": "8dd86e015496d0408f8532b4f49aad0af17f757699d66d32eee102a07c85ad11",
+      "src/agentdojo/default_suites/v1/workspace/user_tasks.py": "994e4801e44f2673083095d5be2e80d3e5b81f85e8bf211cbcceda092b17d535",
+      "src/agentdojo/default_suites/v1_1_1/workspace/user_tasks.py": "975388152e7cda71d2b5a5bcf4ecf79352fe37ada23b682d808e45be903b943d",
+      "src/agentdojo/functions_runtime.py": "dce2bdf4b1c04b77ebd82f9ee165c283cda492045615a9e510e6d5c9423e9248",
+      "src/agentdojo/task_suite/task_suite.py": "5a989815b0d66d87a0f1b802b1753c6a37d181d02b3dbc5933a330f2eb85fef1",
+      "src/agentdojo/types.py": "a8b682192ccad524ebeaa610a78d494270043913bf9b1d4ac159de5c9b0df3a7"
+    },
+    "workspace_state_data_files": {
+      "src/agentdojo/data/suites/workspace/environment.yaml": "c0f93e6b6f9de005fec63588dc579313f227a87235c10259375a9f43aa13db3e",
+      "src/agentdojo/data/suites/workspace/include/calendar.yaml": "0cc12f15f0d9b03e2ef025c3f1b6cb0b807db2e83bee76e2b0c90af78deee9ea",
+      "src/agentdojo/data/suites/workspace/include/cloud_drive.yaml": "95b52f6f408016b42adfdff3d1005514fec3a629e92348c28e05f3dba113eaca",
+      "src/agentdojo/data/suites/workspace/include/inbox.yaml": "13cf70a0a40252708b5f879987fa1fa24dbd92a3639c975bfe294ab7f4fd3c50",
+      "src/agentdojo/data/suites/workspace/injection_vectors.yaml": "13223dbffc51cf7c843657b80939f89c82a46e8b2faf062522241dc5bf928722"
+    },
+    "agentdojo_import_origin": {
+      "path": "src/agentdojo/__init__.py",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    "runtime_identity": {
+      "python_implementation": "CPython",
+      "python_version": "3.12.13",
+      "pydantic_version": "2.11.4",
+      "pyyaml_version": "6.0.2"
+    }
+  },
+  "normalization_implementation": {
+    "path": "experiments/agentdojo_v2_utility_trace_normalization_contract.py",
+    "sha256": "07017c2055389be337087d1ecdc90b67373b1b9bebbc156b2a5c9ba5398f97dd",
+    "raw_trace_schema_version": "agentdojo-function-call-json/v1",
+    "canonical_trace_schema_version": "agentdojo-function-call-json/v1",
+    "witness_schema_version": "agentdojo-utility-trace-normalization-witness/v1"
+  },
+  "mapping": {
+    "v0_to_v1": {
+      "add_calendar_event_participants": "v1_add_calendar_event_participants",
+      "append_to_file": "v1_append_to_file",
+      "cancel_calendar_event": "v1_cancel_calendar_event",
+      "create_calendar_event": "v1_create_calendar_event",
+      "create_file": "v1_create_file",
+      "delete_email": "v1_delete_email",
+      "delete_file": "v1_delete_file",
+      "get_current_day": "v1_get_current_day",
+      "get_day_calendar_events": "v1_get_day_calendar_events",
+      "get_draft_emails": "v1_get_draft_emails",
+      "get_file_by_id": "v1_get_file_by_id",
+      "get_received_emails": "v1_get_received_emails",
+      "get_sent_emails": "v1_get_sent_emails",
+      "get_unread_emails": "v1_get_unread_emails",
+      "list_files": "v1_list_files",
+      "reschedule_calendar_event": "v1_reschedule_calendar_event",
+      "search_calendar_events": "v1_search_calendar_events",
+      "search_contacts_by_email": "v1_search_contacts_by_email",
+      "search_contacts_by_name": "v1_search_contacts_by_name",
+      "search_emails": "v1_search_emails",
+      "search_files": "v1_search_files",
+      "search_files_by_filename": "v1_search_files_by_filename",
+      "send_email": "v1_send_email",
+      "share_file": "v1_share_file"
+    },
+    "v0_direction": "v0_identity",
+    "v1_direction": "v1_to_canonical_v0",
+    "argument_transform": "identity"
+  },
+  "source_only_calibration": [
+    {
+      "case_id": "workspace:v1.2.2:user_task_8:injection_task_2:calendar_introductory_meeting_injection",
+      "ground_truth_trace": {
+        "v0_raw_trace_sha256": "a3d4702c70d78296c46de5675d98914e2b80d1ba57533b47bd5d434940b2fe37",
+        "canonical_trace_sha256": "a3d4702c70d78296c46de5675d98914e2b80d1ba57533b47bd5d434940b2fe37",
+        "call_count": 2
+      },
+      "v0_identity": {
+        "trace_normalization_witness": {
+          "schema_version": "agentdojo-utility-trace-normalization-witness/v1",
+          "contract_version": "v0",
+          "direction": "v0_identity",
+          "tool_contract_digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188",
+          "raw_trace_sha256": "a3d4702c70d78296c46de5675d98914e2b80d1ba57533b47bd5d434940b2fe37",
+          "canonical_trace_sha256": "a3d4702c70d78296c46de5675d98914e2b80d1ba57533b47bd5d434940b2fe37",
+          "raw_function_names_sha256": "8706f3e408a73312c4190a296d3d58b133405aeb2c0b76aef5077aa336bbffd1",
+          "canonical_function_names_sha256": "8706f3e408a73312c4190a296d3d58b133405aeb2c0b76aef5077aa336bbffd1",
+          "arguments_sha256": "5a4d71bba8ddb96c287b680ea0ba34f9391aa5486d2fa02be4d9a90747e16206",
+          "canonical_arguments_sha256": "5a4d71bba8ddb96c287b680ea0ba34f9391aa5486d2fa02be4d9a90747e16206",
+          "call_count": 2
+        },
+        "utility_scorer_status": "scored",
+        "utility_success": true
+      },
+      "v1_synthetic_renaming": {
+        "trace_normalization_witness": {
+          "schema_version": "agentdojo-utility-trace-normalization-witness/v1",
+          "contract_version": "v1",
+          "direction": "v1_to_canonical_v0",
+          "tool_contract_digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188",
+          "raw_trace_sha256": "33ca091006e88f4209203e9f154e45c680acb4726d0646deead68a256ef15f04",
+          "canonical_trace_sha256": "a3d4702c70d78296c46de5675d98914e2b80d1ba57533b47bd5d434940b2fe37",
+          "raw_function_names_sha256": "5e617a99faa3b084ffc990e1b3aeaeb0e3f6f8e71be4d606e51bf56b39d1e2db",
+          "canonical_function_names_sha256": "8706f3e408a73312c4190a296d3d58b133405aeb2c0b76aef5077aa336bbffd1",
+          "arguments_sha256": "5a4d71bba8ddb96c287b680ea0ba34f9391aa5486d2fa02be4d9a90747e16206",
+          "canonical_arguments_sha256": "5a4d71bba8ddb96c287b680ea0ba34f9391aa5486d2fa02be4d9a90747e16206",
+          "call_count": 2
+        },
+        "utility_scorer_status": "scored",
+        "utility_success": true
+      }
+    },
+    {
+      "case_id": "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_injection",
+      "ground_truth_trace": {
+        "v0_raw_trace_sha256": "06aa5e380504d0b71282b66e9e49846a4b802f7de26cf73b474282fc059b0095",
+        "canonical_trace_sha256": "06aa5e380504d0b71282b66e9e49846a4b802f7de26cf73b474282fc059b0095",
+        "call_count": 2
+      },
+      "v0_identity": {
+        "trace_normalization_witness": {
+          "schema_version": "agentdojo-utility-trace-normalization-witness/v1",
+          "contract_version": "v0",
+          "direction": "v0_identity",
+          "tool_contract_digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188",
+          "raw_trace_sha256": "06aa5e380504d0b71282b66e9e49846a4b802f7de26cf73b474282fc059b0095",
+          "canonical_trace_sha256": "06aa5e380504d0b71282b66e9e49846a4b802f7de26cf73b474282fc059b0095",
+          "raw_function_names_sha256": "fecac4ebb126db7c7bfbb64e7f48de239320e9f8a88c112ee80e6d336cc7721c",
+          "canonical_function_names_sha256": "fecac4ebb126db7c7bfbb64e7f48de239320e9f8a88c112ee80e6d336cc7721c",
+          "arguments_sha256": "f238f89f1358d55ef8ffa28f943b9117cd8ecb2b6c180420e7e70d31ae73cd6d",
+          "canonical_arguments_sha256": "f238f89f1358d55ef8ffa28f943b9117cd8ecb2b6c180420e7e70d31ae73cd6d",
+          "call_count": 2
+        },
+        "utility_scorer_status": "scored",
+        "utility_success": true
+      },
+      "v1_synthetic_renaming": {
+        "trace_normalization_witness": {
+          "schema_version": "agentdojo-utility-trace-normalization-witness/v1",
+          "contract_version": "v1",
+          "direction": "v1_to_canonical_v0",
+          "tool_contract_digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188",
+          "raw_trace_sha256": "94be98441dff7383d1c076d6fb3895cb7c919390d3eae66d4f091c798beaf9ac",
+          "canonical_trace_sha256": "06aa5e380504d0b71282b66e9e49846a4b802f7de26cf73b474282fc059b0095",
+          "raw_function_names_sha256": "7149942fad016b724a78589b78150fac5b5d1b0742758f07d059ec8dce7338bc",
+          "canonical_function_names_sha256": "fecac4ebb126db7c7bfbb64e7f48de239320e9f8a88c112ee80e6d336cc7721c",
+          "arguments_sha256": "f238f89f1358d55ef8ffa28f943b9117cd8ecb2b6c180420e7e70d31ae73cd6d",
+          "canonical_arguments_sha256": "f238f89f1358d55ef8ffa28f943b9117cd8ecb2b6c180420e7e70d31ae73cd6d",
+          "call_count": 2
+        },
+        "utility_scorer_status": "scored",
+        "utility_success": true
+      }
+    },
+    {
+      "case_id": "workspace:v1.2.2:user_task_22:injection_task_3:email_password_reset_injection",
+      "ground_truth_trace": {
+        "v0_raw_trace_sha256": "c25dfd57cf5ce362190a92c8d184c0f706493c3ec4c77416768000640e77c131",
+        "canonical_trace_sha256": "c25dfd57cf5ce362190a92c8d184c0f706493c3ec4c77416768000640e77c131",
+        "call_count": 1
+      },
+      "v0_identity": {
+        "trace_normalization_witness": {
+          "schema_version": "agentdojo-utility-trace-normalization-witness/v1",
+          "contract_version": "v0",
+          "direction": "v0_identity",
+          "tool_contract_digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188",
+          "raw_trace_sha256": "c25dfd57cf5ce362190a92c8d184c0f706493c3ec4c77416768000640e77c131",
+          "canonical_trace_sha256": "c25dfd57cf5ce362190a92c8d184c0f706493c3ec4c77416768000640e77c131",
+          "raw_function_names_sha256": "fc9ccba694662e3e5cc3b69dd09627bb9cc1a818e65cf5156ab212d071c8e450",
+          "canonical_function_names_sha256": "fc9ccba694662e3e5cc3b69dd09627bb9cc1a818e65cf5156ab212d071c8e450",
+          "arguments_sha256": "e90cc6d2ae5b65592ec1b6092cbbb5c908eb02887bd7d5bf8dfb9198cbdbbf35",
+          "canonical_arguments_sha256": "e90cc6d2ae5b65592ec1b6092cbbb5c908eb02887bd7d5bf8dfb9198cbdbbf35",
+          "call_count": 1
+        },
+        "utility_scorer_status": "scored",
+        "utility_success": true
+      },
+      "v1_synthetic_renaming": {
+        "trace_normalization_witness": {
+          "schema_version": "agentdojo-utility-trace-normalization-witness/v1",
+          "contract_version": "v1",
+          "direction": "v1_to_canonical_v0",
+          "tool_contract_digest": "781899e9e3e195ebbeb48e2ce05984010451c61c7a9f96625eb5ef80a2a23188",
+          "raw_trace_sha256": "4c2864e7971f00d79b853206c7175aa60796a9228a46d685494dd0899672300f",
+          "canonical_trace_sha256": "c25dfd57cf5ce362190a92c8d184c0f706493c3ec4c77416768000640e77c131",
+          "raw_function_names_sha256": "1359ac1e8c6c5c0bcd1b5e5643b40f89a0196e88c282580dd7146ea4e47908d4",
+          "canonical_function_names_sha256": "fc9ccba694662e3e5cc3b69dd09627bb9cc1a818e65cf5156ab212d071c8e450",
+          "arguments_sha256": "e90cc6d2ae5b65592ec1b6092cbbb5c908eb02887bd7d5bf8dfb9198cbdbbf35",
+          "canonical_arguments_sha256": "e90cc6d2ae5b65592ec1b6092cbbb5c908eb02887bd7d5bf8dfb9198cbdbbf35",
+          "call_count": 1
+        },
+        "utility_scorer_status": "scored",
+        "utility_success": true
+      }
+    }
+  ],
+  "source_only_calibration_sha256": "f746609b94096ad9ecf2f8e27b9d08da66278482d816a990ce77f6422cf36ef8",
+  "observed_execution_counters": {
+    "llm_requests": 0,
+    "provider_requests": 0,
+    "network_requests": 0,
+    "remote_jobs": 0,
+    "local_ground_truth_tool_dispatches": 5
+  },
+  "future_driver_requirement": {
+    "raw_trace_must_be_retained": true,
+    "canonical_trace_must_be_retained": true,
+    "trace_normalization_witness_required": true,
+    "runtime_plan_authorization": "not_authorized"
+  },
+  "scope_limitations": [
+    "The v1 path renames only locally constructed ground-truth function-call records. It is not a v1 AgentDojo runtime, model, carrier, registry, or tool-dispatch observation.",
+    "Normalization preserves function arguments byte-for-byte at the canonical JSON level but cannot prove a future runtime exposed the expected registry, retained the raw trace, or dispatched the calls.",
+    "This contract solves only trace-name compatibility with the pinned default-control utility scorer. A prospective manifest/result bundle and provenance-bound driver remain required."
+  ],
+  "non_claims": [
+    "This artifact contains no LLM, model response, provider, endpoint, Runpod job, network, defense, attack, utility-efficacy, latency, cost, ASR, AFER, causal, statistical, or Q2-readiness observation.",
+    "It does not authorize an execution, make the synthetic renamed trace a benchmark result, or change the immutable historical v1 manifest/result bundle."
+  ]
+}
