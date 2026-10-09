@@ -153,7 +153,15 @@ def _manifest_and_plan(plan: Mapping[str, Any]) -> tuple[dict[str, Any], str]:
     manifest = load_manifest(DEFAULT_MANIFEST)
     episode_id = plan.get("episode_id")
     selected = next((row for row in manifest["episodes"] if row["episode_id"] == episode_id), None)
-    if selected is None or _canonical_bytes(dict(selected)) != _canonical_bytes(dict(plan)):
+    base_plan = dict(plan)
+    for field in (
+        "defense_adapter_id", "defense_variant", "amendment_manifest_sha256",
+        "amendment_cell", "amendment_policy_sha256",
+        "amendment_schema_descriptor_sha256", "amendment_normalization_sha256",
+        "amendment_expected_utility_success",
+    ):
+        base_plan.pop(field, None)
+    if selected is None or _canonical_bytes(dict(selected)) != _canonical_bytes(base_plan):
         raise CaptureBridgeError("episode plan is not the pinned v2 manifest row")
     return manifest, _sha256(manifest)
 
@@ -279,19 +287,20 @@ class _RecordingRuntime:
         try:
             result, error = self._base.run_function(env, function, kwargs, raise_on_error=raise_on_error)
         except BaseException as exc:
-            self.dispatch_events.append(
-                {
+            event = {
                     "function": function,
                     "args": _jsonable(kwargs),
                     "pre_state_sha256": _sha256(pre) if pre is not None else None,
                     "post_state_sha256": _sha256(_state_json(env)) if _state_json(env) is not None else None,
                     "error": f"{type(exc).__name__}: {exc}",
                 }
-            )
+            policy_events = getattr(self._base, "events", ())
+            if policy_events:
+                event["policy_event"] = dict(policy_events[-1])
+            self.dispatch_events.append(event)
             raise
         post = _state_json(env)
-        self.dispatch_events.append(
-            {
+        event = {
                 "function": function,
                 "args": _jsonable(kwargs),
                 "pre_state_sha256": _sha256(pre) if pre is not None else None,
@@ -299,7 +308,10 @@ class _RecordingRuntime:
                 "result_sha256": _sha256(_jsonable(result)),
                 "error": error,
             }
-        )
+        policy_events = getattr(self._base, "events", ())
+        if policy_events:
+            event["policy_event"] = dict(policy_events[-1])
+        self.dispatch_events.append(event)
         return result, error
 
 
@@ -459,6 +471,14 @@ def _metadata(plan: Mapping[str, Any], manifest_digest: str, run_id: str) -> dic
     }
     if "source_cluster_id" in plan:
         metadata["source_cluster_id"] = plan["source_cluster_id"]
+    for field in (
+        "defense_adapter_id", "defense_variant", "amendment_manifest_sha256",
+        "amendment_cell", "amendment_policy_sha256",
+        "amendment_schema_descriptor_sha256", "amendment_normalization_sha256",
+        "amendment_expected_utility_success",
+    ):
+        if field in plan:
+            metadata[field] = plan[field]
     return metadata
 
 
@@ -525,6 +545,16 @@ def _trace_evidence(
             "security-or-utility efficacy claim"
         ),
     }
+    if plan.get("defense_adapter_id") == "TaskFileScope":
+        policy_events = [
+            event["policy_event"]
+            for event in dispatch_events
+            if isinstance(event, dict) and isinstance(event.get("policy_event"), dict)
+        ]
+        if len(policy_events) != len(dispatch_events):
+            raise CaptureBridgeError("TaskFileScope dispatch policy evidence is incomplete")
+        trace_content["per_dispatch_policy_events"] = policy_events
+        trace_content["policy_event_count"] = len(policy_events)
     if plan["arm"] != "attack":
         if normalization_witness is None:
             raise CaptureBridgeError("default-control trace normalization witness is missing")
@@ -789,7 +819,18 @@ def _run_child(
     terminal_blocks = model_output_from_messages(messages)
     terminal_output = get_text_content_as_str(terminal_blocks or [])
     raw_trace = [call.model_dump(mode="json") for call in functions_stack_trace_from_messages(messages)]
-    canonical_trace, normalization_witness = _normalize_unchecked(plan["contract"]["version"], raw_trace)
+    if plan.get("defense_adapter_id") == "TaskFileScope":
+        from experiments.agentdojo_file_scope_preflight import canonical_trace as normalize_file_scope_trace
+
+        canonical_trace = normalize_file_scope_trace(plan["contract"]["version"], raw_trace)
+        normalization_witness = {
+            "schema_version": "task-file-scope-trace-normalization/v1",
+            "version": plan["contract"]["version"],
+            "raw_trace_sha256": _sha256(raw_trace),
+            "canonical_trace_sha256": _sha256(canonical_trace),
+        }
+    else:
+        canonical_trace, normalization_witness = _normalize_unchecked(plan["contract"]["version"], raw_trace)
     post_state = _state_json(post_environment)
     if post_state is None:
         raise CaptureBridgeError("post-environment is not a typed JSON state")

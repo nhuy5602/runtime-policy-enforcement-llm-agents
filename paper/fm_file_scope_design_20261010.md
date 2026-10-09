@@ -165,3 +165,13 @@ dispatch and M/v1 allowed it. This is plumbing evidence only. A future
 amendment-specific episode adapter still must bind model requests, fresh-child
 reset, complete dispatch events, and the validator result shape before any
 canonical F/M observation.
+
+The episode adapter now exists in
+experiments/agentdojo_file_scope_episode_adapter.py. It decorates a canonical
+v2 episode in memory, records amendment manifest/policy/schema/normalization
+identity, and validates redacted per-dispatch policy events. A loopback fake
+OpenAI-compatible server exercised both F/v1 and M/v1 through run_episode in
+fresh child processes. F/v1 produced a denied append with no state change;
+M/v1 produced an allowed append with a changed state. This is T2 plumbing and
+provenance evidence only: the provider was fake, the task was default-control,
+and no harmful attack or real LLM observation exists.

@@ -14,7 +14,7 @@ fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses 
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
 git_head_observed: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c (base before the capture-hook commit)
-working_tree_observed: handoff_state_update_pending; generated_report_cleaned; preexisting_untracked_areas_retained
+working_tree_observed: attributable_episode_adapter_pending; generated_report_cleaned; preexisting_untracked_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
 ```
@@ -167,6 +167,7 @@ Analysis boundary:
   review material, never empirical evidence.
 - A prospective TaskFileScope amendment and fail-closed source-preflight validator bind policy hashes, v0/v1 schema descriptors, argument normalization, and per-dispatch denial state evidence without changing historical v2.
 - The fresh-process capture bridge has an opt-in TaskFileScope adapter hook; historical plans still use their original name-only migration path.
+- An amendment episode/result adapter decorates canonical v2 plans in memory and validates per-dispatch policy events; no historical manifest is rewritten.
 
 ### 5.2 Verification already observed on the current local patch
 
@@ -698,3 +699,18 @@ Spend/calls: zero Runpod jobs, zero Gemini requests, zero paid provider calls; a
 Cleanup: no current preflight report retained under qa; tmp pinned runtime and graphify-out/deliverables were retained as needed local artifacts.
 Teacher verdict: local self-review only; full fresh-child pipeline must bind an amendment-specific episode plan and validator evidence before any user-authorized pilot.
 Single next priority: create the amendment-specific episode-plan/result adapter consumed by the fresh child, validate model request/response plus per-dispatch guard events, and run a non-billable fake-provider full-pipeline test without touching historical v2.
+
+## 18. Continuation update ? 10 October 2026
+
+Date/time (Asia/Saigon): 2026-10-10 05:20.
+Git base / branch: e364e8f7688ca6f53441f359580a0874a161d4d9 / main before this episode-adapter commit.
+Files changed: agentdojo_file_scope_episode_adapter.py decorates canonical v2 episode plans with TaskFileScope F/M amendment identity and validates per-dispatch redacted policy events; capture bridge now accepts adapter fields while comparing the stripped base plan; capture trace evidence retains per-dispatch policy events for adapter plans; amendment tests exercise both fresh-child cells.
+Scientific question resolved: the prospective F/M amendment now reaches the actual fresh-child capture path. A loopback fake provider drove search then append through F/v1 and M/v1; F denied append before native dispatch and preserved state, M dispatched append and changed state.
+Verification command and exact result: full discovery after the episode adapter ran 144 tests in 457.990s, OK, no skips. Focused amendment plus historical bridge tests ran 11 tests in 217.625s, OK. The fresh-child fake-provider F/M test passed in 77.771s. No model or paid provider request was used.
+Evidence tier reached: T2 local fake-provider plumbing/provenance; still not T3 real LLM or T4 efficacy.
+Claims now supported: adapter plan identity, nested argument normalization, fresh-child guard decisions, per-dispatch evidence, and state effects are locally auditable; historical v2 path remains regression-tested.
+Claims still forbidden: real F/M defense efficacy, harmful-effect regression, population inference, Q2 readiness, and any paid pilot conclusion.
+Spend/calls: zero Runpod jobs, zero Gemini requests, zero paid provider calls; only loopback fake provider and pinned local runtime.
+Cleanup: no current preflight report retained under qa; tmp, graphify-out, and deliverables retained.
+Teacher verdict: local self-review only; next review must inspect adapter plan/result binding and the fact that this task is utility/default-control only. No login or user interaction was required.
+Single next priority: run the amendment adapter through the canonical result acceptance boundary in a separate prospective adapter report, then prepare the non-billable review artifact; do not alter historical v2 or launch paid execution.

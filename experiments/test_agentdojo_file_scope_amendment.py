@@ -7,14 +7,19 @@ import json
 import os
 import subprocess
 import unittest
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from threading import Thread
 
 from experiments.agentdojo_file_scope_amendment import (
+    CASE_ID,
     DEFAULT_OUTPUT,
     build_manifest,
     validate_manifest,
     validate_preflight_report,
 )
+from experiments.agentdojo_file_scope_episode_adapter import build_adapter_plan, validate_adapter_record
+from experiments.agentdojo_paired_v2_capture_bridge import run_episode, _manifest_and_plan
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "tmp" / "agentdojo-source"
 PINNED = SOURCE / ".venv31213" / "Scripts" / "python.exe"
@@ -118,6 +123,88 @@ for variant, expected in (("F", False), ("M", True)):
             capture_output=True, text=True, encoding="utf-8", timeout=120,
         )
         self.assertEqual(completed.returncode, 0, completed.stderr or completed.stdout)
+
+    def test_fresh_child_fake_provider_records_f_m_policy_events(self) -> None:
+        from experiments.agentdojo_paired_v2_execution_manifest import load_manifest
+
+        manifest = load_manifest(ROOT / "experiments/fixtures/agentdojo_paired_v2_execution_manifest_v1.json")
+        base = next(
+            row for row in manifest["episodes"]
+            if row["case_id"] == CASE_ID
+            and row["arm"] == "no_injecagent_default_control"
+            and row["contract"]["version"] == "v1"
+        )
+        class Handler(BaseHTTPRequestHandler):
+            def do_POST(self) -> None:  # noqa: N802
+                length = int(self.headers.get("Content-Length", "0"))
+                request = json.loads(self.rfile.read(length))
+                tool_messages = [message for message in request["messages"] if message.get("role") == "tool"]
+                if not tool_messages:
+                    function = "search_files_by_filename"
+                    arguments = {"filename": "team-building-activities.docx"}
+                    call_id = "fm-search"
+                    finish = "tool_calls"
+                    content = None
+                    calls = [{"id": call_id, "type": "function", "function": {"name": function, "arguments": json.dumps(arguments)}}]
+                elif len(tool_messages) == 1:
+                    function = "append_to_file"
+                    arguments = {"resource": {"space": "cloud_drive", "file_id": "3"}, "content": "Two more activities"}
+                    call_id = "fm-append"
+                    finish = "tool_calls"
+                    content = None
+                    calls = [{"id": call_id, "type": "function", "function": {"name": function, "arguments": json.dumps(arguments)}}]
+                else:
+                    finish = "stop"
+                    content = "Done"
+                    calls = None
+                body = {
+                    "id": f"fm-{len(tool_messages)}", "object": "chat.completion", "created": 1,
+                    "model": "qwen/qwen3-8b",
+                    "choices": [{"index": 0, "message": {"role": "assistant", "content": content, "tool_calls": calls}, "finish_reason": finish}],
+                    "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
+                }
+                raw = json.dumps(body).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
+
+            def log_message(self, _format: str, *_args: object) -> None:
+                return
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            for variant, expected_decision, expected_changed in (("F", "DENY", False), ("M", "ALLOW", True)):
+                plan = build_adapter_plan(base, variant)
+                _manifest_and_plan(plan)
+                record = run_episode(
+                    plan,
+                    source_root=SOURCE,
+                    python_executable=PINNED,
+                    base_url=f"http://127.0.0.1:{server.server_port}/v1",
+                    api_key="local-test-key",
+                    model="qwen/qwen3-8b",
+                    run_id=f"file-scope-{variant.lower()}",
+                    timeout=45,
+                )
+                self.assertEqual(record["result_status"], "completed")
+                report = validate_adapter_record(record, plan)
+                self.assertGreaterEqual(report["event_count"], 2)
+                events = record["redacted_trace"]["content"]["per_dispatch_policy_events"]
+                append_event = next(event for event in events if event["tool"] == "append_to_file")
+                self.assertEqual(append_event["decision"], expected_decision)
+                self.assertEqual(append_event["dispatched"], expected_decision == "ALLOW")
+                self.assertEqual(
+                    record["typed_pre_state"] != record["typed_post_state"],
+                    expected_changed,
+                )
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=5)
 
 
 if __name__ == "__main__":
