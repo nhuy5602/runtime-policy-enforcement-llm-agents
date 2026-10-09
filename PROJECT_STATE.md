@@ -13,7 +13,7 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: c554b0f2d0d0f4be6ecf58adf8b7b7d5f3f2bb9f
+git_head_observed: 3b668e1a2253c814ad51f13e3240771e21debc2e
 working_tree_observed: source_patch_committed_and_pushed; snapshot_before_handoff_commit; untracked_generated_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Specify and implement one real defense as F and its explicitly migrated form as M under an authorization-relevant v0-to-v1 tool-contract change; first write the concrete design record, then run non-billable preflight/review."
@@ -274,7 +274,7 @@ Generated or local-only areas that normally must not be committed as source:
 
 ## 8. Git state refreshed 9 October 2026
 
-Current source freeze: c554b0f (handoff update) after fbfa92c v2 source freeze, on main,
+Current observed HEAD: 3b668e1a2253c814ad51f13e3240771e21debc2e (handoff update), on main,
 pushed successfully to origin/main. All 22 attributable source/doc files
 below are now committed; the list is retained as the pre-freeze audit. Only
 this handoff update and untracked deliverables/, graphify-out/, and tmp/
@@ -332,7 +332,7 @@ Git before relying on the lists.
 
 ## 9. Next steps in the correct order
 
-### P0 ? Preserve the verified v2 seam (completed 9 October 2026)
+### P0 - Preserve the verified v2 seam (completed 9 October 2026)
 
 Frozen and pushed in fbfa92c; full post-fix suite passes 133 tests. The
 following steps are the retained checklist, not the next task.
@@ -550,7 +550,7 @@ do not manufacture a progress update.
 ## 14. Continuation update — 2026-10-09
 
 Date/time (Asia/Saigon): 2026-10-09 23:52
-Git HEAD / branch: c554b0f / main, pushed to origin/main; source freeze is fbfa92c.
+Git HEAD / branch: 3b668e1a2253c814ad51f13e3240771e21debc2e / main, pushed to origin/main; source freeze is fbfa92c. This is the observed parent of the final handoff correction commit, not a self-referential final commit hash.
 Files changed: committed the attributable v2 source/doc patch in fbfa92c (22 files). PROJECT_STATE.md is this handoff update; deliverables/, graphify-out/, and tmp/ remain untracked local/generated areas and were not staged.
 Scientific question resolved: P0 instrumentation uncertainty resolved. The OpenAI SDK independently retried a provider HTTP 503 three times despite the bridge replacing AgentDojo's helper; max_retries=0 now enforces the manifest no-retry rule and the regression test observes one attempt. The current configuration remains U/D0 with rename-only migration; no F/M comparison exists.
 Verification command and exact result: focused v2 suite before the retry fix — Ran 40 tests in 333.991s; OK; retry regression — Ran 1 test in 24.531s; OK; full discovery after the fix — Ran 133 tests in 241.083s; OK; dry-run assertion — 12 not_run rows; 6 pairs retained; 0 scored pairs; no bundle contract error; secret scan — 22 source/doc files; 0 matches; git diff --check and git diff --cached --check clean after stripping four Markdown trailing-space line breaks.
