@@ -13,10 +13,10 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: bf9e1c9f28a74b093b819dd9072e0d317f3607d2
-working_tree_observed: dirty
-codex_goal_registry_observed: usageLimited
-next_single_priority: "Freeze the current v2 pipeline patch, then implement one real defense as F and its explicitly migrated form as M under an authorization-relevant v0-to-v1 tool-contract change."
+git_head_observed: c554b0f2d0d0f4be6ecf58adf8b7b7d5f3f2bb9f
+working_tree_observed: source_patch_committed_and_pushed; snapshot_before_handoff_commit; untracked_generated_areas_retained
+codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
+next_single_priority: "Specify and implement one real defense as F and its explicitly migrated form as M under an authorization-relevant v0-to-v1 tool-contract change; first write the concrete design record, then run non-billable preflight/review."
 ```
 
 Minimal prompt for a new model:
@@ -25,9 +25,9 @@ Minimal prompt for a new model:
 > repository, then continue only the single next priority while preserving all
 > claim and spending boundaries in that file. Update the file before finishing.
 
-The observed Codex goal-registry state `usageLimited` is an execution-system
-status, not scientific completion and not permission to change the topic. This
-file remains the cross-model continuation mechanism.
+The previous goal-registry status usageLimited was an execution-system status,
+not scientific completion. On 9 October, get_goal returned null (no active
+goal). This file remains the cross-model continuation mechanism.
 
 ## 1. Rules for starting or resuming work
 
@@ -272,7 +272,16 @@ Generated or local-only areas that normally must not be committed as source:
 - rendered screenshots/PDF intermediates
 - virtual environments, caches, dependencies, model weights, and secrets
 
-## 8. Live Git state at this handoff
+## 8. Git state refreshed 9 October 2026
+
+Current source freeze: c554b0f (handoff update) after fbfa92c v2 source freeze, on main,
+pushed successfully to origin/main. All 22 attributable source/doc files
+below are now committed; the list is retained as the pre-freeze audit. Only
+this handoff update and untracked deliverables/, graphify-out/, and tmp/
+remain locally. No generated directory was staged. The AgentDojo checkout
+remains clean at 089ed468cf3ed0322acc66b0211f26d9d90dbf60.
+
+### Historical pre-freeze snapshot (superseded)
 
 Observed base commit:
 
@@ -323,7 +332,11 @@ Git before relying on the lists.
 
 ## 9. Next steps in the correct order
 
-### P0 — Preserve the verified v2 seam
+### P0 ? Preserve the verified v2 seam (completed 9 October 2026)
+
+Frozen and pushed in fbfa92c; full post-fix suite passes 133 tests. The
+following steps are the retained checklist, not the next task.
+
 
 1. Review the current diff for scope, secrets, generated files, stale claims,
    and budget values.
@@ -533,3 +546,37 @@ Single next priority:
 
 If no artifact, verified result, failure, or required user decision changed,
 do not manufacture a progress update.
+
+## 14. Continuation update — 2026-10-09
+
+Date/time (Asia/Saigon): 2026-10-09 23:52
+Git HEAD / branch: c554b0f / main, pushed to origin/main; source freeze is fbfa92c.
+Files changed: committed the attributable v2 source/doc patch in fbfa92c (22 files). PROJECT_STATE.md is this handoff update; deliverables/, graphify-out/, and tmp/ remain untracked local/generated areas and were not staged.
+Scientific question resolved: P0 instrumentation uncertainty resolved. The OpenAI SDK independently retried a provider HTTP 503 three times despite the bridge replacing AgentDojo's helper; max_retries=0 now enforces the manifest no-retry rule and the regression test observes one attempt. The current configuration remains U/D0 with rename-only migration; no F/M comparison exists.
+Verification command and exact result: focused v2 suite before the retry fix — Ran 40 tests in 333.991s; OK; retry regression — Ran 1 test in 24.531s; OK; full discovery after the fix — Ran 133 tests in 241.083s; OK; dry-run assertion — 12 not_run rows; 6 pairs retained; 0 scored pairs; no bundle contract error; secret scan — 22 source/doc files; 0 matches; git diff --check and git diff --cached --check clean after stripping four Markdown trailing-space line breaks.
+Evidence tier reached: T1/T2 instrumentation and local fake-provider integration only.
+Claims now supported: the capture bridge suppresses SDK-level retries; the v2 seam preserves fixed denominator and fail-closed scoring in local checks.
+Claims still forbidden: F/M efficacy, defense regression rate, population inference, Q2 readiness, and claims from rename-only U/D0 execution.
+Runpod/Gemini/API spend or calls: zero Runpod or Gemini calls and zero paid provider requests; loopback fake-provider HTTP requests only. Git fetch/push and deterministic graphify query/save-result also ran.
+Teacher verdict: local self-review only (no independent Teacher/Gemini review performed); P0 verification passes; F/M design and authorization-relevant migration remain required, and remote pilot remains off without explicit user command.
+Single next priority: Specify one real defense/policy family as F and M under an authorization-relevant v0-to-v1 contract change, then run the smallest non-billable four-cell preflight and review before any paid pilot.
+
+Exact new verification commands (using the environment from section 11):
+
+```powershell
+& $python -B -m unittest experiments.test_agentdojo_paired_v2_capture_bridge.AgentDojoPairedV2CaptureBridgeTests.test_provider_failure_is_not_retried_by_sdk -v
+& $python -B -m unittest discover -s experiments -p "test_*.py" -q
+& $python experiments/agentdojo_paired_v2_driver.py --dry-run --run-id p0-freeze-20261009 --bundle-output qa/p0_freeze_v2_bundle.json --report-output qa/p0_freeze_v2_report.json
+git diff --check
+git diff --cached --check
+```
+
+The focused pre-fix command is exactly the six-module command in section 11.
+The new HTTP 503 test failed before the fix (3 requests versus expected 1),
+then passed after max_retries=0. One initial full-suite invocation was
+interrupted for that fix; it is not counted as verification. The subsequent
+133-test run exited 0 with no skips. Local dry-run outputs remain ignored in qa/.
+Skills used: ponytail for the minimal shared-boundary fix and graphify for a
+query of the existing project graph. Graphify located the v2 driver, validator,
+and source-oracle paths; live file reads were authoritative over its older line
+locations. No plugin invoked paid compute or external review.
