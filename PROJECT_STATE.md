@@ -13,8 +13,8 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: 8144be696869bcb1c7e61ed059056ffb252bafc4 (base before the amendment commit)
-working_tree_observed: attributable_FM_amendment_pending; generated_report_cleaned; preexisting_untracked_areas_retained
+git_head_observed: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c (base before the capture-hook commit)
+working_tree_observed: attributable_capture_hook_pending; generated_report_cleaned; preexisting_untracked_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
 ```
@@ -166,6 +166,7 @@ Analysis boundary:
 - A read-only Gemini reviewer exists for methodological critique. Its output is
   review material, never empirical evidence.
 - A prospective TaskFileScope amendment and fail-closed source-preflight validator bind policy hashes, v0/v1 schema descriptors, argument normalization, and per-dispatch denial state evidence without changing historical v2.
+- The fresh-process capture bridge has an opt-in TaskFileScope adapter hook; historical plans still use their original name-only migration path.
 
 ### 5.2 Verification already observed on the current local patch
 
@@ -682,3 +683,18 @@ Runpod/Gemini/API spend or calls: zero Runpod jobs, zero Gemini requests, zero p
 Cleanup: removed the generated qa/fm_file_scope_preflight_20261010.json report. Retained tmp pinned runtime, graphify-out knowledge graph, and deliverables course artifacts.
 Teacher verdict: local self-review only; the conservative task still cannot expose harmful-effect regression, and canonical capture/manifest integration plus independent review remain open. No login or user interaction was required.
 Single next priority: add the amendment-specific capture adapter hook to the fresh child, then run a non-billable fake-provider integration that proves F/M model tool calls are transformed, guarded, and fail closed without altering historical v2 controls.
+
+## 17. Continuation update ? 10 October 2026
+
+Date/time (Asia/Saigon): 2026-10-10 04:00.
+Git base / branch: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c / main before this capture-hook commit.
+Files changed: agentdojo_paired_v2_capture_bridge.py now exposes _prepare_runtime_for_plan; plans with defense_adapter_id=TaskFileScope use the authored v0/v1 resource migration and guard, while historical plans continue through AGENTDOJO_CONTRACT_MANIFEST. The amendment test now runs preflight in a pinned subprocess for process isolation.
+Scientific question resolved: the F/M policy amendment is reachable from the fresh-child capture seam without silently changing historical v2. A fake model tool-call test proves F/v1 denies append before dispatch and M/v1 permits it, with state effects matching the expected utility contrast.
+Verification command and exact result: hook test passed 1 test in 29.502s; historical v2 capture bridge suite passed 5 tests in 143.648s; final full discovery passed 143 tests in 403.060s, no skips. Amendment CLI previously accepted the four-cell preflight with utility [true,false,true,true]. git diff --check and secret scan were clean before staging the source patch.
+Evidence tier reached: T1 source-conformance plus capture-hook plumbing; no model/provider/attack observation and no canonical F/M result bundle.
+Claims now supported: opt-in adapter hook preserves historical v2 path; F/M tool-call argument transformation and fail-closed denial are testable in the pinned runtime.
+Claims still forbidden: canonical fresh-child F/M LLM efficacy, harmful-effect regression, population inference, Q2 readiness, paid-pilot conclusion.
+Spend/calls: zero Runpod jobs, zero Gemini requests, zero paid provider calls; all checks were local pinned runtime or fake tool calls.
+Cleanup: no current preflight report retained under qa; tmp pinned runtime and graphify-out/deliverables were retained as needed local artifacts.
+Teacher verdict: local self-review only; full fresh-child pipeline must bind an amendment-specific episode plan and validator evidence before any user-authorized pilot.
+Single next priority: create the amendment-specific episode-plan/result adapter consumed by the fresh child, validate model request/response plus per-dispatch guard events, and run a non-billable fake-provider full-pipeline test without touching historical v2.

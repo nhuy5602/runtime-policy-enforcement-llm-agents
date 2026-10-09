@@ -303,6 +303,31 @@ class _RecordingRuntime:
         return result, error
 
 
+def _prepare_runtime_for_plan(runtime: Any, plan: Mapping[str, Any]) -> tuple[Any, str | None]:
+    """Install an amendment-specific guard without changing historical v2.
+
+    Historical plans omit defense_adapter_id and follow the existing name-only
+    contract migration. A prospective TaskFileScope plan opts in explicitly
+    and owns its v0/v1 argument migration instead.
+    """
+
+    adapter_id = plan.get("defense_adapter_id")
+    if adapter_id is None:
+        return runtime, None
+    if adapter_id != "TaskFileScope":
+        raise CaptureBridgeError(f"unsupported defense adapter: {adapter_id}")
+    from experiments.agentdojo_file_scope_defense import FileScopePolicy, FileScopeRuntime, migrate_file_contract
+
+    variant = plan.get("defense_variant")
+    version = plan.get("contract", {}).get("version")
+    if variant not in {"F", "M"} or version not in {"v0", "v1"}:
+        raise CaptureBridgeError("TaskFileScope plans require defense_variant F/M and v0/v1")
+    policy_contract = "v1" if variant == "M" and version == "v1" else "v0"
+    prepared = migrate_file_contract(runtime) if version == "v1" else runtime
+    policy = FileScopePolicy("user_task_29", "3", "team-building-activities.docx", policy_contract)
+    return FileScopeRuntime(prepared, policy), adapter_id
+
+
 class _RequestCapture:
     """One-call OpenAI helper replacement used inside the fresh child."""
 
@@ -663,9 +688,10 @@ def _run_child(
     from agentdojo.types import get_text_content_as_str
     import openai
 
-    # v1 migration is activated only through the manifest environment variable.
-    # The wrapped OpenAILLM.query applies it exactly once to the fresh runtime.
-    if plan["contract"]["version"] == "v1":
+    # Historical v1 migration is activated only through the manifest
+    # environment variable. Amendment-specific defenses own their migration.
+    amendment_adapter = plan.get("defense_adapter_id")
+    if plan["contract"]["version"] == "v1" and amendment_adapter is None:
         os.environ[MANIFEST_ENV] = str(ROOT / plan["contract"]["tool_contract_manifest"])
     else:
         os.environ.pop(MANIFEST_ENV, None)
@@ -703,6 +729,7 @@ def _run_child(
         carrier_witness = _carrier_witness(plan, pre_state, injections)
 
     runtime_base = FunctionsRuntime(suite.tools)
+    runtime_base, applied_adapter = _prepare_runtime_for_plan(runtime_base, plan)
     runtime = _RecordingRuntime(
         runtime_base,
         max_tool_calls=execution_budget["max_tool_calls_per_episode"],
@@ -736,7 +763,15 @@ def _run_child(
         openai_llm.chat_completion_request = original_request
 
     migration_marker = getattr(runtime, "_agentdojo_contract_migration_witness", None)
-    if plan["contract"]["version"] == "v1":
+    if applied_adapter is not None:
+        runtime_migration = {
+            "status": "defense_adapter_applied",
+            "adapter_id": applied_adapter,
+            "defense_variant": plan["defense_variant"],
+            "contract_version": plan["contract"]["version"],
+        }
+        registry_witness = _registry_witness(runtime.functions, tool_contract)
+    elif plan["contract"]["version"] == "v1":
         if not isinstance(migration_marker, Mapping):
             raise CaptureBridgeError("v1 migration did not leave a native witness on the runtime")
         runtime_migration = {"status": "applied", "witness": dict(migration_marker)}

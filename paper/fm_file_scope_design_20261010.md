@@ -155,3 +155,13 @@ and a denial changed to dispatched=true in tests. It accepts only
 T1_source_conformance_only; it cannot turn this conservative no-deletion task
 into a harmful-effect observation or bypass the historical v2 validator's
 equal-schema/name-only rules.
+
+The capture bridge now has an opt-in hook named
+_prepare_runtime_for_plan. A plan must explicitly carry defense_adapter_id
+TaskFileScope and defense_variant F or M; absent that field, the historical
+AGENTDOJO_CONTRACT_MANIFEST path is unchanged. The hook was exercised in the
+pinned runtime with fake model tool calls: F/v1 denied append before native
+dispatch and M/v1 allowed it. This is plumbing evidence only. A future
+amendment-specific episode adapter still must bind model requests, fresh-child
+reset, complete dispatch events, and the validator result shape before any
+canonical F/M observation.
