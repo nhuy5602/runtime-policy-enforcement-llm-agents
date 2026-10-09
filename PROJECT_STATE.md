@@ -14,7 +14,7 @@ fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses 
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
 git_head_observed: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c (base before the capture-hook commit)
-working_tree_observed: attributable_capture_hook_pending; generated_report_cleaned; preexisting_untracked_areas_retained
+working_tree_observed: handoff_state_update_pending; generated_report_cleaned; preexisting_untracked_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
 ```
@@ -675,7 +675,7 @@ Date/time (Asia/Saigon): 2026-10-10 03:05.
 Git base / branch: 8144be696869bcb1c7e61ed059056ffb252bafc4 / main before the amendment commit.
 Files changed: TaskFileScope runtime/preflight now record per-dispatch pre/post state hashes and canonical schema projections; new agentdojo_file_scope_amendment.py, its fixture, test module, and design addendum bind the prospective F/M evidence contract; temporary qa/fm_file_scope_preflight_20261010.json was deleted after verification.
 Scientific question resolved: the conservative F/M slice is now bound by a separate prospective manifest/validator. F remains the same policy hash across v0/v1; M changes only the explicit argument contract at v1. The validator accepts the four source cells only when policy/schema/normalization identities and denial state invariants match.
-Verification command and exact result: amendment CLI accepted the source preflight with utility sequence [true, false, true, true] and T1_source_conformance_only. Focused amendment + defense tests: 9 tests, 51.588s, OK; corrected isolation test: 4 amendment tests, 35.981s, OK; full discovery after correction: 142 tests, 396.843s, OK. A prior full-suite attempt failed because the amendment test ran preflight in the shared process; the test now uses the pinned subprocess and the final full suite passed. git diff --check passed before staging.
+Verification command and exact result: amendment CLI accepted the source preflight with utility sequence [true, false, true, true] and T1_source_conformance_only. Focused amendment + defense tests: 9 tests, 51.588s, OK; corrected isolation test: 4 amendment tests, 35.981s, OK; full discovery after correction: 142 tests, 396.843s, OK; after the capture hook, full discovery: 143 tests, 403.060s, OK. A prior full-suite attempt failed because the amendment test ran preflight in the shared process; the test now uses the pinned subprocess and the final full suite passed. git diff --check passed before staging.
 Evidence tier reached: T1 source conformance/amendment validation only; still no model or attack episode.
 Claims now supported: prospective F/M policy identity, schema descriptors, nested argument normalization, and per-dispatch denial state evidence are fail-closed and tamper-tested.
 Claims still forbidden: canonical v2 F/M efficacy, harmful-effect regression, population inference, Q2 readiness, and any paid-pilot conclusion.
@@ -687,7 +687,7 @@ Single next priority: add the amendment-specific capture adapter hook to the fre
 ## 17. Continuation update ? 10 October 2026
 
 Date/time (Asia/Saigon): 2026-10-10 04:00.
-Git base / branch: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c / main before this capture-hook commit.
+Git base / branch: a726356ee52480f9077458a2a9c24d478d1115f1 / main before this final handoff commit.
 Files changed: agentdojo_paired_v2_capture_bridge.py now exposes _prepare_runtime_for_plan; plans with defense_adapter_id=TaskFileScope use the authored v0/v1 resource migration and guard, while historical plans continue through AGENTDOJO_CONTRACT_MANIFEST. The amendment test now runs preflight in a pinned subprocess for process isolation.
 Scientific question resolved: the F/M policy amendment is reachable from the fresh-child capture seam without silently changing historical v2. A fake model tool-call test proves F/v1 denies append before dispatch and M/v1 permits it, with state effects matching the expected utility contrast.
 Verification command and exact result: hook test passed 1 test in 29.502s; historical v2 capture bridge suite passed 5 tests in 143.648s; final full discovery passed 143 tests in 403.060s, no skips. Amendment CLI previously accepted the four-cell preflight with utility [true,false,true,true]. git diff --check and secret scan were clean before staging the source patch.
