@@ -14,7 +14,7 @@ fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses 
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
 git_head_observed: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c (base before the capture-hook commit)
-working_tree_observed: attributable_episode_adapter_pending; generated_report_cleaned; preexisting_untracked_areas_retained
+working_tree_observed: handoff_state_update_pending; generated_report_cleaned; preexisting_untracked_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
 ```
@@ -703,7 +703,7 @@ Single next priority: create the amendment-specific episode-plan/result adapter 
 ## 18. Continuation update ? 10 October 2026
 
 Date/time (Asia/Saigon): 2026-10-10 05:20.
-Git base / branch: e364e8f7688ca6f53441f359580a0874a161d4d9 / main before this episode-adapter commit.
+Git base / branch: e678ea22c89a29c611c226acb71378fe0c1c7ebe / main before this final state commit.
 Files changed: agentdojo_file_scope_episode_adapter.py decorates canonical v2 episode plans with TaskFileScope F/M amendment identity and validates per-dispatch redacted policy events; capture bridge now accepts adapter fields while comparing the stripped base plan; capture trace evidence retains per-dispatch policy events for adapter plans; amendment tests exercise both fresh-child cells.
 Scientific question resolved: the prospective F/M amendment now reaches the actual fresh-child capture path. A loopback fake provider drove search then append through F/v1 and M/v1; F denied append before native dispatch and preserved state, M dispatched append and changed state.
 Verification command and exact result: full discovery after the episode adapter ran 144 tests in 457.990s, OK, no skips. Focused amendment plus historical bridge tests ran 11 tests in 217.625s, OK. The fresh-child fake-provider F/M test passed in 77.771s. No model or paid provider request was used.
