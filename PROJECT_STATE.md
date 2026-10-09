@@ -6,17 +6,17 @@
 
 ```yaml
 schema_version: 1
-last_updated: 2026-10-09
+last_updated: 2026-10-10
 timezone: Asia/Saigon
 project_status: active
 research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: 31f4a44f1a04444c7c638d446e28ff4e995e3f04 (observed before this final handoff commit)
-working_tree_observed: source_patch_committed_and_pushed; snapshot_before_handoff_commit; untracked_generated_areas_retained
+git_head_observed: 66b9ff02e7a44301f69d8753065d0d061262469f (base before the 2026-10-10 source and handoff commit)
+working_tree_observed: attributable_FM_source_patch_pending; preexisting_untracked_generated_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
-next_single_priority: "Specify and implement one real defense as F and its explicitly migrated form as M under an authorization-relevant v0-to-v1 tool-contract change; first write the concrete design record, then run non-billable preflight/review."
+next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
 ```
 
 Minimal prompt for a new model:
@@ -93,8 +93,8 @@ version and defense-migration status are the controlled changes.
 | ID | Meaning | Current status | Permitted claim |
 |---|---|---|---|
 | `U` | Unprotected AgentDojo integration reference; legacy ID `D0_unmodified_agentdojo` | Executable integration path exists locally | Integration/debug reference only |
-| `F` | A real defense/policy frozen at its `v0` form and reused unchanged under `v1` | **Not implemented in canonical v2 experiment** | None yet |
-| `M` | The same defense with an explicit, documented `v0 -> v1` migration | **Not implemented in canonical v2 experiment** | None yet |
+| `F` | A real defense/policy frozen at its `v0` form and reused unchanged under `v1` | **Implemented as TaskFileScope source-conformance slice; not integrated into canonical v2** | T1 conformance only |
+| `M` | The same defense with an explicit, documented `v0 -> v1` migration | **Implemented as TaskFileScope source-conformance slice; not integrated into canonical v2** | T1 conformance only |
 | `E` | Optional migrate-or-escalate comparator when equivalence cannot be proved | Planned, secondary | None yet |
 | `P0/P1/P2` | Existing reference guard, canonicalization, and staged state-diff mechanisms | Component-level artifacts exist | Mechanism/calibration only |
 
@@ -187,12 +187,27 @@ They are **not** evidence that a defense resists indirect prompt injection.
 Re-run the relevant tests after changing code; do not quote these counts as if
 they cover later edits.
 
-### 5.3 What evidence does not yet exist
+### 5.3 New source-only F/M evidence (10 October 2026)
+
+TaskFileScope is implemented in experiments/agentdojo_file_scope_defense.py.
+Its authored resource-argument migration changes file_id into an explicitly
+scoped resource object. The user_task_29 default-control sequence was executed
+through AgentDojo ToolsExecutor and scored through the existing public utility
+scorer in all four cells: F/v0=true, F/v1=false, M/v0=true, M/v1=true.
+This is T1 source conformance, with zero model requests and zero attack episodes.
+It is a conservative baseline: it cannot expose a harmful-effect regression
+for this task, which never grants deletion. It does not answer the main RQ.
+The prospective design and local self-review are in
+paper/fm_file_scope_design_20261010.md. Canonical capture/acceptance is pending;
+the historical validator's equal-schema and name-only trace rules remain intact.
+
+### 5.4 What evidence does not yet exist
 
 - No canonical v2 execution of a real `F` defense.
 - No canonical v2 execution of the corresponding migrated `M` defense.
-- No main-study authorization-relevant contract migration; the current rename
-  mapping is a compatibility/negative control.
+- An authored resource-argument migration now exists for the conservative source
+  slice; no main-study treatment capable of resolving the harmful-effect RQ is
+  implemented. The historical rename mapping remains a negative control.
 - No adequately sized paired LLM result set over multiple model snapshots.
 - No held-out carrier/mutation evaluation demonstrating robustness.
 - No Q2-ready effect estimate, confidence interval, power/precision gate, or
@@ -272,14 +287,16 @@ Generated or local-only areas that normally must not be committed as source:
 - rendered screenshots/PDF intermediates
 - virtual environments, caches, dependencies, model weights, and secrets
 
-## 8. Git state refreshed 9 October 2026
+## 8. Git state refreshed 10 October 2026
 
-Current observed HEAD: 3b668e1a2253c814ad51f13e3240771e21debc2e (handoff update), on main,
-pushed successfully to origin/main. All 22 attributable source/doc files
-below are now committed; the list is retained as the pre-freeze audit. Only
-this handoff update and untracked deliverables/, graphify-out/, and tmp/
-remain locally. No generated directory was staged. The AgentDojo checkout
-remains clean at 089ed468cf3ed0322acc66b0211f26d9d90dbf60.
+Observed base HEAD: 66b9ff02e7a44301f69d8753065d0d061262469f on main,
+matching origin/main at session start. The tracked working tree was clean.
+New attributable files this session are the defense, source preflight, tests,
+and design record named in section 15; PROJECT_STATE.md is updated with them.
+Preexisting deliverables/, graphify-out/, and tmp/ remain untracked local areas;
+qa/ remains ignored. No generated directory is part of the source patch.
+The AgentDojo source checkout remains clean at
+089ed468cf3ed0322acc66b0211f26d9d90dbf60.
 
 ### Historical pre-freeze snapshot (superseded)
 
@@ -350,6 +367,11 @@ This is repository hygiene, not the next scientific contribution.
 
 ### P1 — Specify one real defense and one real migration
 
+The development design is now recorded in paper/fm_file_scope_design_20261010.md.
+TaskFileScope is a conservative F/M baseline; it is not a treatment that can
+expose harmful-effect regression for the selected task. The main-study
+discriminating treatment remains an unmet requirement. Retain this checklist:
+
 Create a short, falsifiable design record before implementation:
 
 - name the defense/policy family;
@@ -364,6 +386,11 @@ Do not add another generic contract until this design record identifies the
 concrete executable classes/functions and selected AgentDojo cases.
 
 ### P2 — Implement the smallest executable `F/M` slice
+
+Current partial implementation: the four default-control source-conformance
+cells execute through the real native runtime and public utility scorer.
+Attack/model capture and canonical manifest/validator acceptance are still
+missing, so P2/P3 are not complete and no paid-pilot gate is opened.
 
 Implement one defense family for one attack pair and one default-control pair:
 
@@ -580,3 +607,60 @@ Skills used: ponytail for the minimal shared-boundary fix and graphify for a
 query of the existing project graph. Graphify located the v2 driver, validator,
 and source-oracle paths; live file reads were authoritative over its older line
 locations. No plugin invoked paid compute or external review.
+
+## 15. Continuation update — 10 October 2026
+
+- Date/time (Asia/Saigon): 2026-10-10 00:15.
+- Git base / branch: 66b9ff02e7a44301f69d8753065d0d061262469f / main.
+  The final source/handoff commit follows this observed base; do not try to
+  embed the file's own future commit hash in itself.
+- Files changed: experiments/agentdojo_file_scope_defense.py,
+  experiments/agentdojo_file_scope_preflight.py,
+  experiments/test_agentdojo_file_scope_defense.py,
+  paper/fm_file_scope_design_20261010.md, and PROJECT_STATE.md.
+- Scientific question resolved: a real fail-closed resource guard can retain
+  its frozen policy identity under an explicit nested-resource contract while
+  losing source-task utility; changing only the policy argument decoder restores
+  utility in the four development controls. This resolves implementation and
+  utility-conformance uncertainty, not the primary harmful-effect hypothesis.
+- Verification: focused new tests ran 5 tests in 7.204s, OK. Full discovery
+  after the implementation ran 138 tests in 121.261s, OK, no skips. The standalone
+  source preflight returned F/v0=true, F/v1=false, M/v0=true, M/v1=true, with
+  identical initial-state hashes, matched within-version schemas and expected
+  frozen/migrated policy digests. No model or attack episode was executed.
+- Evidence tier: T1 source conformance only; no new T2/T3/T4 observation.
+- Repository checks: git diff --check and git diff --cached --check passed.
+  Secret-pattern/environment-secret scan of the five changed files found no
+  matches after correcting a token-boundary false positive on the schema name.
+- Claims now supported: concrete TaskFileScope F/M execution at the AgentDojo
+  tool boundary and the stated source-utility contrast. A denial is distinguished
+  from a native tool error and does not dispatch or change typed state.
+- Claims still forbidden: defense efficacy, harmful-effect regression rates,
+  population inference, canonical F/M scored pairs, Q2 readiness. This task does
+  not grant deletion, so the slice cannot expose the main harmful-effect contrast.
+- Spend/calls: zero Runpod jobs, zero Gemini requests, zero paid provider calls.
+  Full regression tests use the existing loopback fake-provider seam only.
+- Review: local self-review recorded in the design document; no independent
+  Teacher/Gemini review. P2 canonical integration and P3 review are incomplete.
+- Skills/plugins: ponytail informed reuse of FunctionsRuntime, ToolsExecutor,
+  canonical hashing and public utility scoring; graphify queried the existing
+  guard/contract graph. Live source was authoritative. No skill installed or
+  external compute/plugin resource changed.
+- Single next priority: integrate this conservative F/M baseline through a
+  prospective capture/manifest/validator amendment with policy migration binding,
+  v0/v1 schema descriptors, nested-argument normalization and per-dispatch denial
+  evidence. Preserve historical v2 name-only controls; verify without paid calls.
+
+Commands (using the pinned Python and encoding from section 11):
+
+~~~powershell
+& $python -B -m unittest experiments.test_agentdojo_file_scope_defense -v
+& $python -B -m experiments.agentdojo_file_scope_preflight --output qa/fm_file_scope_preflight_20261010.json
+& $python -B -m unittest discover -s experiments -p "test_*.py" -q
+git diff --check
+git diff --cached --check
+~~~
+
+The source preflight report is ignored under qa/; it is not a benchmark bundle
+and must not be copied into efficacy tables. Its hashes include implementation
+files; successful post-state hashes can vary due to native append timestamps.
