@@ -55,6 +55,10 @@ class AgentDojoPairedV2ExecutionManifestTests(unittest.TestCase):
             self.assertEqual(binding["outcome"]["endpoint_field"], "utility_success")
             self.assertTrue(binding["trace_normalization_contract"]["raw_trace_must_be_retained"])
             self.assertTrue(binding["trace_normalization_contract"]["canonical_trace_must_be_retained"])
+            self.assertEqual(
+                binding["trace_normalization_contract"]["dispatcher_trace_commitments"],
+                ["raw_function_trace_sha256", "canonical_function_trace_sha256"],
+            )
             self.assertTrue(
                 {"raw_function_trace", "canonical_function_trace", "trace_normalization_witness"}
                 <= set(row["required_driver_evidence"])

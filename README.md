@@ -1,19 +1,54 @@
-# Working candidate: security regression under versioned agent tool contracts
+# Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts
 
 Research repository for a paper on indirect prompt injection and tool misuse.
 The prior *Semantic Mediation Fidelity Under Tool Adapter Drift* direction is
 retained as a component stress artifact, not as a locked novelty claim.
 
-This repository is for building the final scientific paper and its reproducible research artifacts. It intentionally excludes weekly class reports and unrelated course files.
+This repository is for building the final scientific paper and its reproducible research artifacts. It also keeps the minimum course-project deliverables needed if the Q2+ submission gate is not yet met.
 
 The execution, review, and test gates for a Q2-ready manuscript are defined in [ROADMAP.md](ROADMAP.md).
 
+### Optional Gemini method review
+
+Gemini can act as a read-only second reviewer through the Gemini API. Keep the
+key out of Git and out of chat:
+
+```powershell
+$env:GEMINI_API_KEY = "<set locally>"
+python experiments/gemini_reviewer.py --dry-run
+python experiments/gemini_reviewer.py `
+  --files paper/research_protocol.md paper/statistical_analysis_plan.md paper/q2_claim_gate_review.md `
+  --output qa/gemini_method_review.md
+```
+
+The reviewer sends only explicitly selected UTF-8 files (maximum 300 KB),
+uses `GEMINI_REVIEW_MODEL` when set and otherwise requests
+`gemini-3.1-pro-preview`, and writes under the git-ignored `qa/` directory.
+Its output is critique, not empirical evidence and not permission to change the
+fixed research topic. Graphify can independently use the same environment key
+when run with its Gemini backend.
+
+The project has two explicit delivery tiers:
+
+1. **Research tier:** a defensible submission candidate for a Q2+ venue,
+   subject to the literature, live-evidence, statistics, and reproducibility
+   gates below.
+2. **Course tier:** a complete paper and presentation covering the problem,
+   feasibility, related work, background, a partial solution,
+   implementation/evaluation plan, report, and presentation.
+
 ## Current status
 
+Read [`PROJECT_STATE.md`](PROJECT_STATE.md) first when resuming work. The next
+scientific priority is one real frozen defense F and its explicitly migrated
+form M under an authorization-relevant tool-contract change. The current
+U/D0 plus name-only migration is an integration/negative control; a paid pilot
+requires a separate explicit user command after the non-billable review gates.
+
 R1 was reopened on 27 September 2026 after a closest-prior audit. The active
-candidate is **Security Regression Testing of Indirect Prompt-Injection
-Defenses under Versioned Agent Tool Contracts**; it is not locked until the
-literature stop gate in `paper/r1_reopening_20260927.md` passes. The repository
+direction is **Security Regression Testing of Indirect Prompt Injection
+Defenses under Versioned Agent Tool Contracts**, fixed by the user. R1 reviews
+the contribution and prior-work overlap, not permission to change this topic. The repository
 still contains a proposal plus preliminary component-level validation: the
 simulator verifies policy enforcement at a mock tool boundary; it is **not** an
 LLM benchmark and does not establish resistance to prompt injection in a real
@@ -30,20 +65,20 @@ A concise three-paper primary-source synthesis was added on 02 October 2026:
 It applies the literature result to the active scope without treating the
 course-style synthesis as a novelty gate or an LLM evaluation.
 
-The next protocol artifact freezes the missing paired `v0`/`v1` factor rather
-than comparing two post-migration tracks: [`experiments/agentdojo_paired_v0_v1_execution_manifest.py`](experiments/agentdojo_paired_v0_v1_execution_manifest.py)
+The historical protocol artifact freezes the missing paired `v0`/`v1` factor
+rather than comparing two post-migration tracks:
+[`experiments/agentdojo_paired_v0_v1_execution_manifest.py`](experiments/agentdojo_paired_v0_v1_execution_manifest.py)
 and its fixture define six counterbalanced pairs with a required real-carrier
-attack arm and planned
-no-injection arms. [`experiments/agentdojo_paired_result_bundle.py`](experiments/agentdojo_paired_result_bundle.py)
-now fail-closes any future result whose caller-supplied manifest, registry,
-carrier/model/trace evidence is internally inconsistent, and recomputes the
-harmful-effect endpoint independently. Those checks do not themselves prove
-runtime provenance or carrier materialization. The contract also exposes a
-current design defect: the historical manifest does not pin an arm-specific
-no-injection initial state or executable utility oracle, so its benign rows
-are intentionally unscorable. These artifacts perform zero model or tool
-execution and are not benchmark results; a typed-state driver, a versioned
-amendment and a task-scoped D1 policy remain required before any efficacy claim.
+attack arm and planned no-injection arms. It is retained as an audit snapshot.
+The canonical prospective path is now
+[`experiments/agentdojo_paired_v2_result_bundle.py`](experiments/agentdojo_paired_v2_result_bundle.py),
+which fail-closes any future result whose caller-supplied manifest, registry,
+carrier/model/trace evidence is internally inconsistent and recomputes the
+harmful-effect or default-control utility endpoint independently. Those checks
+do not themselves prove runtime provenance or carrier materialization. These
+artifacts perform zero model or tool execution and are not benchmark results;
+the v2 typed-state driver/bridge, a fair D1 policy, and the remaining
+multi-model/held-out gates are still required before any efficacy claim.
 
 The prospective repair for that missing instrument is
 [experiments/agentdojo_v2_no_injecagent_default_control_contract.py](experiments/agentdojo_v2_no_injecagent_default_control_contract.py)
@@ -69,13 +104,57 @@ The next prospective preregistration is
 It fixes twelve unexecuted episodes: three attack pairs and three distinct
 no-InjecAgent default-control utility pairs, each crossed over v0/v1 with a
 balanced order. The manifest binds both contracts and requires raw/canonical
-trace witnesses for default-control v1 records. It is still only a plan: a v2
-result-bundle validator and a provenance-capturing driver are intentionally
-absent, and no model call is authorized.
+trace witnesses for default-control v1 records. The v2 result-bundle validator
+and canonical `experiments/agentdojo_paired_v2_driver.py` now own the
+fixed-denominator orchestration seam and dry-run artifact. The fresh-process
+`experiments/agentdojo_paired_v2_capture_bridge.py` is the only live-capture
+path: it verifies the clean AgentDojo commit/runtime, disables request retries,
+and records typed state, registry/migration, request/response, carrier, and
+trace provenance. Capture mode is hard-limited to one attack pair plus one
+default-control pair (four episodes); the other eight rows remain in the bundle
+as `pilot_pair_not_selected`.
 
-The live Runpod preflight and the no-overclaim, budgeted-pilot stop conditions
-are recorded in [`paper/runpod_budgeted_pilot_gate_20260927.md`](paper/runpod_budgeted_pilot_gate_20260927.md).
-No new billable job was submitted when that gate was recorded.
+The v2 driver is covered by focused offline tests:
+
+```powershell
+python -m unittest experiments.test_agentdojo_paired_v2_driver -v
+python -m unittest experiments.test_agentdojo_paired_v2_capture_bridge -v
+python experiments/agentdojo_paired_v2_driver.py --dry-run `
+  --run-id local-dry-run `
+  --bundle-output tmp/agentdojo_paired_v2_result_bundle.json `
+  --report-output tmp/agentdojo_paired_v2_result_report.json
+```
+
+Accepted v2 pairs are converted to statistics input only through
+`experiments/agentdojo_paired_v2_statistics_adapter.py`. It preserves the
+fixed denominator and `not_scored` reasons, rejects missing source-cluster
+provenance, and never combines attack and default-control endpoints.
+
+Capture mode must run under the pinned AgentDojo environment
+(`tmp/agentdojo-source/.venv31213/Scripts/python.exe`) so the parent validator
+and each fresh child share the contract's CPython 3.12.13/Pydantic 2.11.4
+runtime. The historical state fixtures also bind Windows cp1252 default file
+decoding with Python UTF-8 mode disabled. The child checks this before model
+requests; merely matching package versions is insufficient. Set
+`$env:PYTHONUTF8 = "0"` to reproduce this historical environment and use
+`$env:PYTHONIOENCODING = "utf-8"` for console output. This preserves evidence,
+not a claim that cp1252 is the correct dataset encoding; a UTF-8 migration
+requires a declared dataset/state amendment. It requires an explicit OpenAI-compatible base URL and API-key
+environment variable; capture mode requires `--confirm-billable` even for a
+loopback proxy, because that proxy can submit paid requests. The fake-provider
+integration test uses its own local server without contacting Runpod.
+
+The course-tier manuscript and editable presentation are now canonical
+artifacts: `paper/imrad_manuscript.md`,
+`paper/course_project_checklist.md`, and
+`deliverables/course_presentation_security_regression.pptx`.
+
+The current Runpod preflight and no-overclaim budget gate are recorded in
+[`paper/runpod_budgeted_pilot_gate_20261007.md`](paper/runpod_budgeted_pilot_gate_20261007.md):
+USD 10.00 authorized in this thread, planned as USD 8.00 execution and USD 2.00
+reserve, including prior spending under that authorization. The pasted chat's
+USD 13.00 claim is not authorization and has been corrected. Request/tool caps
+do not provide a provider-enforced dollar ceiling.
 
 ## Repository layout
 
@@ -87,6 +166,9 @@ paper/
   novelty_pivot_memo.md    Closest-prior review and drift-focused pivot
   claim_strategy_review.md Primary metric/RQ/Hypothesis strategy
   research_protocol.md     Threat model, RQs, protocol, and planned evaluation
+  statistical_analysis_plan.md  Locked estimands, paired tests, uncertainty, and stopping rules
+  imrad_manuscript.md      Canonical course/research manuscript draft
+  course_project_checklist.md  Course-tier acceptance checklist
   related_work_matrix.md   R1 novelty and overlap gate
   r1_targeted_literature_audit_20260927.md  Search log and closest-prior screen
   literature_update_20261002.md  Three-paper primary-source scope update
@@ -100,7 +182,11 @@ experiments/
   agentdojo_contract_migration.py  Fail-closed v0-to-v1 name-only registry control
   agentdojo_pilot_execution_plan.py  No-billable, manifest-bound pilot preflight
   agentdojo_paired_v0_v1_execution_manifest.py  Counterbalanced v0/v1 paired preflight
-  agentdojo_paired_result_bundle.py  Fail-closed future-result acceptance and paired transition report
+  agentdojo_paired_result_bundle.py  Historical v1 result-acceptance snapshot
+  agentdojo_paired_v2_execution_manifest.py  Canonical prospective v0/v1 manifest
+  agentdojo_paired_v2_result_bundle.py  Canonical fail-closed v2 result acceptance
+  agentdojo_paired_v2_capture_bridge.py  Fresh-process runtime evidence bridge
+  agentdojo_paired_v2_driver.py  Fixed-denominator driver, pilot gate, and dry-run artifact
   agentdojo_v2_selected_binding_regeneration_audit.py  Retained historical source-regeneration observation
   agentdojo_v2_selected_binding_regeneration_adjudication.py  Fresh-process correction of that observation
   fixtures/agentdojo_paired_v0_v1_execution_manifest_v1.json  Locked 12-episode plan
@@ -283,6 +369,28 @@ standalone trace runner can request
 inject sampling or thinking parameters, so every full run must archive its
 actual serialized request before those parameters are described as locked.
 
+The canonical v2 capture path is separate from the historical smoke runner.
+After the current 7 October 2026 budget gate passes and a local proxy is
+listening, run it from the pinned parent environment:
+
+```powershell
+$agentPy = (Resolve-Path "tmp\agentdojo-source\.venv31213\Scripts\python.exe").Path
+$env:AGENTDOJO_CAPTURE_API_KEY = "local-proxy-only"
+& $agentPy experiments\agentdojo_paired_v2_driver.py `
+  --capture-bridge `
+  --base-url http://127.0.0.1:8765/v1 `
+  --api-key-env AGENTDOJO_CAPTURE_API_KEY `
+  --run-id runpod-v2-pilot-20261007 `
+  --confirm-billable `
+  --bundle-output tmp\agentdojo_paired_v2_capture_bundle.json `
+  --report-output tmp\agentdojo_paired_v2_capture_report.json
+```
+
+Capture mode submits only four episodes and keeps the other eight rows in the
+fixed denominator. A non-loopback base URL is rejected unless
+`--confirm-billable` is supplied. The bridge's local tests use a fake provider
+and never require the Runpod key.
+
 For the pinned independent benchmark, first acquire the exact AgentDojo source
 and lockfile, then run the one-task paired smoke. The Runpod key is injected
 only through the current shell or CI secret; the script never reads a Codex
@@ -297,9 +405,10 @@ python scripts/run_agentdojo_paired_smoke.py --source-root $benchRoot
 The script starts the proxy, runs the same `user_task_0`/`injection_task_0`
 once for baseline and once for the attested adapter, and writes a short
 manifest under `qa/`. The current one-task artifact is a pilot only: both
-tracks completed with 100% utility and 0% injection security, so it is
-evidence of end-to-end execution and a reproducible failure case—not a Q2
-efficacy result.
+tracked target episodes had utility=true and attack_success=false; neither
+proposed or executed the targeted send_email. See the corrected
+`experiments/independent_runs/agentdojo_smoke_summary.json`. This establishes
+integration only and does not measure a defense effect.
 
 Before any new billable feasibility episode, verify the separately committed,
 outcome-blind population artifact. It enumerates 840 carrier-visible

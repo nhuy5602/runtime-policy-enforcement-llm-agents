@@ -6,6 +6,13 @@ Xây dựng manuscript và research artifact **submission-ready** cho một venu
 
 Repository này không lưu báo cáo tuần. Mọi workstream bên dưới chỉ phục vụ manuscript, benchmark và artifact tái lập của bài báo.
 
+Project có hai tầng giao hàng:
+
+1. **Research tier:** submission candidate cho venue/tạp chí Q2+ nếu vượt qua
+   literature, live-evidence, thống kê và reproducibility gates.
+2. **Course tier:** bài báo và bài trình bày hoàn chỉnh theo yêu cầu môn học,
+   kể cả khi research tier chưa đủ bằng chứng để submit.
+
 ## Tiêu chí Q2 ready
 
 Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án phải chứng minh:
@@ -93,6 +100,10 @@ Trước khi coi manuscript sẵn sàng gửi phản biện ngoài, dự án ph�
 
 ### R2 Methods and statistical review
 
+The locked estimands, independent cluster rule, McNemar/bootstrap procedures,
+Holm families, missingness bounds, precision/power gates, and stopping rule are
+specified in [`paper/statistical_analysis_plan.md`](paper/statistical_analysis_plan.md).
+
 **Câu hỏi phản biện:** baseline có công bằng, oracles có độc lập, hypotheses có quyết định rule, sample/CI/statistical test có phù hợp không?
 
 **Pass khi:** policy/test split đã khóa trước, metrics có numerator/denominator, approval outcome được định nghĩa và mọi kết luận định lượng có uncertainty.
@@ -134,12 +145,34 @@ khi chưa có full run, held-out migration và raw redacted traces.
 
 ## Trạng thái hiện tại
 
+Hướng cố định: **Security Regression Testing of Indirect Prompt Injection
+Defenses under Versioned Agent Tool Contracts**. R1 đánh giá đóng góp trong
+hướng này; không cho phép tự đổi đề tài.
+
+Review tiếp nhận chat ngày 07/10: nguồn task-cluster và runtime đã được nối
+manifest → child → validator → statistics; adapter chỉ nhận pair-level verdict
+`scored`, không chỉ hai endpoint hợp lệ riêng lẻ. Môi trường historical còn
+phụ thuộc cp1252/UTF-8 mode, được kiểm tra trước request. Ngân sách được sửa
+về USD 10 tổng theo ủy quyền trong thread. Những mục theo ngày bên dưới là
+lịch sử, không phải xác nhận lại kết quả của chat khác.
+
+Ưu tiên khoa học kế tiếp: thêm phòng thủ F (frozen policy) và M (migrated cùng
+policy) có thực thi, cùng một migration liên quan authorization có nguồn gốc
+rõ. Pilot hiện vẫn là U/D0 không phòng thủ + rename-only: dùng kiểm tra đường
+chạy và negative control. Passing tests hay thiếu API key không quyết định
+tính sẵn sàng cho claim về suy giảm phòng thủ.
+
 - E1: **mở lại**; generic runtime guard và semantic-mediation stress chỉ là baseline/artifact. Xem `paper/r1_reopening_20260927.md`.
 - E2: policy fixture sơ bộ có sẵn; approval lifecycle và episode semantics đã có component test; session/expiry/argument constraint chưa hiện thực.
 - E3: v2 source-qualified selection, effect oracle, paired `v0`/`v1` preflight và result-bundle contract đã khóa 6 paired units/12 planned episodes; contract fail-closed fixed denominator/self-consistency và recompute attack endpoint, nhưng chưa chứng minh runtime provenance/capture và còn phơi bày thiếu arm-specific no-injection state + executable utility oracle. Audit 03/10 từng ghi mismatch pre-state ở cả ba selected binding. Fixture đó được giữ nguyên, nhưng adjudication 05/10 chạy 3 process mới × 3 case trong môi trường có source/runtime provenance được ghi lại (không chứng thực độc lập bước cài dependency/build) và tái tạo đúng tất cả carrier/injection-map/pre-state hash; vì vậy chỉ kết luận mismatch cũ bị **mâu thuẫn bởi bằng chứng mới**, không suy đoán nguyên nhân. Điều này không mở historical v2 plan: trước runtime vẫn cần benign initial state + utility oracle thật, driver bind manifest, reset/trace provenance, baseline công bằng, D1 và các gate khoa học còn lại.
 - E3 bổ sung 06/10: contract prospective [agentdojo_v2_no_injecagent_default_control_contract.py](experiments/agentdojo_v2_no_injecagent_default_control_contract.py) đã pin source/default-map/default-carrier digest và pre-state cho 3 selected case, rồi gọi trực tiếp upstream utility dispatcher với terminal output + typed function trace. Đây là no-InjecAgent default-carrier control, không phải carrier-absent hay benign theo nghĩa ngữ nghĩa: input {} của AgentDojo vẫn merge default carrier content. Ba negative và ba GroundTruthPipeline positive controls đều chỉ là source-only instrument calibration (0 LLM/provider/network/remote job); positive post-state không được freeze vì có biến thiên runtime nên scorer tương lai phải validate typed post-state trực tiếp. V1 historical vẫn bất biến/fail-closed; bước tiếp theo là manifest/result-bundle v2 và driver bind đầy đủ provenance, không phải chạy benchmark.
 - E3 trace compatibility 06/10: trước khi v2 manifest có thể đưa default-control vào paired v0/v1, contract [agentdojo_v2_utility_trace_normalization_contract.py](experiments/agentdojo_v2_utility_trace_normalization_contract.py) đã pin map đảo v1-exposed-name → canonical-v0-name, giữ nguyên arguments và buộc raw/canonical trace digest witness. Sáu controls chỉ rename local GroundTruthPipeline trace để kiểm tra interface với utility scorer; không phải v1 runtime, LLM, carrier hay registry evidence. Manifest/bundle v2 sau đó phải consume witness này, nếu không raw v1 trace sẽ fail-closed.
-- E3 preregistration 06/10: [agentdojo_paired_v2_execution_manifest.py](experiments/agentdojo_paired_v2_execution_manifest.py) đã khóa 6 pair/12 episode prospective (3 attack + 3 no-InjecAgent default-control, mỗi pair v0/v1) và counterbalance 3 v0-first/3 v1-first. Control arm bind exact default pre-state, utility scorer, raw/canonical trace và normalization witness; attack arm vẫn bind effect oracle riêng. Không so sánh chéo attack/control endpoint. Đây chưa phải result bundle hay driver, nên chưa tạo runtime provenance hoặc LLM evidence.
+- E3 preregistration 06/10: [agentdojo_paired_v2_execution_manifest.py](experiments/agentdojo_paired_v2_execution_manifest.py) đã khóa 6 pair/12 episode prospective (3 attack + 3 no-InjecAgent default-control, mỗi pair v0/v1) và counterbalance 3 v0-first/3 v1-first. Control arm bind exact default pre-state, utility scorer, raw/canonical trace và normalization witness; attack arm vẫn bind effect oracle riêng. Không so sánh chéo attack/control endpoint.
+- E3 driver 07/10: [agentdojo_paired_v2_driver.py](experiments/agentdojo_paired_v2_driver.py) đã trở thành entry point canonical cho fixed-denominator orchestration và dry-run. Driver chạy mỗi episode đúng một lần, fail-closed thành `not_run`, không fabricate evidence và không tạo paid request khi capture bridge chưa được cung cấp. Đây vẫn chưa phải runtime provenance hay LLM evidence.
+- Capture bridge 07/10: [experiments/agentdojo_paired_v2_capture_bridge.py](experiments/agentdojo_paired_v2_capture_bridge.py) đã nối manifest v2 với AgentDojo thật qua fresh child process cho từng episode. Bridge pin clean commit/runtime, tắt retry OpenAI, và ghi typed pre/post/reset, carrier/default-control, registry/migration, request/response, raw/canonical trace và redacted provenance. Test local chạy được một attack pair + một default-control pair (4 episode) qua fake OpenAI-compatible server; chưa có Runpod billing.
+- Pilot gate 07/10: [experiments/agentdojo_paired_v2_driver.py](experiments/agentdojo_paired_v2_driver.py) chỉ cho capture mode chạy 1 pair mỗi arm (4 episode), giữ đủ 12-row denominator, dừng provider sau lỗi đầu tiên, và yêu cầu parent/child cùng runtime CPython 3.12.13/Pydantic 2.11.4. Presentation deck và Runpod pilot vẫn chưa được coi là bằng chứng efficacy.
+- R2 statistical plan 07/10: [`paper/statistical_analysis_plan.md`](paper/statistical_analysis_plan.md) now freezes the v2 estimand, pair/source-cluster units, exact McNemar, clustered bootstrap, Holm families, fixed-denominator missingness handling, precision/power gates, and no outcome-based stopping. [`experiments/agentdojo_paired_v2_statistics_adapter.py`](experiments/agentdojo_paired_v2_statistics_adapter.py) now enforces that boundary; it intentionally emits no complete rows until the live driver supplies `source_cluster_id`. The current six-pair design and four-episode pilot remain descriptive by construction.
+- Course fallback 07/10: [paper/imrad_manuscript.md](paper/imrad_manuscript.md) và [paper/course_project_checklist.md](paper/course_project_checklist.md) đã được tạo để tách deliverable môn học khỏi research-tier claims.
 - E4: component prototype có P0/P1/P2, audit/effect oracle sơ bộ; chưa phải complete mediation hoặc integration với tool thật.
 - E5: trace-replay pilot đã đo PDER_schema/AFER_adapter; chưa có full LLM result để trả lời RQ1–RQ5.
 - R1–R3: audit ban đầu đã xác định các thiếu sót cần khắc phục.

@@ -1,10 +1,9 @@
 # IMRaD migration plan and claim freeze
 
-**Status:** editorial plan, not a manuscript and not an empirical result
-**Date:** 2026-09-26
+**Status:** editorial plan; the canonical draft now exists, but it is not an empirical result
+**Date:** 2026-10-07
 **Source dossier:** `paper/q2_ready_report.md`
-**Canonical manuscript target:** `paper/imrad_manuscript.md` (to be created only after the
-full-result freeze)
+**Canonical manuscript:** `paper/imrad_manuscript.md`
 
 ## Editorial decision
 
@@ -177,8 +176,9 @@ Until all gates pass, the manuscript title and abstract must include neither
 ## Migration sequence
 
 1. Freeze `q2_ready_report.md` and current artifacts as a dated dossier.
-2. Create `paper/imrad_manuscript.md` from the section map above; use
-   `DATA_REQUIRED` placeholders instead of invented values.
+2. Keep `paper/imrad_manuscript.md` as the single active draft; use
+   `DATA_REQUIRED` placeholders instead of invented values and replace them
+   only from a frozen result bundle.
 3. Move R1–R3, P1–P2, the 5+3+2 map, and the Q2 scorecard to supplement/internal
    files.
 4. Run the full benchmark and generate one machine-readable result table.

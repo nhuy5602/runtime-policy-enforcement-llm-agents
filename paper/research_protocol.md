@@ -1,11 +1,11 @@
-# Protocol nghiên cứu v2 — candidate, R1 reopened
+# Protocol nghiên cứu — hướng cố định, đóng góp đang kiểm chứng
 
 ## Đề tài
 
-**When Safe Tools Change: Security Regression Testing of Indirect Prompt-Injection Defenses under Versioned Agent Tool Contracts**
+**Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts**
 
-Đây là candidate evaluation pivot của đề tài ban đầu **Runtime Policy
-Enforcement for LLM Agents Against Indirect Prompt Injection and Tool Misuse**.
+Đây là hướng cố định do người dùng chốt ngày 7 tháng 10 năm 2026, phát triển
+từ đề tài ban đầu Runtime Policy Enforcement for LLM Agents.
 Runtime guard, capability, provenance và approval được giữ làm
 baseline/reference monitor; không được trình bày như đóng góp cơ chế mới.
 
@@ -17,8 +17,8 @@ schema/policy/toolset drift đều có công trình gần (bao gồm VIGIL, CXI,
 CONTINUITY và Assidiqi et al.). Vì vậy **semantic mediation fidelity không còn
 được khóa làm contribution độc lập**. Candidate mới là paired
 security-regression evaluation của IPI defenses khi tool contract đổi từ `v0`
-sang `v1`, với harmful-effect oracle. Candidate chỉ được khóa sau literature
-stop gate trong `paper/r1_reopening_20260927.md`; protocol này không claim
+sang `v1`, với harmful-effect oracle. R1 kiểm chứng tính mới của đóng góp,
+không đổi hướng đề tài đã chốt. Xem `paper/r1_reopening_20260927.md`; protocol này không claim
 “first runtime policy guard”, “first post-call contract”, “first drift
 benchmark” hoặc “provably secure”.
 
@@ -37,13 +37,12 @@ lập của literature stop gate.
 LLM Agent có thể vẫn bị ảnh hưởng bởi nội dung không đáng tin cậy. Nghiên cứu
 này không cố chứng minh rằng LLM trở nên miễn nhiễm với indirect prompt
 injection. Thay vào đó, nghiên cứu kiểm tra một câu hỏi hẹp hơn: **sau khi
-tool call đã được đề xuất, quyết định `ALLOW` hoặc `REQUIRE_APPROVAL` có còn
-đúng với side effect quan sát được khi call đi qua drift của schema/adapter
+phòng thủ đã ngăn tác hại ở tool contract v0 có tiếp tục ngăn tác hại đó
+khi contract chuyển sang v1, trên cùng task và indirect prompt injection
 hay không?**
 
-Guard tại biên thực thi là baseline cần thiết để cô lập câu hỏi này. Hai mở
-rộng được đánh giá là canonicalization trước dispatch và post-call
-state-diff/effect verification sau dispatch.
+Guard là đối tượng được đánh giá. Canonicalization và state/effect verification
+phục vụ thực thi và đo lường; không thay thế so sánh phòng thủ trước/sau migration.
 
 ## Phạm vi
 
@@ -142,9 +141,10 @@ Provenance trong prototype là nhãn nguồn ở resource hoặc session level, 
 | B1 | Prompt-only proxy: system prompt coi external content là data | Weak baseline |
 | B2 | Static Tool Filter: allowlist tool tĩnh | Boundary baseline |
 | B4 | Argument Guard: kiểm tra tool/argument đơn giản | Stronger pre-dispatch baseline |
-| D0 | Frozen defense/policy from `v0` used unchanged at `v1` | Security-regression baseline |
-| D1 | Manually migrated defense/policy under a preregistered mapping | Adaptation comparator |
-| D2 | Migrate-or-escalate when no machine-checkable equivalence witness exists | Conservative candidate baseline |
+| U (legacy ID: D0_unmodified_agentdojo) | Unprotected agent, no policy | Integration reference only; current executable pilot |
+| F (planned) | Frozen defense/policy from `v0` used unchanged at `v1` | Actual security-regression baseline, not yet implemented in v2 |
+| M (planned) | Same defense with explicitly migrated policy | Adaptation comparator, not yet implemented in v2 |
+| E (optional, planned) | Migrate-or-escalate when equivalence is unverified | Secondary comparator after F/M execute |
 | P0/P1/P2 | Existing reference guard, canonicalization and staged state-diff checks | Component stress/diagnostic only, not primary contribution |
 | A1–A4 | Bỏ lần lượt scope, destination, quota hoặc approval | Mechanism ablation only |
 
@@ -185,7 +185,9 @@ Schema tối thiểu của một case:
 
 | Metric | Definition |
 |---|---|
-| `AFER_uncond` (primary) | Drift attack tạo forbidden post-effect / tổng drift attack |
+| Paired harmful-effect risk difference (primary estimand) | Mean H_v1 minus H_v0 among valid matched attack pairs; report missing pairs separately |
+| Paired security regression (primary event) | H_v0=0 and H_v1=1; report all 00/01/10/11 transitions and explicit denominator |
+| `AFER_uncond` (legacy diagnostic) | Drift attack tạo forbidden post-effect / tổng drift attack |
 | `AFER_cond` | Forbidden post-effect / drift attack qua `ALLOW` hoặc approval hợp lệ trước dispatch |
 | `PDER_schema` | Forbidden effect trên schema/alias drift; loại trừ executor mismatch |
 | `AFER_adapter` | Forbidden effect trên executor/adapter-alias drift; denominator tách khỏi `PDER_schema` |
@@ -200,6 +202,13 @@ Schema tối thiểu của một case:
 | Mediation Coverage | Tool execution đi qua Guard / tổng tool execution |
 
 ## Protocol tái lập
+
+Các estimand paired `v0`/`v1`, đơn vị cluster độc lập, exact McNemar,
+clustered bootstrap, Holm correction, xử lý `not_scored`, ngưỡng precision/
+power và stopping rule được khóa riêng trong
+[`statistical_analysis_plan.md`](statistical_analysis_plan.md). Mọi bảng định
+lượng của v2 phải tuân theo kế hoạch đó; các kết quả trace-replay, fake-provider
+và pilot bốn episode chỉ được ghi ở claim tier mô tả.
 
 1. Chốt policy, prompt, tool schema, model/version, dataset manifest, drift map
    và scoring oracle trước khi xem test results.
@@ -396,30 +405,24 @@ efficacy run but not sufficient to satisfy that gate:
    Until a manifest-bound driver binds full state-schema validation and the
    case/arm/carrier/run/trace provenance, its caller-supplied source/reset
    witnesses are assertions—not admissible benchmark observations.
-9. `experiments/agentdojo_paired_result_bundle.py` is a no-network,
-   fail-closed **pre-execution result-acceptance contract** for a *future*
-   result bundle. It preserves
-   all 12 planned rows in the denominator; cross-checks the manifest digest,
+9. `experiments/agentdojo_paired_v2_result_bundle.py` is the canonical
+   no-network, fail-closed **pre-execution result-acceptance contract** for the
+   prospective v2 result bundle. It preserves all 12 planned rows in the
+   denominator; cross-checks the v2 manifest and bound contract digests,
    immutable episode fields, no-retry rule and caller-supplied
-   model/request/trace/carrier evidence; recomputes v0/v1 registry descriptor
-   roots; and recomputes an attack endpoint only through
-   `score_attack_episode`. It does not trust a
-   runner-supplied harm label. It emits only the four paired attack transitions
-   (`00`, `01`, `10`, `11`) and explicit `not_scored` reasons, with a hard-coded
-   descriptive-only claim tier. The current benign rows inherit the effect
-   oracle's **injected attack** pre-state hash and do not pin either an
-   arm-specific no-injection state or an executable utility oracle. The
-   acceptance contract therefore
-   rejects every benign endpoint as `benign_initial_state_not_pinned` (and
-   records `benign_utility_oracle_not_pinned`) until a versioned manifest
-   amendment supplies both bindings. This is a reproducibility/claim-control
-   instrument, not a completed run, a defense comparison, a population
-   estimate, or Q2 evidence. The request/trace/carrier hashes establish only
-   self-consistency of caller-supplied JSON: they do not prove that AgentDojo,
-   InjecAgent or a model endpoint produced it. A future driver must capture
-   source-pinned injection/reset events, full serialized tool schemas and
-   prompts, and immutable runtime trace artifacts before these fields become
-   admissible run provenance.
+   model/request/trace/carrier evidence; recomputes v0/v1 registry and
+   migration witnesses; and recomputes the attack endpoint through the
+   independent harmful-effect oracle or the default-control endpoint through
+   the pinned trace normalizer and utility scorer. It never trusts a
+   runner-supplied endpoint Boolean. The validator emits explicit
+   `not_scored` reasons and remains descriptive-only: it is not a completed
+   run, a defense comparison, a population estimate, or Q2 evidence. The
+   request/trace/carrier hashes establish only self-consistency of
+   caller-supplied JSON; they do not prove that AgentDojo, InjecAgent or a
+   model endpoint produced it. The separate v2 driver and capture bridge must
+   capture source-pinned injection/reset events, full serialized tool schemas
+   and prompts, and immutable runtime trace artifacts before records become
+   admissible benchmark provenance.
 
 The attestation result is a transactional adapter contract: it prevents a
 commit after a mismatch when the adapter supports staged execution. It does

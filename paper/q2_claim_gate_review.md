@@ -1,5 +1,11 @@
 # Q2 claim-gate review — 02 October 2026
 
+> **Historical snapshot.** The gate table and reviewer notes below record the
+> repository state audited on 2 October 2026. The dated 7 October addendum at
+> the end supersedes implementation-status statements where the v2 validator,
+> driver, capture bridge, and local seam have since changed; it does not
+> supersede the Q2 efficacy verdict.
+
 ## Verdict
 
 **FAIL / continue work.** The study has a defensible drift-focused research
@@ -246,3 +252,57 @@ no-InjecAgent default-carrier control, then bind an independent monotone
 post-effect/canary oracle; only then run the paired,
 reset-verified model matrix and compute clustered intervals/closest-prior
 comparisons.
+
+## Addendum — 7 October 2026
+
+The dated review above predates the current v2 implementation seam. Since that
+review:
+
+- `agentdojo_paired_v2_result_bundle.py` now validates the attack oracle,
+  default-control utility oracle, raw/canonical trace witness, registry and
+  migration evidence under one fixed twelve-row denominator.
+- `agentdojo_paired_v2_driver.py` is the canonical scheduler. Its capture mode
+  is limited to one pair per arm (four episodes), preserves the other eight
+  rows as `pilot_pair_not_selected`, requires explicit billable confirmation,
+  and stops provider calls after the first bridge failure.
+- `agentdojo_paired_v2_capture_bridge.py` runs each episode in a fresh
+  CPython 3.12.13 child process, disables AgentDojo's automatic request retry,
+  enforces a preregistered limit of 8 model requests and 16 tool dispatches,
+  and captures typed pre/post/reset, carrier/default-control, registry/
+  migration, request/response, and raw/canonical trace provenance. The
+  validator remains fail-closed for multiple model requests until every request
+  is bound, rather than scoring only the first request.
+- `paper/statistical_analysis_plan.md` and
+  `agentdojo_paired_v2_statistics_adapter.py` now lock the estimand,
+  source-cluster rule, McNemar/clustered-bootstrap/Holm procedures,
+  missingness bounds, precision/power gates, and fixed-denominator handoff.
+- The local fake-provider seam completed both one attack pair and one
+  default-control pair; the focused v2 suite passed 31 tests and the full
+  experiment suite passed 123 tests with five optional AgentDojo skips.
+- Runpod preflight on 7 October 2026 was read-only: endpoint
+  `h5ec6v08cb8uc2` had an empty queue and 45 completed/0 failed jobs; its
+  active worker was `THROTTLED`; billing for 1–7 October returned `0`.
+  No billable job was submitted.
+
+The verdict remains **FAIL for Q2 efficacy claims**. The implementation blocker
+has moved from “no capture bridge” to “first provenance-valid remote pilot,
+multi-request/per-dispatch provenance completion, fair baselines,
+multi-model/held-out evaluation, clustered statistics, and clean-room
+reproduction.” The local seam is integration evidence, not an effectiveness
+result.
+
+## Continuation correction — 9 October 2026
+
+`PROJECT_STATE.md` supersedes the dated next-step statements above. The current
+executable configuration is U/D0 with a name-only migration; a remote run of
+that configuration cannot answer the frozen-versus-migrated defense question.
+Specify one defense family F/M and an authorization-relevant contract change,
+then implement and review the smallest non-billable slice before any explicitly
+requested real-LLM pilot. Per-dispatch provenance, fair baselines, model/case
+coverage, statistical gates, and independent reproduction remain open.
+
+The P0 source review found a no-retry violation in the capture bridge: replacing
+AgentDojo's request helper did not disable the OpenAI SDK's own retry policy. A
+loopback HTTP 503 regression check observed three attempts before the fix and
+one attempt after setting `max_retries=0`. This validates request-budget
+instrumentation only. It adds no defense, model-efficacy, or population evidence.
