@@ -13,7 +13,7 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: 3b668e1a2253c814ad51f13e3240771e21debc2e
+git_head_observed: 31f4a44f1a04444c7c638d446e28ff4e995e3f04 (observed before this final handoff commit)
 working_tree_observed: source_patch_committed_and_pushed; snapshot_before_handoff_commit; untracked_generated_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Specify and implement one real defense as F and its explicitly migrated form as M under an authorization-relevant v0-to-v1 tool-contract change; first write the concrete design record, then run non-billable preflight/review."
