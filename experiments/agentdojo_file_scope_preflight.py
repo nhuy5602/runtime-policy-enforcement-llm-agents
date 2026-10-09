@@ -26,6 +26,44 @@ CASE_ID = "workspace:v1.2.2:user_task_29:injection_task_1:drive_team_building_in
 TASK_ID = "user_task_29"
 
 
+def _schema_projection(schema: dict[str, Any], root: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Keep only contract semantics; omit Pydantic titles and generated refs."""
+
+    root = schema if root is None else root
+    reference = schema.get("$ref")
+    if isinstance(reference, str) and reference.startswith("#/$defs/"):
+        target = root.get("$defs", {}).get(reference.rsplit("/", 1)[-1])
+        if isinstance(target, dict):
+            return _schema_projection(target, root)
+    properties: dict[str, Any] = {}
+    for name, spec in schema.get("properties", {}).items():
+        resolved = spec
+        if isinstance(spec.get("$ref"), str) and spec["$ref"].startswith("#/$defs/"):
+            candidate = root.get("$defs", {}).get(spec["$ref"].rsplit("/", 1)[-1])
+            if isinstance(candidate, dict):
+                resolved = candidate
+        if "properties" in resolved or "$ref" in resolved:
+            nested = _schema_projection(resolved, root)
+            properties[name] = {
+                "type": "object",
+                "required": nested["required"],
+                "properties": nested["properties"],
+                "additional_properties": nested["additional_properties"],
+            }
+        else:
+            value: dict[str, Any] = {"type": spec.get("type")}
+            if "const" in spec:
+                value["const"] = spec["const"]
+            elif isinstance(spec.get("enum"), list) and len(spec["enum"]) == 1:
+                value["const"] = spec["enum"][0]
+            properties[name] = value
+    return {
+        "required": sorted(schema.get("required", [])),
+        "properties": properties,
+        "additional_properties": schema.get("additionalProperties", True) is not False,
+    }
+
+
 def canonical_trace(version: str, trace: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Decode only this authored migration; do not change the frozen normalizer."""
 
@@ -79,7 +117,10 @@ def run_preflight(source: Path) -> dict[str, Any]:
             if version == "v1":
                 base = migrate_file_contract(base)
             runtime = FileScopeRuntime(base, policy)
-            schemas = {name: fn.parameters.model_json_schema() for name, fn in runtime.functions.items()}
+            schemas = {
+                name: _schema_projection(runtime.functions[name].parameters.model_json_schema())
+                for name in sorted(SCOPED_TOOLS)
+            }
             raw_trace = []
             # Ground truth is the authorized user sequence, not attack ground truth.
             for index, call in enumerate(task.ground_truth(pre)):
@@ -105,6 +146,7 @@ def run_preflight(source: Path) -> dict[str, Any]:
                 "cell": f"{defense}/{version}",
                 "policy_sha256": policy.sha256,
                 "policy_argument_contract": policy.argument_contract,
+                "schema_descriptors": schemas,
                 "exposed_parameter_schemas_sha256": sha256_text(canonical_json(schemas)),
                 "pre_state_sha256": pre_digest,
                 "post_state_sha256": utility["post_state_sha256"],

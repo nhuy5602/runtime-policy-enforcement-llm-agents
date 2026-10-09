@@ -13,8 +13,8 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: 66b9ff02e7a44301f69d8753065d0d061262469f (base before the 2026-10-10 source and handoff commit)
-working_tree_observed: attributable_FM_source_patch_pending; preexisting_untracked_generated_areas_retained
+git_head_observed: 8144be696869bcb1c7e61ed059056ffb252bafc4 (base before the amendment commit)
+working_tree_observed: attributable_FM_amendment_pending; generated_report_cleaned; preexisting_untracked_areas_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
 next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
 ```
@@ -165,6 +165,7 @@ Analysis boundary:
   attack and default-control outcomes separate.
 - A read-only Gemini reviewer exists for methodological critique. Its output is
   review material, never empirical evidence.
+- A prospective TaskFileScope amendment and fail-closed source-preflight validator bind policy hashes, v0/v1 schema descriptors, argument normalization, and per-dispatch denial state evidence without changing historical v2.
 
 ### 5.2 Verification already observed on the current local patch
 
@@ -289,13 +290,15 @@ Generated or local-only areas that normally must not be committed as source:
 
 ## 8. Git state refreshed 10 October 2026
 
-Observed base HEAD: 66b9ff02e7a44301f69d8753065d0d061262469f on main,
-matching origin/main at session start. The tracked working tree was clean.
-New attributable files this session are the defense, source preflight, tests,
-and design record named in section 15; PROJECT_STATE.md is updated with them.
-Preexisting deliverables/, graphify-out/, and tmp/ remain untracked local areas;
-qa/ remains ignored. No generated directory is part of the source patch.
-The AgentDojo source checkout remains clean at
+Observed base HEAD: 8144be696869bcb1c7e61ed059056ffb252bafc4 on main,
+matching origin/main before this amendment. The tracked working tree contains
+only attributable amendment changes: the defense/preflight state-hash and
+schema-projection edits, the amendment module and fixture, its tests, the
+design addendum, and this handoff update. Generated preflight QA output was
+deleted after verification. Preexisting deliverables/, graphify-out/, and tmp/
+remain untracked local areas; tmp is retained because it contains the pinned
+runtime. No generated directory is part of the source patch. The AgentDojo
+source checkout remains clean at
 089ed468cf3ed0322acc66b0211f26d9d90dbf60.
 
 ### Historical pre-freeze snapshot (superseded)
@@ -664,3 +667,18 @@ git diff --cached --check
 The source preflight report is ignored under qa/; it is not a benchmark bundle
 and must not be copied into efficacy tables. Its hashes include implementation
 files; successful post-state hashes can vary due to native append timestamps.
+
+## 16. Continuation update ? 10 October 2026
+
+Date/time (Asia/Saigon): 2026-10-10 03:05.
+Git base / branch: 8144be696869bcb1c7e61ed059056ffb252bafc4 / main before the amendment commit.
+Files changed: TaskFileScope runtime/preflight now record per-dispatch pre/post state hashes and canonical schema projections; new agentdojo_file_scope_amendment.py, its fixture, test module, and design addendum bind the prospective F/M evidence contract; temporary qa/fm_file_scope_preflight_20261010.json was deleted after verification.
+Scientific question resolved: the conservative F/M slice is now bound by a separate prospective manifest/validator. F remains the same policy hash across v0/v1; M changes only the explicit argument contract at v1. The validator accepts the four source cells only when policy/schema/normalization identities and denial state invariants match.
+Verification command and exact result: amendment CLI accepted the source preflight with utility sequence [true, false, true, true] and T1_source_conformance_only. Focused amendment + defense tests: 9 tests, 51.588s, OK; corrected isolation test: 4 amendment tests, 35.981s, OK; full discovery after correction: 142 tests, 396.843s, OK. A prior full-suite attempt failed because the amendment test ran preflight in the shared process; the test now uses the pinned subprocess and the final full suite passed. git diff --check passed before staging.
+Evidence tier reached: T1 source conformance/amendment validation only; still no model or attack episode.
+Claims now supported: prospective F/M policy identity, schema descriptors, nested argument normalization, and per-dispatch denial state evidence are fail-closed and tamper-tested.
+Claims still forbidden: canonical v2 F/M efficacy, harmful-effect regression, population inference, Q2 readiness, and any paid-pilot conclusion.
+Runpod/Gemini/API spend or calls: zero Runpod jobs, zero Gemini requests, zero paid provider calls. The only runtime calls were local pinned source controls and test subprocesses.
+Cleanup: removed the generated qa/fm_file_scope_preflight_20261010.json report. Retained tmp pinned runtime, graphify-out knowledge graph, and deliverables course artifacts.
+Teacher verdict: local self-review only; the conservative task still cannot expose harmful-effect regression, and canonical capture/manifest integration plus independent review remain open. No login or user interaction was required.
+Single next priority: add the amendment-specific capture adapter hook to the fresh child, then run a non-billable fake-provider integration that proves F/M model tool calls are transformed, guarded, and fail closed without altering historical v2 controls.

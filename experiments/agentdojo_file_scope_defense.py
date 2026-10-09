@@ -162,6 +162,17 @@ class FileScopeRuntime:
             return "file_not_granted_or_policy_not_migrated"
         return None
 
+    @staticmethod
+    def _state_hash(env: Any) -> str | None:
+        """Hash typed state when available; denial evidence remains explicit."""
+
+        if env is None or not hasattr(env, "model_dump"):
+            return None
+        try:
+            return sha256_text(canonical_json(env.model_dump(mode="json")))
+        except (TypeError, ValueError):
+            return None
+
     def run_function(
         self, env: Any, function: str, kwargs: Mapping[str, Any], raise_on_error: bool = False
     ) -> tuple[Any, str | None]:
@@ -169,6 +180,7 @@ class FileScopeRuntime:
             raise TypeError("function name must be a string")
         arguments = copy.deepcopy(dict(kwargs)) if isinstance(kwargs, Mapping) else None
         reason = "invalid_arguments" if arguments is None else self._authorize(function, arguments)
+        pre_state_sha256 = self._state_hash(env)
         try:
             digest = sha256_text(canonical_json(arguments)) if arguments is not None else None
         except (TypeError, ValueError, RecursionError):
@@ -178,6 +190,7 @@ class FileScopeRuntime:
             "policy_sha256": self.policy.sha256, "arguments_sha256": digest,
             "decision": "DENY" if reason else "ALLOW", "reason": reason,
             "dispatched": reason is None, "tool_error": False,
+            "pre_state_sha256": pre_state_sha256, "post_state_sha256": pre_state_sha256,
         }
         self._events.append(event)
         if reason:
@@ -186,6 +199,8 @@ class FileScopeRuntime:
             result, error = self._base.run_function(env, function, arguments, raise_on_error=raise_on_error)
         except Exception:
             event["tool_error"] = True
+            event["post_state_sha256"] = self._state_hash(env)
             raise
         event["tool_error"] = error is not None
+        event["post_state_sha256"] = self._state_hash(env)
         return result, error

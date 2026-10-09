@@ -137,3 +137,21 @@ v0/v1 schema descriptors, nested-argument normalization, denial-versus-tool-erro
 classification, and per-dispatch evidence. The historical equal-schema-root
 rule must remain intact for its name-only control. A main-study harmful-effect
 treatment remains a separate unmet scientific requirement.
+
+## Amendment and validator, 10 October 2026
+
+The prospective binding now exists in
+experiments/agentdojo_file_scope_amendment.py and
+experiments/fixtures/agentdojo_file_scope_amendment_v1.json. It is separate
+from the historical v2 manifest. The amendment freezes the TaskFileScope F and
+M policy hashes, v0/v1 schema descriptor projections, the explicit nested
+resource-to-v0 normalization map, four cell identities, and required
+per-dispatch evidence. validate_preflight_report accepts only the four
+source-control cells with one reset hash, matching policy/schema identities,
+and dispatch events whose denial state hash is unchanged.
+
+The validator rejected tampered schema hashes, policy hashes, post-state hashes,
+and a denial changed to dispatched=true in tests. It accepts only
+T1_source_conformance_only; it cannot turn this conservative no-deletion task
+into a harmful-effect observation or bypass the historical v2 validator's
+equal-schema/name-only rules.
