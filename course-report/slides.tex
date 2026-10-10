@@ -1,0 +1,123 @@
+% !TeX program = xelatex
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmonofont{lmmono10-regular.otf}
+\usepackage{booktabs}
+\usetheme{default}
+\definecolor{ink}{HTML}{183B4E}
+\setbeamercolor{structure}{fg=ink}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamersize{text margin left=10mm,text margin right=10mm}
+\title{Kiểm thử hồi quy an ninh\ khi hợp đồng công cụ thay đổi}
+\subtitle{Phòng thủ prompt injection gián tiếp cho LLM agent}
+\author{Nguyễn Thùy Dương \and Đặng Ngọc Huy \and Vũ Hồng Quang}
+\institute{Nhóm 11 • Chính sách quản trị an ninh mạng}
+\date{10 tháng 10 năm 2026}
+\begin{document}
+\begin{frame}\titlepage
+\note{Mở đầu: đây là báo cáo phần giải pháp đã triển khai. Nêu câu hỏi về ảnh hưởng của thay đổi hợp đồng công cụ, không tuyên bố đã chứng minh hiệu quả phòng thủ trên LLM thật.}
+\end{frame}
+\begin{frame}{Vấn đề cần giải quyết}
+\begin{itemize}
+\item Agent đọc nội dung không tin cậy rồi đề xuất lời gọi công cụ.
+\item Policy kiểm tra quyền; công cụ có thể sửa tệp, gửi thư hoặc tạo lịch.
+\item Khi contract đổi, policy cũ có thể hiểu sai hoặc từ chối tham số mới.
+\end{itemize}
+\vfill
+\textbf{Câu hỏi:} phòng thủ có giữ an toàn và hoàn thành nhiệm vụ sau migration?
+\note{Nguồn nền tảng: Greshake et al., arXiv:2302.12173; AgentDojo, NeurIPS 2024. Đọc chỉ dẫn trong tài liệu không đồng nghĩa được cấp quyền thực hiện.}
+\end{frame}
+\begin{frame}{Nền tảng cần phân biệt}
+\begin{description}
+\item[Contract] Tên công cụ, schema, mặc định, scope và ý nghĩa tác động.
+\item[Guard] Quyết định ALLOW/DENY trước native dispatch.
+\item[Oracle] Chấm trạng thái sau thực thi, độc lập với verdict của guard.
+\item[Utility] Mức hoàn thành nhiệm vụ hợp lệ; chặn mọi thứ không đủ.
+\end{description}
+\note{Fail closed là từ chối khi không diễn giải được quyền. Đây có thể là lựa chọn an toàn nhưng làm mất utility.}
+\end{frame}
+\begin{frame}{Nghiên cứu liên quan}
+\begin{itemize}
+\item \textbf{AgentDojo}: môi trường stateful, đo security và utility.
+\item \textbf{InjecAgent}: đánh giá prompt injection gián tiếp.
+\item \textbf{CaMeL}: tách dữ liệu và luồng điều khiển, kiểm tra capability.
+\item \textbf{Progent}: kiểm soát đặc quyền qua policy.
+\end{itemize}
+\vfill
+Nhóm tập trung vào \textbf{đo hồi quy theo phiên bản}, không nhận guard là nguyên lý mới.
+\note{Nguồn: Debenedetti et al., AgentDojo (2024); Zhan et al., doi:10.18653/v1/2024.findings-acl.624; CaMeL, arXiv:2503.18813; Progent, arXiv:2504.11703. Danh mục đầy đủ trong báo cáo.}
+\end{frame}
+\begin{frame}{Thiết kế kiểm thử theo cặp}
+\begin{itemize}
+\item Cố định task, carrier, model và trạng thái ban đầu.
+\item Thay contract $v0 \rightarrow v1$; giữ hoặc chuyển đổi policy.
+\item An ninh: quan sát harmful effect $H$; hồi quy là $0\rightarrow1$.
+\item Utility: quan sát $U$; suy giảm là $1\rightarrow0$.
+\item Giữ các bản ghi thiếu bằng chứng là \texttt{not\_scored}.
+\end{itemize}
+\note{Phân biệt hai chiều chuyển tiếp. Số test không phải số quan sát độc lập. Không gộp attack/control thành cùng endpoint. Nguồn: research_protocol.md và statistical_analysis_plan.md.}
+\end{frame}
+\begin{frame}{Phần giải pháp TaskFileScope}
+\begin{itemize}
+\item Nhiệm vụ: đọc và bổ sung hoạt động vào đúng file ID 3.
+\item Guard chỉ cấp quyền tìm tên tệp, đọc và append theo scope.
+\item $v0$: tham số \texttt{file\_id}.
+\item $v1$: \texttt{resource = \{space, file\_id\}}.
+\item F giữ decoder cũ; M chuyển decoder sang $v1$, giữ nguyên quyền.
+\end{itemize}
+\note{Nguồn: agentdojo_file_scope_defense.py, fm_file_scope_design_20261010.md. Không có quyền xóa. Không gọi lát cắt này là bằng chứng harmful-effect regression.}
+\end{frame}
+\begin{frame}{Luồng thực thi và bằng chứng}
+\begin{enumerate}
+\item Manifest khóa cấu hình và định danh nhiệm vụ.
+\item Agent đề xuất lời gọi; guard kiểm tra trước executor.
+\item Ghi policy, tham số, decision, dispatch và state trước/sau.
+\item Chuẩn hóa trace rồi gọi oracle độc lập.
+\item Validator kiểm tra bằng chứng; thiếu dữ liệu giữ nguyên trong mẫu.
+\end{enumerate}
+\note{Hash chỉ kiểm tra nhất quán; không phải chữ ký chứng thực provider. Giải thích denial bình thường khác native tool error.}
+\end{frame}
+\begin{frame}{Kết quả kiểm tra nguồn}
+\centering
+\begin{tabular}{l@{\hspace{12pt}}l@{\hspace{12pt}}l@{\hspace{12pt}}l}
+\toprule
+Cấu hình & Contract & Decoder & Utility \\
+\midrule
+F & $v0$ & $v0$ & Thành công \\
+F & $v1$ & $v0$ & Không thành công \\
+M & $v0$ & $v0$ & Thành công \\
+M & $v1$ & $v1$ & Thành công \\
+\bottomrule
+\end{tabular}
+\vfill
+\raggedright
+Chuỗi thao tác xác định qua ToolsExecutor và scorer upstream.\par
+\textbf{Không phải kết quả hành vi LLM thật.}
+\note{Nguồn: source preflight ngày 10/10 và PROJECT_STATE mục 15. F/v1 từ chối vì không hiểu cấu trúc resource. Không tính ASR hoặc khoảng tin cậy từ bảng này.}
+\end{frame}
+\begin{frame}{Đánh giá tiếp theo và hạn chế}
+\begin{itemize}
+\item Fake provider đã kiểm tra được đường chạy trong fresh child.
+\item Một task và migration tự thiết kế chưa đủ để suy rộng.
+\item Task không cấp quyền xóa: chưa bộc lộ harmful-effect contrast.
+\item Tiếp theo: hoàn thiện evidence binding, review, rồi chạy LLM thật.
+\end{itemize}
+\note{Nguồn: PROJECT_STATE mục 18. T2 chỉ xác nhận plumbing. Giữ fixed denominator và không thay trường hợp sau khi xem kết quả.}
+\end{frame}
+\begin{frame}{Kết luận}
+\begin{itemize}
+\item Đã xác định vấn đề khi hợp đồng công cụ thay đổi.
+\item Đã hiện thực guard theo task và migration policy cụ thể.
+\item Utility mất ở F/v1 và được giữ ở M/v1 trong kiểm tra nguồn.
+\item Hiệu quả trước prompt injection trên mô hình thật còn phải đánh giá.
+\end{itemize}
+\vfill
+\textbf{Thảo luận:} làm sao giữ quyền đúng khi cấu trúc tài nguyên thay đổi?
+\note{Kết luận theo phạm vi học phần: nền tảng, thiết kế, một phần giải pháp và cách đánh giá. Không tự nhận có tính mới hoặc bài báo Q2-ready.}
+\end{frame}
+\end{document}

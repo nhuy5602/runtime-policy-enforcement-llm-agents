@@ -1,0 +1,8 @@
+\section{Nghiên cứu liên quan}
+AgentDojo cung cấp môi trường có trạng thái để đánh giá agent trước prompt injection và kiểm tra cả security lẫn utility \cite{debenedetti2024}. Nhóm dùng môi trường này làm nguồn tác vụ và công cụ. Việc gọi thành công một công cụ giả lập chỉ xác nhận tích hợp; đánh giá agent cần hành động thực sự do mô hình sinh ra.
+
+InjecAgent nghiên cứu prompt injection gián tiếp trong agent tích hợp công cụ \cite{zhan2024}. Công trình này giúp phân biệt nội dung mang chỉ dẫn tấn công với hành động đầu ra của agent. Báo cáo không gộp một chuỗi lời gọi được viết sẵn với một episode có mô hình đọc carrier và tự quyết định.
+
+CaMeL tổ chức tách biệt dữ liệu không tin cậy và luồng điều khiển, kết hợp kiểm tra capability \cite{debenedetti2025}. Progent đặt trọng tâm vào kiểm soát đặc quyền thông qua policy \cite{shi2025}. Vì các ý tưởng kiểm soát quyền và runtime enforcement đã được nghiên cứu, TaskFileScope trong báo cáo là thành phần tham chiếu để kiểm thử, không phải tuyên bố sáng tạo một nguyên lý bảo vệ mới.
+
+Điểm tập trung của đề tài là đo sự thay đổi của cùng phòng thủ dưới hai hợp đồng công cụ. Đây là một câu hỏi đánh giá có thể kiểm chứng. Tổng hợp trên chỉ là lựa chọn công trình gần, không phải tổng quan hệ thống đầy đủ và chưa đủ để khẳng định tính mới của đóng góp nghiên cứu.

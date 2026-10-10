@@ -1,0 +1,39 @@
+\section{Triển khai và phương án đánh giá}
+\subsection{Môi trường và tổ chức artifact}
+Mã nguồn triển khai bằng Python, dùng AgentDojo Workspace v1.2.2 tại commit \texttt{089ed468cf3e}. Môi trường tái lập lịch sử khóa CPython 3.12.13, Pydantic 2.11.4 và PyYAML 6.0.2. Các fixture trạng thái còn phụ thuộc encoding mặc định cp1252 trên Windows với Python UTF-8 mode tắt. Đây là ràng buộc tái lập của dữ liệu hiện có, không phải khuyến nghị dùng cp1252 cho dữ liệu mới.
+
+Guard và adapter migration nằm trong module TaskFileScope; source preflight chạy chuỗi thao tác được cấp quyền qua ToolsExecutor. Manifest và result validator v2 giữ riêng đường kiểm tra đổi tên lịch sử. Amendment TaskFileScope bổ sung schema resource; report acceptance mới đang được củng cố và chưa được xem là kết quả nghiên cứu hoàn chỉnh.
+
+\subsection{Kết quả kiểm chứng thành phần}
+Bảng~\ref{tab:utility} ghi kết quả source-conformance đã quan sát. Đầu vào là chuỗi thao tác xác định cho nhiệm vụ người dùng, không phải hành động do LLM thật sinh ra. Mỗi ô bắt đầu từ cùng trạng thái nguồn được reset và utility do scorer upstream tính.
+\begin{table}[htbp]
+\caption{Utility trong bốn kiểm tra nguồn của TaskFileScope}
+\label{tab:utility}
+\centering
+\begin{tabular}{l@{\hspace{10pt}}l@{\hspace{10pt}}l@{\hspace{10pt}}l}
+\toprule
+Cấu hình & Contract & Policy decoder & Utility \\
+\midrule
+F & $v0$ & $v0$ & Thành công \\
+F & $v1$ & $v0$ & Không thành công \\
+M & $v0$ & $v0$ & Thành công \\
+M & $v1$ & $v1$ & Thành công \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+F/$v1$ không hiểu đường dẫn resource mới nên từ chối append. M/$v1$ diễn giải đúng resource và cho phép append vào file được cấp quyền. Kết quả phù hợp với dự đoán về mất utility khi đóng băng policy. Nó không chứng minh có hồi quy an ninh: nhiệm vụ này không cấp quyền xóa ở bất kỳ phiên bản nào, nên lát cắt chưa phân biệt được giả thuyết harmful-effect chính.
+
+Kiểm tra tích hợp với server giả tương thích OpenAI đã chạy lời gọi tìm kiếm và append qua tiến trình capture mới: F/$v1$ giữ nguyên trạng thái khi từ chối; M/$v1$ làm thay đổi trạng thái sau append. Đây là bằng chứng đường chạy và thu thập dữ liệu. Server giả không thể chứng minh mô hình chống được prompt injection.
+
+Bộ regression ở snapshot \texttt{e678ea2} ghi nhận 144 test thành công, không failure hoặc skip. Con số này áp dụng cho snapshot đó; không chứng nhận các thay đổi nghiên cứu đang làm dở sau snapshot. Các test gồm kiểm tra metadata, trace, reset, thiếu bằng chứng và request retry. Báo cáo không dùng số test làm thước đo hiệu quả bảo mật.
+
+\subsection{Tái lập và tiêu chí nghiệm thu}
+Trong môi trường pinned của repository, kiểm tra nguồn chạy bằng module source preflight của TaskFileScope; kiểm tra tích hợp nằm trong bộ test amendment cùng tên. Hướng dẫn đi kèm bộ LaTeX ghi đường dẫn và lệnh PowerShell đầy đủ. Biên dịch báo cáo không cần môi trường AgentDojo hoặc khóa API.
+
+Nghiệm thu thành phần yêu cầu: lời gọi ngoài quyền không tới native executor; denial không đổi typed state; policy F không tự đổi theo contract; M chỉ thay decoder đã khai báo; utility được tính độc lập. Thất bại provider, lỗi reset hoặc thiếu trace phải được giữ trong mẫu dự kiến, không được xóa để làm đẹp kết quả.
+
+\subsection{Thiết kế thực nghiệm tiếp theo}
+Giai đoạn nghiên cứu cần bổ sung một treatment có khả năng bộc lộ thay đổi quyền tạo tác động có hại, không làm yếu F chỉ để tạo kết quả mong muốn. Với mỗi case, giữ cùng model snapshot, task, carrier và reset; chạy cả $v0$ và $v1$ cho F/M. Tách riêng attack endpoint và default-control utility; lưu đủ bốn chuyển tiếp và nguyên nhân không chấm được.
+
+Khi có đủ dữ liệu, báo cáo chênh lệch rủi ro theo cặp, khoảng tin cậy bootstrap theo nhiệm vụ nguồn và McNemar trong điều kiện độc lập thích hợp. Kế hoạch nghiên cứu dự kiến ít nhất ba model snapshots, kiểm tra carrier giữ lại và tái lập độc lập. Chưa có bộ dữ liệu đáp ứng các cổng đó trong kết quả của báo cáo này.

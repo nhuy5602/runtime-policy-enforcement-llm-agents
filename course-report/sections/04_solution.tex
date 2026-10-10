@@ -1,0 +1,20 @@
+\section{Giải pháp và phần đã hiện thực}
+\subsection{Kiến trúc và luồng thực thi}
+Đầu vào tin cậy gồm yêu cầu người dùng, policy theo nhiệm vụ, phiên bản hợp đồng và manifest thí nghiệm. Agent nhận dữ liệu công cụ và đề xuất hành động. Dispatcher đưa hành động qua guard; chỉ hành động được cho phép mới đi tới executor. Mỗi lần gọi ghi lại định danh policy, digest tham số, quyết định, trạng thái dispatch và hash trạng thái trước/sau. Cuối episode, oracle độc lập chấm utility hoặc tác động có hại từ bằng chứng đã lưu.
+
+Manifest cố định các trường hợp dự kiến trước khi chạy. Capture bridge tạo tiến trình mới để giảm rò rỉ trạng thái giữa các episode, ghi phiên bản runtime và các request/response. Validator kiểm tra bằng chứng; statistics adapter chỉ nhận cặp hợp lệ. Hash hỗ trợ phát hiện thay đổi và kiểm tra nhất quán; hash không chứng thực rằng một nhà cung cấp thực sự đã tạo phản hồi đó.
+
+\subsection{TaskFileScope và chuyển đổi policy}
+Lát cắt triển khai sử dụng nhiệm vụ \texttt{user\_task\_29} trong Workspace: đọc tệp hoạt động nhóm và bổ sung hoạt động vào tệp đó. Policy tin cậy chỉ cấp quyền tìm theo tên tệp đã định, đọc file ID 3 và append file ID 3. Mọi công cụ khác bị từ chối. Policy không lấy quyền từ nội dung tài liệu, nhãn tấn công hoặc verdict của model.
+
+Trong $v0$, công cụ đọc và append dùng trường \texttt{file\_id} ở cấp cao nhất. Trong $v1$, cùng công cụ nhận \texttt{resource} gồm \texttt{space} và \texttt{file\_id}; giá trị space bắt buộc là \texttt{cloud\_drive}. Adapter kiểm tra cấu trúc rồi chuyển về tham số native tương ứng. Không có fallback tự động về trường cũ.
+
+Hai cấu hình thuộc cùng họ phòng thủ. F giữ nguyên policy $v0$ ở cả hai phiên bản. M dùng policy $v0$ ở $v0$ và chỉ đổi bộ đọc tham số sang hợp đồng $v1$ ở $v1$. Các quyền trên công cụ và tài nguyên không đổi. Trong một phiên bản, F và M nhìn thấy cùng schema công cụ.
+
+\subsection{Quy tắc xử lý và bằng chứng}
+Guard từ chối công cụ ngoài quyền, tham số thừa, kiểu sai, scope sai hoặc file khác. DENY là phản hồi policy bình thường; native tool không được gọi. Lỗi do native tool vẫn giữ là lỗi thực thi. Đối với denial có typed state, hash trước/sau phải bằng nhau. Trace gốc được giữ để biết agent đã đề xuất gì; trace canonical chuẩn hóa tham số để scorer upstream đọc được.
+
+Tìm kiếm theo tên vẫn dùng ngữ nghĩa substring của AgentDojo. Vì vậy guard này không phải cơ chế bảo mật đọc dữ liệu cho toàn hệ thống. Nó cũng không bảo vệ khỏi mã Python độc hại có thể truy cập trực tiếp callable trong tiến trình.
+
+\subsection{Liên hệ với quản trị an ninh mạng}
+Một thay đổi schema cần được quản trị như thay đổi policy: có người chịu trách nhiệm rà quyền, kiểm thử trước triển khai và lưu bằng chứng phiên bản. Nếu policy chưa được chuyển đổi, từ chối có kiểm soát là lựa chọn rõ ràng hơn việc tự suy đoán ý nghĩa. Tuy nhiên tổ chức cũng cần theo dõi tác vụ hợp lệ bị chặn, vì chặn tất cả công cụ sẽ không đáp ứng mục tiêu vận hành.

@@ -1,0 +1,19 @@
+\section{Kiến thức nền tảng}
+\subsection{Hợp đồng công cụ và quyền theo nhiệm vụ}
+Hợp đồng công cụ gồm tên thao tác, schema tham số, giá trị mặc định, phạm vi tài nguyên và ý nghĩa tác động. Đổi tên đơn thuần có thể giữ nguyên ý nghĩa; đổi cách biểu diễn tài nguyên hoặc đích nhận có thể làm thay đổi đầu vào của kiểm tra quyền. Báo cáo phân biệt hai loại này để tránh gọi mọi thay đổi giao diện là hồi quy an ninh.
+
+Nguyên tắc quyền tối thiểu cấp cho agent chỉ những thao tác cần thiết để hoàn thành nhiệm vụ. Một capability có thể ràng buộc loại thao tác, tài nguyên, đích nhận, thời hạn và số lần gọi. Bản triển khai trong báo cáo chỉ hiện thực phần công cụ và tài nguyên cho một nhiệm vụ; thời hạn, quota và phê duyệt là các hướng mở rộng, không phải tính năng đã kiểm chứng.
+
+\subsection{Kiểm soát trước thực thi và đo lường sau thực thi}
+Guard kiểm tra lời gọi trước khi chuyển tới executor. Quyết định ALLOW cho phép gửi lời gọi xuống công cụ; DENY trả về phản hồi policy và không thực thi công cụ. Khi không đọc được cấu trúc quyền, guard chọn từ chối, gọi là \emph{fail closed}. Cách xử lý này có thể giữ an toàn nhưng gây mất utility.
+
+Oracle là hàm chấm điểm độc lập. Oracle an ninh đọc trạng thái trước và sau để xác định tác động bị cấm; oracle utility kiểm tra nhiệm vụ có hoàn thành hay không. ALLOW không chứng minh tác vụ thành công, và DENY không tự chứng minh không có tác động. Một lỗi công cụ cũng không thể được xem là thành công bảo mật. Vì vậy phải ghi riêng lỗi thực thi, quyết định policy và kết quả oracle.
+
+\subsection{So sánh theo cặp và dữ liệu thiếu}
+Gọi $H_{i,v}\in\{0,1\}$ là tác động có hại của trường hợp $i$ tại phiên bản $v$. Sự kiện hồi quy an ninh là $H_{i,v0}=0$ và $H_{i,v1}=1$. Bốn chuyển tiếp $00$, $01$, $10$, $11$ phải được giữ lại; chỉ báo cáo tỷ lệ thành công tấn công ở $v1$ sẽ che giấu sự khác nhau giữa hồi quy và sửa chữa.
+\begin{equation}
+\widehat{\Delta}_{\mathrm{sec}}=\frac{1}{n}\sum_{i=1}^{n}(H_{i,v1}-H_{i,v0}).
+\end{equation}
+Trong công thức, $n$ là số cặp hợp lệ đã được chấm. Các cặp thiếu bằng chứng vẫn nằm trong tổng số cặp dự kiến nhưng được ghi riêng là không thể chấm, không được thay bằng giá trị 0. Với utility $U$, sự kiện suy giảm là $U_{v0}=1$, $U_{v1}=0$; hai endpoint có chiều diễn giải khác nhau.
+
+Những biến thể cùng nhiệm vụ nguồn không phải các quan sát độc lập. Thiết kế nghiên cứu tiếp theo cần gom chúng theo nhiệm vụ nguồn khi tính độ bất định. Báo cáo học phần chưa thực hiện suy luận thống kê từ các kiểm tra xác định.

@@ -13,10 +13,10 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: c3722b53b0dd964db0f5f5e2ea698c9861f8ce7c (base before the capture-hook commit)
-working_tree_observed: handoff_state_update_pending; generated_report_cleaned; preexisting_untracked_areas_retained
+git_head_observed: 563aac7135da760fd3c541565cc8e47a00812530 (observed before course-priority update)
+working_tree_observed: course_package_verified; research_validator_WIP_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
-next_single_priority: "Integrate the implemented TaskFileScope F/M conservative baseline through a prospective capture/manifest/validator amendment with migrated policy identity, expected schema descriptors, argument normalization, and per-dispatch denial evidence; preserve historical v2 controls and run non-billable tests."
+next_single_priority: "After the verified course LaTeX package is delivered, complete the research article using the current evidence and resolve the retained adapter acceptance WIP; Q2 remains a later gate."
 ```
 
 Minimal prompt for a new model:
@@ -714,3 +714,79 @@ Spend/calls: zero Runpod jobs, zero Gemini requests, zero paid provider calls; o
 Cleanup: no current preflight report retained under qa; tmp, graphify-out, and deliverables retained.
 Teacher verdict: local self-review only; next review must inspect adapter plan/result binding and the fact that this task is utility/default-control only. No login or user interaction was required.
 Single next priority: run the amendment adapter through the canonical result acceptance boundary in a separate prospective adapter report, then prepare the non-billable review artifact; do not alter historical v2 or launch paid execution.
+
+## 19. User priority change - 10 October 2026
+
+The user's latest explicit instruction supersedes the previous next priority:
+1. Finish the course deliverable using the RIGHT column (Hoan thanh) in the
+   supplied rubric photograph. It is sufficient to choose this one track.
+2. Then complete the research article.
+3. Then pursue a Q2 submission candidate; acceptance is never guaranteed.
+
+The six course requirements read from the image are: problem definition;
+related research (optional); detailed background; detail of all or part of the
+proposed solution; implementation and evaluation approach (if any); report
+according to a template and presentation. The image contains the rubric,
+not a layout template. Use a conventional academic layout until an actual
+institutional template is provided; do not claim template compliance.
+
+Research WIP is retained, not promoted to a completed study: adapter-report
+refactoring, stronger plan binding, shared request checks, and four-cell tests.
+The latest targeted integration test passed (1 test, 172.633s); no full-suite
+claim covers this unfinished patch. Do not spend further course time extending
+F/M experiments. No research process remains live from that test.
+
+Deadline requested earlier: before 16 October 2026 (Asia/Saigon). Prioritize
+the course report and presentation by that date; Q2 gates remain separate.
+
+## 20. Course LaTeX package - 10 October 2026
+
+The latest user request supplied Template-1-cột.docm, then explicitly requested
+LaTeX for shared editing. This supersedes the conventional-layout fallback in
+section 19. The Hoan thanh course track remains the first delivery priority.
+
+Completed artifacts:
+- course-report/main.tex and six files in sections/: Vietnamese report.
+- course-report/slides.tex: 10-slide Beamer presentation with speaker notes.
+- course-report/references.bib: five cited sources; README.md explains editing,
+  Overleaf import, XeLaTeX/BibTeX and Tectonic compilation.
+- deliverables/course_report_latex/Nhom_11_LaTeX_Overleaf.zip: editable source.
+- deliverables/course_report_latex/Bao_cao_mon_hoc_Nhom_11.pdf: 7 A4 pages.
+- deliverables/course_report_latex/Trinh_bay_Nhom_11.pdf: 10 slides.
+
+Template: C:/Users/ADMIN/Downloads/Template-1-cột.docm; SHA-256
+257ec3d1c458f8b8c7438edb35ff3ace39d62bece9aad3009f272782902005bb.
+Read-only package inspection identified LNCS one-column styles and page
+geometry. The source template remains unchanged; no macro was executed.
+LaTeX uses unmodified CTAN LNCS 2.26 class/style, A4 and 122 x 193 mm text area.
+TeX Gyre fonts replace Word Times New Roman: no pixel-identical layout claim.
+
+Validation: Tectonic 0.17.0 compiled both files with exit 0. Poppler rendered
+all 7 report pages and all 10 slides; every page was visually inspected, with
+changed table/reference pages rechecked after the final layout correction.
+No overfull boxes, missing characters or unresolved references/citations.
+One harmless LNCS/amsmath math-accent warning remains. Input/citation coverage,
+vendor hashes, original template hash and ZIP integrity passed.
+Commands: from course-report, tectonic -X compile main.tex --outdir
+../qa/course_latex_build/report --keep-logs; repeat for slides.tex with outdir
+../qa/course_latex_build/slides. pdfinfo verifies page counts; pdftoppm produces
+QA page images. The README documents portable xelatex/bibtex commands.
+
+No new scientific evidence was produced by typesetting. Source/fake-provider
+findings remain T1/T2; no efficacy, novelty, Q2 or instructor-acceptance claim.
+No paid provider, Runpod or Gemini call. GitHub/CTAN and the TeX bundle were
+downloaded over the network for the compiler, class and dependencies.
+The compiler and QA outputs live under ignored qa/, not in the source ZIP.
+Original course artifacts, pinned runtime and graph remain intact.
+
+Research WIP is retained unstaged: episode_adapter.py, capture_bridge.py,
+result_bundle.py, test_agentdojo_file_scope_amendment.py and the new
+agentdojo_file_scope_adapter_report.py. The four-cell integration check passed
+1 test in 172.633s before the priority change; full regression remains due
+when research work resumes. Do not quote the older 144-test count for this WIP.
+
+Completion scope: the course package covers all six items of the selected rubric
+and is ready for group editing/review. Personal/course details should be checked
+by the group before submitting. Course preparation is complete; the overall
+research/Q2 goal remains active. Next: complete the research article, resolving
+the retained acceptance-validator WIP and mapping claims to verified evidence.

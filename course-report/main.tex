@@ -1,0 +1,38 @@
+% !TeX program = xelatex
+\documentclass[runningheads,a4paper]{llncs}
+\usepackage[a4paper,textwidth=122mm,textheight=193mm,centering]{geometry}
+\usepackage{fontspec}
+\setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmonofont{lmmono10-regular.otf}
+\usepackage{amsmath,booktabs,tabularx,array}
+\usepackage[unicode,hidelinks]{hyperref}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\abstractname}{Tóm tắt.}
+\renewcommand{\keywordname}{\textbf{Từ khóa:}}
+\renewcommand{\andname}{và}
+\renewcommand{\lastandname}{ và}
+\renewcommand{\tablename}{Bảng}
+\begin{document}
+\title{Kiểm thử hồi quy an ninh của phòng thủ prompt injection gián tiếp khi hợp đồng công cụ thay đổi}
+\titlerunning{Kiểm thử hồi quy an ninh cho agent sử dụng công cụ}
+\author{Nguyễn Thùy Dương \and Đặng Ngọc Huy \and Vũ Hồng Quang}
+\authorrunning{Nhóm 11}
+\institute{Nhóm 11\\Học phần Chính sách quản trị an ninh mạng}
+\maketitle
+\begin{abstract}
+Agent sử dụng mô hình ngôn ngữ lớn có thể gọi công cụ để đọc và thay đổi dữ liệu. Nội dung không tin cậy trong tài liệu hoặc kết quả công cụ có thể chứa chỉ dẫn làm agent hành động ngoài nhiệm vụ. Báo cáo trình bày thiết kế kiểm thử hồi quy an ninh khi hợp đồng công cụ chuyển từ phiên bản $v0$ sang $v1$. Phương pháp giữ cố định nhiệm vụ, trạng thái ban đầu và cấu hình agent, đồng thời tách kết quả an ninh khỏi mức độ hoàn thành nhiệm vụ. Nhóm triển khai một phòng thủ giới hạn quyền truy cập tệp, hai trạng thái policy đóng băng và đã chuyển đổi, cùng kiểm tra trạng thái trước và sau lời gọi. Kiểm chứng bằng chuỗi thao tác xác định cho thấy policy đóng băng từ chối cấu trúc tham số mới, còn policy đã chuyển đổi hoàn thành thao tác được cấp quyền. Kết quả này xác nhận hoạt động của thành phần triển khai; chưa chứng minh hiệu quả trước prompt injection trên mô hình thật. Báo cáo nêu kiến thức nền tảng, nghiên cứu liên quan, kiến trúc giải pháp, cách tái lập, giới hạn và kế hoạch đánh giá tiếp theo.
+\keywords{LLM agent \and prompt injection gián tiếp \and hợp đồng công cụ \and kiểm thử hồi quy \and chính sách truy cập}
+\end{abstract}
+\input{sections/01_problem}
+\input{sections/02_background}
+\input{sections/03_related}
+\input{sections/04_solution}
+\input{sections/05_evaluation}
+\input{sections/06_conclusion}
+\clearpage
+\renewcommand{\refname}{Tài liệu tham khảo}
+\bibliographystyle{splncs04}
+\bibliography{references}
+\end{document}

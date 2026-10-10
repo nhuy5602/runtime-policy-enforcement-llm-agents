@@ -1,0 +1,6 @@
+\section{Hạn chế và kết luận}
+Phần hiện thực đã cho thấy có thể đặt một guard quyền theo nhiệm vụ trước công cụ, chuyển đổi cấu trúc resource một cách tường minh và kiểm tra utility bằng scorer độc lập. Đây là phần giải pháp cụ thể phục vụ mục tiêu học phần; chưa phải nghiên cứu thực nghiệm hoàn chỉnh về khả năng chống prompt injection.
+
+Các hạn chế chính gồm một task nguồn, một kiểu migration do nhóm thiết kế, chuỗi thao tác xác định và provider giả. Thiết kế chưa kiểm tra paraphrase, partial leakage, công cụ ngoài sandbox hoặc nhiều model. Biến thiên timestamp của thao tác append cũng khiến hash trạng thái sau thực thi có thể khác, dù utility giống nhau. Không được suy rộng số đếm kiểm tra sang tỷ lệ an toàn của hệ thống thực tế.
+
+Bước tiếp theo về kỹ thuật là hoàn thiện ràng buộc plan--record--oracle và kiểm chứng phản biện độc lập. Sau đó mới thu thập dữ liệu từ mô hình thật theo thiết kế cố định. Kết luận hiện tại là tính khả thi của phương pháp kiểm thử và một lát cắt triển khai đã được kiểm tra; kết luận hiệu quả bảo mật vẫn cần bằng chứng bổ sung.
