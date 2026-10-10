@@ -1,0 +1,2 @@
+# XeLaTeX default for latexmk. In Overleaf also select XeLaTeX in Settings.
+$pdf_mode = 5;

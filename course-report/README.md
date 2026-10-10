@@ -5,10 +5,22 @@ Bộ này thực hiện nhánh **Hoàn thành** trong ảnh tiêu chí. Ưu tiê
 ## Chỉnh sửa trên Overleaf
 
 1. Tạo **New Project → Upload Project**, chọn ZIP nguồn bàn giao.
-2. Đặt **Main document: main.tex**, **Compiler: XeLaTeX**.
+2. Trong **Settings**, đặt **Main document: main.tex** và **Compiler: XeLaTeX**.
 3. Recompile để tạo báo cáo. Bibliography dùng BibTeX, Overleaf tự chạy các lượt cần thiết.
 4. Chọn slides.tex làm Main document để tạo bản trình chiếu 10 slide.
 5. Dùng **Share** để mời thành viên; cả nhóm sửa cùng project. Không cần khóa API hoặc chạy AgentDojo để biên dịch.
+
+### Lỗi fontspec requires either XeTeX or LuaTeX
+
+Lỗi này xuất hiện khi project đang dùng pdfLaTeX. Trong Overleaf mở **Settings**
+(biểu tượng bánh răng), tìm **Compiler**, chọn **XeLaTeX**, rồi **Recompile**.
+Nếu cần, chọn **Recompile from scratch** trong menu cạnh nút Recompile.
+Dòng chú thích đầu file “TeX program = xelatex” không thay đổi thiết lập compiler
+của project Overleaf. Áp dụng cùng thiết lập khi biên dịch slides.tex.
+
+File latexmkrc đi kèm đặt XeLaTeX làm mặc định cho latexmk; không thay thế việc
+kiểm tra Compiler trên Overleaf, nơi tùy chọn project có thể ghi đè mặc định.
+Không cần xóa fontspec hoặc thay font để sửa lỗi chọn sai compiler này.
 
 ## Các file cần sửa
 

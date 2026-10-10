@@ -790,3 +790,27 @@ and is ready for group editing/review. Personal/course details should be checked
 by the group before submitting. Course preparation is complete; the overall
 research/Q2 goal remains active. Next: complete the research article, resolving
 the retained acceptance-validator WIP and mapping claims to verified evidence.
+
+## 21. Course Overleaf compiler support - 10 October 2026
+
+The supplied Overleaf log starts with pdfTeX/pdflatex (TeX Live 2026) and stops
+at fontspec cannot-use-pdftex. Root cause is project compiler selection, not
+Vietnamese content or the LNCS class. The TeX program comment does not select
+the Overleaf project compiler. Instruct Settings > Compiler > XeLaTeX, then
+Recompile; from scratch if cached output persists.
+
+Added course-report/latexmkrc with pdf_mode=5 as the local latexmk default and
+README troubleshooting; repack the source ZIP to include both. No content or
+layout changes; the previously inspected PDFs remain applicable. No access to
+the user's Overleaf project settings was performed or claimed. Verification
+here covers file/ZIP consistency and diff hygiene, not an Overleaf compile.
+The project compiler may override latexmk defaults. Source package remains
+XeLaTeX-based. Resume the research article only after this course support task.
+
+User supplied the pdfTeX log and Overleaf screenshot on 10 October. Applied
+clarification directly in main.tex's editor comment and package README, rebuilt
+the 15-entry Overleaf ZIP including latexmkrc, and verified archive CRC. The
+source ZIP now explicitly says the project-level Compiler must be XeLaTeX. The
+two final PDFs do not need rebuilding because their content/layout did not
+change. Remaining verification is compile within the user's Overleaf project,
+which has not been accessed from this workspace.
