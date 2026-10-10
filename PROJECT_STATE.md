@@ -6,17 +6,17 @@
 
 ```yaml
 schema_version: 1
-last_updated: 2026-10-10
+last_updated: 2026-10-11
 timezone: Asia/Saigon
 project_status: active
 research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: febe7bcf2e3ad8bb81a2b0c53ddf5121e516e83b (base before English report commit)
-working_tree_observed: English_report_and_bilingual_package_ready; awaiting_commit; research_WIP_retained
+git_head_observed: 355479fc95be79a30930e214d7e1346401960153 (observed before final handoff update)
+working_tree_observed: course_report_english_slides_vietnamese_committed; research_validator_WIP_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
-next_single_priority: "Commit the English course report with Vietnamese presentation sources/PDFs. Then complete the research article from verified evidence; Q2 readiness follows its independent evidence gates."
+next_single_priority: "The English course report and Vietnamese presentation are delivered; next complete the research article from verified evidence, resolve retained adapter-report WIP, and keep Q2 readiness behind its separate empirical gates."
 ```
 
 Minimal prompt for a new model:
@@ -847,3 +847,30 @@ Course deliverable priority is now complete and ready for group editing. The
 overall goal remains active. Next single priority: complete the research article
 using only verified evidence, starting by resolving the retained adapter
 result-acceptance WIP. Real-LLM efficacy and Q2 readiness remain unproven.
+
+## 23. Report language revision - 11 October 2026
+
+The user clarified that the course report should be in English while the slides
+remain Vietnamese. This overrides earlier package-language notes. The active
+Overleaf source folder and source ZIP were synchronized to that split:
+English title/abstract/body/references and README; Vietnamese Beamer source;
+English report PDF; Vietnamese slide PDF.
+
+Verification: Tectonic compiled main.tex successfully to a 7-page A4 PDF.
+Poppler extracted English headings and visually reviewed all seven pages.
+The retained 10-slide Vietnamese PDF was unchanged and confirmed by source/PDF
+text. ZIP source entries match course-report, ZIP CRC passes, and its compiler
+instructions specify XeLaTeX. No missing glyphs, overfull boxes or unresolved
+references/citations appeared in the final report log. The Overleaf project
+itself has not been accessed; selecting XeLaTeX in its Settings remains
+necessary because the supplied log showed pdfLaTeX.
+
+Commit 355479f contains the English report source/PDF and the Vietnamese slide
+source bundle. Research files changed before this language revision remain
+uncommitted and were not staged. No paid API, Gemini or Runpod call occurred.
+
+Course-report acceptance criteria from the supplied Completion rubric are met
+in the local deliverable package, subject to the group checking names/course
+details. The research article and Q2 goal remain active and unverified.
+Single next priority: continue the research article from current evidence,
+starting with the incomplete prospective adapter-result acceptance path.
