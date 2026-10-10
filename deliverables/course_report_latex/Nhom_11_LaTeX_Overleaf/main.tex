@@ -1,0 +1,39 @@
+% !TeX program = xelatex
+% Overleaf: Menu/Settings > Compiler > XeLaTeX. The editor hint above does not
+% override a project explicitly configured to use pdfLaTeX.
+\documentclass[runningheads,a4paper]{llncs}
+\usepackage[a4paper,textwidth=122mm,textheight=193mm,centering]{geometry}
+\usepackage{fontspec}
+\setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmonofont{lmmono10-regular.otf}
+\usepackage{amsmath,booktabs,tabularx,array}
+\usepackage[unicode,hidelinks]{hyperref}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\abstractname}{Abstract.}
+\renewcommand{\keywordname}{\textbf{Keywords:}}
+\renewcommand{\andname}{and}
+\renewcommand{\lastandname}{, and}
+\begin{document}
+\title{Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts}
+\titlerunning{Security Regression Testing for Tool-Using Agents}
+\author{Nguyễn Thùy Dương \and Đặng Ngọc Huy \and Vũ Hồng Quang}
+\authorrunning{Group 11}
+\institute{Group 11\\Cybersecurity Governance Policy Course}
+\maketitle
+\begin{abstract}
+LLM agents can invoke tools to read and modify data. Documents or tool outputs may contain untrusted instructions that redirect an agent beyond the user's task. This report presents a security regression-testing design for a tool contract migrating from version $v0$ to $v1$. The design holds the task, initial state, and agent configuration constant while measuring security and task utility as separate outcomes. The group implements task-scoped file authorization under frozen and explicitly migrated policy states and checks the environment before and after tool calls. Deterministic source checks show that the frozen policy rejects the new argument structure, while the migrated policy completes the authorized action. These checks validate an implementation slice; they do not establish resistance to prompt injection by a real language model. The report covers background, related work, the proposed solution, reproducibility, limitations, and a plan for further evaluation.
+\keywords{LLM agents \and indirect prompt injection \and tool contracts \and security regression \and access control}
+\end{abstract}
+\input{sections/01_problem}
+\input{sections/02_background}
+\input{sections/03_related}
+\input{sections/04_solution}
+\input{sections/05_evaluation}
+\input{sections/06_conclusion}
+\clearpage
+\renewcommand{\refname}{References}
+\bibliographystyle{splncs04}
+\bibliography{references}
+\end{document}

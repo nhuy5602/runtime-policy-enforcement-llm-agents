@@ -11,21 +11,20 @@
 \usepackage[unicode,hidelinks]{hyperref}
 \urlstyle{same}
 \setlength{\emergencystretch}{2em}
-\renewcommand{\abstractname}{Tóm tắt.}
-\renewcommand{\keywordname}{\textbf{Từ khóa:}}
-\renewcommand{\andname}{và}
-\renewcommand{\lastandname}{ và}
-\renewcommand{\tablename}{Bảng}
+\renewcommand{\abstractname}{Abstract.}
+\renewcommand{\keywordname}{\textbf{Keywords:}}
+\renewcommand{\andname}{and}
+\renewcommand{\lastandname}{, and}
 \begin{document}
-\title{Kiểm thử hồi quy an ninh của phòng thủ prompt injection gián tiếp khi hợp đồng công cụ thay đổi}
-\titlerunning{Kiểm thử hồi quy an ninh cho agent sử dụng công cụ}
+\title{Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts}
+\titlerunning{Security Regression Testing for Tool-Using Agents}
 \author{Nguyễn Thùy Dương \and Đặng Ngọc Huy \and Vũ Hồng Quang}
-\authorrunning{Nhóm 11}
-\institute{Nhóm 11\\Học phần Chính sách quản trị an ninh mạng}
+\authorrunning{Group 11}
+\institute{Group 11\\Cybersecurity Governance Policy Course}
 \maketitle
 \begin{abstract}
-Agent sử dụng mô hình ngôn ngữ lớn có thể gọi công cụ để đọc và thay đổi dữ liệu. Nội dung không tin cậy trong tài liệu hoặc kết quả công cụ có thể chứa chỉ dẫn làm agent hành động ngoài nhiệm vụ. Báo cáo trình bày thiết kế kiểm thử hồi quy an ninh khi hợp đồng công cụ chuyển từ phiên bản $v0$ sang $v1$. Phương pháp giữ cố định nhiệm vụ, trạng thái ban đầu và cấu hình agent, đồng thời tách kết quả an ninh khỏi mức độ hoàn thành nhiệm vụ. Nhóm triển khai một phòng thủ giới hạn quyền truy cập tệp, hai trạng thái policy đóng băng và đã chuyển đổi, cùng kiểm tra trạng thái trước và sau lời gọi. Kiểm chứng bằng chuỗi thao tác xác định cho thấy policy đóng băng từ chối cấu trúc tham số mới, còn policy đã chuyển đổi hoàn thành thao tác được cấp quyền. Kết quả này xác nhận hoạt động của thành phần triển khai; chưa chứng minh hiệu quả trước prompt injection trên mô hình thật. Báo cáo nêu kiến thức nền tảng, nghiên cứu liên quan, kiến trúc giải pháp, cách tái lập, giới hạn và kế hoạch đánh giá tiếp theo.
-\keywords{LLM agent \and prompt injection gián tiếp \and hợp đồng công cụ \and kiểm thử hồi quy \and chính sách truy cập}
+LLM agents can invoke tools to read and modify data. Documents or tool outputs may contain untrusted instructions that redirect an agent beyond the user's task. This report presents a security regression-testing design for a tool contract migrating from version $v0$ to $v1$. The design holds the task, initial state, and agent configuration constant while measuring security and task utility as separate outcomes. The group implements task-scoped file authorization under frozen and explicitly migrated policy states and checks the environment before and after tool calls. Deterministic source checks show that the frozen policy rejects the new argument structure, while the migrated policy completes the authorized action. These checks validate an implementation slice; they do not establish resistance to prompt injection by a real language model. The report covers background, related work, the proposed solution, reproducibility, limitations, and a plan for further evaluation.
+\keywords{LLM agents \and indirect prompt injection \and tool contracts \and security regression \and access control}
 \end{abstract}
 \input{sections/01_problem}
 \input{sections/02_background}
@@ -34,7 +33,7 @@ Agent sử dụng mô hình ngôn ngữ lớn có thể gọi công cụ để �
 \input{sections/05_evaluation}
 \input{sections/06_conclusion}
 \clearpage
-\renewcommand{\refname}{Tài liệu tham khảo}
+\renewcommand{\refname}{References}
 \bibliographystyle{splncs04}
 \bibliography{references}
 \end{document}

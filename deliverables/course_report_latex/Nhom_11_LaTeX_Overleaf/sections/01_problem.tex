@@ -1,0 +1,16 @@
+\section{Problem Statement}
+\label{sec:problem}
+\subsection{Context and Motivation}
+An LLM agent commonly follows a three-step loop: it reads a request and data, proposes a tool call, and uses the tool result to decide what to do next. Unlike a text-only system, an agent may send email, create calendar events, or modify files. A reasoning error can therefore change the environment.
+
+Indirect prompt injection occurs when a third party places instructions in data the agent is allowed to read, rather than in the user's direct request. For example, a work document may ask the agent to perform an action outside its assigned task. The security boundary is action authorization: reading an instruction does not grant permission to carry it out \cite{greshake2023,debenedetti2024}.
+
+Systems must also handle tool-interface changes. A policy may check a field in an older argument structure but fail to interpret the newer structure correctly. A schema-valid change is not necessarily authorization-equivalent. Regression testing must measure both forbidden effects and completion of legitimate tasks.
+
+\subsection{Research Question and Objectives}
+The research question is whether a defense that prevents a harmful effect under tool contract $v0$ retains that protection under $v1$, and whether an explicit policy migration repairs any mismatch without losing task utility. For this course project, the group defines a measurement design and implements part of the proposed solution to check feasibility.
+
+The report has three technical objectives: define a paired comparison, implement a task-scoped authorization guard, and independently inspect post-execution state. The fixed research topic is \emph{Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts}. This report does not claim a new defense mechanism or population-level evidence of effectiveness.
+
+\subsection{Scope and Threat Model}
+The attacker may control email, document, or tool-output content read by the agent. The attacker cannot modify the trusted policy, dispatcher, tool implementation, or oracle. Experiments use a sandbox with synthetic data. Model poisoning, compromise of trusted Python code, and end-to-end information-flow guarantees across multiple agents are outside scope. These assumptions limit the interpretation of results: a dispatcher guard cannot protect a deliberately bypassed execution path.

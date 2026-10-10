@@ -1,0 +1,20 @@
+\section{Proposed Solution and Implemented Component}
+\subsection{Architecture and Execution Flow}
+Trusted inputs consist of the user request, task policy, contract version, and experiment manifest. The agent receives tool data and proposes an action. The dispatcher sends the action through the guard; only an authorized call reaches the executor. Each call records the policy identity, argument digest, decision, dispatch status, and pre/post state hashes. At the end of an episode, an independent oracle scores utility or harmful effects from the retained evidence.
+
+The manifest fixes the planned cases before execution. The capture bridge starts a fresh process to reduce state leakage between episodes and records the runtime version and requests/responses. The validator checks the evidence, and the statistics adapter accepts only valid pairs. Hashes detect changes and support consistency checks; they do not authenticate that a provider generated a response.
+
+\subsection{TaskFileScope and Policy Migration}
+The implemented slice uses Workspace task \texttt{user\_task\_29}: read the team-activities file and append activities to it. The trusted policy grants only filename search for the specified file, reading file ID 3, and appending to file ID 3. Other tools are denied. The policy does not derive permissions from document content, attack labels, or model verdicts.
+
+Under $v0$, the read and append tools use a top-level \texttt{file\_id}. Under $v1$, the same tools receive a \texttt{resource} object containing \texttt{space} and \texttt{file\_id}; the space must be \texttt{cloud\_drive}. The adapter validates the structure and maps it to the corresponding native argument. There is no automatic fallback to the old field.
+
+Both configurations belong to the same defense family. F keeps the $v0$ policy unchanged under both contract versions. M uses the same $v0$ policy under $v0$ and changes only the argument decoder to $v1$ under contract $v1$. Tool and resource grants do not change. F and M see the same tool schema within each contract version.
+
+\subsection{Enforcement Rules and Evidence}
+The guard rejects ungranted tools, extra arguments, invalid types, incorrect scope, or a different file. DENY is a normal policy response; the native tool is not called. Native tool failures remain execution errors. For a denial with typed state, the pre/post hashes must match. The raw trace records what the agent proposed; the canonical trace normalizes arguments for the upstream scorer.
+
+Filename search retains AgentDojo's substring semantics. This guard is not a system-wide read-confidentiality mechanism. It also does not protect against malicious Python code that can access the callable directly within the process.
+
+\subsection{Relevance to Cybersecurity Governance}
+A schema change should be governed like a policy change: assign an owner to review permissions, test before deployment, and retain versioned evidence. If a policy has not been migrated, an explicit denial is clearer than guessing the intended meaning. Organizations must also monitor legitimate tasks that are blocked, because denying every tool call does not meet operational needs.

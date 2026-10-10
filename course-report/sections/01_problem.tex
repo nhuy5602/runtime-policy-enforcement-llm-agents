@@ -1,16 +1,16 @@
-\section{Vấn đề cần giải quyết}
+\section{Problem Statement}
 \label{sec:problem}
-\subsection{Bối cảnh và động cơ}
-Một agent sử dụng mô hình ngôn ngữ lớn (LLM) thường lặp lại ba bước: đọc yêu cầu và dữ liệu, đề xuất lời gọi công cụ, rồi dùng kết quả công cụ để quyết định bước tiếp theo. Khác với hệ thống chỉ sinh văn bản, lời gọi có thể gửi thư, thêm lịch hoặc sửa tệp. Vì vậy, sai lệch trong suy luận có thể dẫn đến thay đổi thực tế ở môi trường.
+\subsection{Context and Motivation}
+An LLM agent commonly follows a three-step loop: it reads a request and data, proposes a tool call, and uses the tool result to decide what to do next. Unlike a text-only system, an agent may send email, create calendar events, or modify files. A reasoning error can therefore change the environment.
 
-Prompt injection gián tiếp xuất hiện khi chỉ dẫn của bên thứ ba nằm trong dữ liệu mà agent được phép đọc, thay vì trong yêu cầu trực tiếp của người dùng. Ví dụ, một tài liệu công việc có thể chứa nội dung yêu cầu agent thực hiện hành động ngoài nhiệm vụ. Ranh giới cần bảo vệ là quyền hành động: việc đọc được một chỉ dẫn không đồng nghĩa với việc được phép thực hiện chỉ dẫn đó \cite{greshake2023,debenedetti2024}.
+Indirect prompt injection occurs when a third party places instructions in data the agent is allowed to read, rather than in the user's direct request. For example, a work document may ask the agent to perform an action outside its assigned task. The security boundary is action authorization: reading an instruction does not grant permission to carry it out \cite{greshake2023,debenedetti2024}.
 
-Hệ thống còn phải đối mặt với thay đổi giao diện công cụ. Policy có thể kiểm tra một trường tham số ở phiên bản cũ nhưng không còn diễn giải đúng cấu trúc ở phiên bản mới. Một thay đổi vẫn hợp lệ về schema chưa chắc tương đương về quyền truy cập. Kiểm thử hồi quy cần quan sát cả tác động bị cấm lẫn khả năng hoàn thành tác vụ hợp lệ.
+Systems must also handle tool-interface changes. A policy may check a field in an older argument structure but fail to interpret the newer structure correctly. A schema-valid change is not necessarily authorization-equivalent. Regression testing must measure both forbidden effects and completion of legitimate tasks.
 
-\subsection{Câu hỏi và mục tiêu}
-Câu hỏi nghiên cứu là: một phòng thủ đã ngăn tác động có hại ở hợp đồng công cụ $v0$ có duy trì được sự bảo vệ khi chuyển sang $v1$, và việc chuyển đổi policy có khắc phục sai lệch mà vẫn giữ utility hay không? Trong phạm vi học phần, nhóm xây dựng thiết kế đo lường và hiện thực một phần giải pháp để kiểm chứng khả năng triển khai.
+\subsection{Research Question and Objectives}
+The research question is whether a defense that prevents a harmful effect under tool contract $v0$ retains that protection under $v1$, and whether an explicit policy migration repairs any mismatch without losing task utility. For this course project, the group defines a measurement design and implements part of the proposed solution to check feasibility.
 
-Ba đầu ra kỹ thuật của báo cáo là: định nghĩa so sánh theo cặp; xây dựng guard giới hạn quyền theo nhiệm vụ; và kiểm tra độc lập trạng thái sau thực thi. Đề tài cố định có tên tiếng Anh là \emph{Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts}. Báo cáo không khẳng định đã tạo một cơ chế phòng thủ mới hoặc đã chứng minh hiệu quả trên một quần thể agent.
+The report has three technical objectives: define a paired comparison, implement a task-scoped authorization guard, and independently inspect post-execution state. The fixed research topic is \emph{Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts}. This report does not claim a new defense mechanism or population-level evidence of effectiveness.
 
-\subsection{Phạm vi và mô hình đe dọa}
-Bên tấn công có thể kiểm soát nội dung email, tài liệu hoặc kết quả công cụ mà agent đọc. Họ không được sửa policy tin cậy, dispatcher, mã công cụ hoặc oracle. Môi trường triển khai là sandbox với dữ liệu giả lập. Phạm vi không bao gồm đầu độc mô hình, chiếm quyền mã Python trong tiến trình tin cậy, hoặc bảo đảm luồng thông tin xuyên nhiều agent. Các giả định này giới hạn ý nghĩa của kết quả: guard tại dispatcher không bảo vệ một đường thực thi cố tình bỏ qua dispatcher.
+\subsection{Scope and Threat Model}
+The attacker may control email, document, or tool-output content read by the agent. The attacker cannot modify the trusted policy, dispatcher, tool implementation, or oracle. Experiments use a sandbox with synthetic data. Model poisoning, compromise of trusted Python code, and end-to-end information-flow guarantees across multiple agents are outside scope. These assumptions limit the interpretation of results: a dispatcher guard cannot protect a deliberately bypassed execution path.

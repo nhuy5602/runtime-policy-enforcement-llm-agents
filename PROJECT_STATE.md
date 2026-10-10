@@ -13,10 +13,10 @@ research_tier: not_yet_submission_ready
 fixed_topic: "Security Regression Testing of Indirect Prompt Injection Defenses under Versioned Agent Tool Contracts"
 target: "Q2-or-better submission candidate; acceptance is not guaranteed"
 git_branch_observed: main
-git_head_observed: 563aac7135da760fd3c541565cc8e47a00812530 (observed before course-priority update)
-working_tree_observed: course_package_verified; research_validator_WIP_retained
+git_head_observed: febe7bcf2e3ad8bb81a2b0c53ddf5121e516e83b (base before English report commit)
+working_tree_observed: English_report_and_bilingual_package_ready; awaiting_commit; research_WIP_retained
 codex_goal_registry_observed: none (get_goal returned null on 2026-10-09)
-next_single_priority: "After the verified course LaTeX package is delivered, complete the research article using the current evidence and resolve the retained adapter acceptance WIP; Q2 remains a later gate."
+next_single_priority: "Commit the English course report with Vietnamese presentation sources/PDFs. Then complete the research article from verified evidence; Q2 readiness follows its independent evidence gates."
 ```
 
 Minimal prompt for a new model:
@@ -814,3 +814,36 @@ source ZIP now explicitly says the project-level Compiler must be XeLaTeX. The
 two final PDFs do not need rebuilding because their content/layout did not
 change. Remaining verification is compile within the user's Overleaf project,
 which has not been accessed from this workspace.
+
+## 22. English report and Vietnamese presentation - 11 October 2026
+
+The user's language instruction is explicit: report in English, presentation in
+Vietnamese. Current source package implements that split. The English report
+covers all six requested Completion-track rubric items; the slide source and
+PDF remain Vietnamese.
+
+The active Overleaf working folder
+deliverables/course_report_latex/Nhom_11_LaTeX_Overleaf was synchronized with
+course-report. The English report source was compiled with Tectonic 0.17.0 and
+rendered to a 7-page A4 PDF. The Vietnamese Beamer PDF remains 10 slides. Every
+report page was visually inspected after translation. The latest report log
+has no overfull boxes, missing characters, or unresolved references/citations.
+The source ZIP was regenerated with 15 entries and a valid CRC; checks confirm
+English report sections and the Vietnamese slide source are both present.
+The compiler-selection note and latexmkrc remain included for Overleaf XeLaTeX.
+
+Only the English report PDF changed; the Vietnamese presentation source/PDF
+were preserved. Research WIP in four experiment files remains unstaged and
+unchanged. No Runpod, Gemini, or paid provider call occurred.
+
+Verification: Tectonic command
+tectonic -X compile main.tex --outdir ../qa/course_latex_build/report --keep-logs
+exited 0; pdfinfo reports 7 pages at A4. Poppler rendered all pages for review.
+A source/ZIP/PDF language-split check passed: report includes Problem Statement
+and Limitations and Conclusion; slides retain the Vietnamese title/section text.
+The original Word template is still unchanged. The package README is English.
+
+Course deliverable priority is now complete and ready for group editing. The
+overall goal remains active. Next single priority: complete the research article
+using only verified evidence, starting by resolving the retained adapter
+result-acceptance WIP. Real-LLM efficacy and Q2 readiness remain unproven.

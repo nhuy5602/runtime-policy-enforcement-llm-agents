@@ -1,0 +1,19 @@
+\section{Background}
+\subsection{Tool Contracts and Task-Scoped Authorization}
+A tool contract specifies operation names, argument schemas, defaults, resource scope, and effect semantics. A rename may preserve meaning, while changing how a resource or destination is represented can alter the inputs to authorization. This report distinguishes the two so that not every interface change is labeled a security regression.
+
+Least privilege grants an agent only the operations needed for its task. A capability may constrain operations, resources, destinations, expiration, and call counts. The implementation in this report covers tools and resources for one task; expiration, quotas, and approval are possible extensions, not verified features.
+
+\subsection{Pre-Execution Enforcement and Post-Execution Measurement}
+The guard checks a call before it reaches the executor. ALLOW dispatches the tool call; DENY returns a policy response without executing the tool. If the authorization structure cannot be interpreted, the guard rejects the call, a behavior known as \emph{fail closed}. This can preserve security while reducing utility.
+
+An oracle is an independent scoring function. The security oracle reads pre- and post-execution state to identify forbidden effects; the utility oracle checks whether the task was completed. ALLOW does not prove task success, and DENY alone does not prove that no effect occurred. A tool error is not a security success. Execution errors, policy decisions, and oracle outcomes must therefore be recorded separately.
+
+\subsection{Paired Comparison and Missing Data}
+Let $H_{i,v}\in\{0,1\}$ denote the harmful effect for case $i$ under version $v$. A security regression occurs when $H_{i,v0}=0$ and $H_{i,v1}=1$. All four transitions, $00$, $01$, $10$, and $11$, must be retained; reporting only the attack-success rate under $v1$ can hide the distinction between regressions and repairs.
+\begin{equation}
+\widehat{\Delta}_{\mathrm{sec}}=\frac{1}{n}\sum_{i=1}^{n}(H_{i,v1}-H_{i,v0}).
+\end{equation}
+Here, $n$ is the number of valid scored pairs. Pairs with missing evidence remain in the planned denominator and are reported as unscorable; they are not replaced with zero. For utility $U$, a regression is $U_{v0}=1$ and $U_{v1}=0$. The two endpoints have different interpretations.
+
+Variants derived from the same source task are not independent observations. A later study must cluster them by source task when estimating uncertainty. This course report does not draw statistical inferences from deterministic checks.

@@ -11,11 +11,11 @@ paper and Q2 readiness are later priorities.
 | Detailed background | Section 2 | Slides 3 and 5 | Written |
 | Detail of all/part of proposed solution | Section 4, TaskFileScope F/M | Slides 6 and 7 | Written |
 | Implementation/evaluation approach | Section 5, scoped observed results and planned study | Slides 8 and 9 | Written |
-| Report according to template and prepare presentation | LNCS one-column LaTeX; 7-page A4 PDF | 10-slide Beamer source/PDF with notes | Compiled and visually inspected |
+| Report according to template and prepare presentation | English LNCS one-column LaTeX; 7-page A4 PDF | Vietnamese 10-slide Beamer source/PDF with notes | Compiled and visually inspected |
 
 ## Team source and outputs
 
-- course-report/main.tex and sections/: editable Vietnamese report.
+- course-report/main.tex and sections/: editable English report.
 - course-report/references.bib: BibTeX reference list.
 - course-report/slides.tex: editable 10-slide presentation and speaker notes.
 - course-report/README.md: Overleaf and local XeLaTeX/BibTeX instructions.
@@ -23,7 +23,8 @@ paper and Q2 readiness are later priorities.
 - deliverables/course_report_latex/Bao_cao_mon_hoc_Nhom_11.pdf: rendered report.
 - deliverables/course_report_latex/Trinh_bay_Nhom_11.pdf: rendered presentation.
 
-The original Template-1-cot.docm was inspected but not changed or executed.
+The report is in English; the slides remain in Vietnamese, as requested. The
+original Template-1-cot.docm was inspected but not changed or executed.
 LaTeX follows its LNCS structure and text block; typography/page breaks are
 not pixel-identical. Actual source path/hash is recorded in the source README.
 

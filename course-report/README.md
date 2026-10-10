@@ -1,46 +1,40 @@
-# Báo cáo học phần của Nhóm 11 bằng LaTeX
+# Group 11 Course Report in LaTeX
 
-Bộ này thực hiện nhánh **Hoàn thành** trong ảnh tiêu chí. Ưu tiên: báo cáo môn học → bài báo nghiên cứu → mục tiêu Q2.
+The report is in English; the presentation slides remain in Vietnamese, as requested. This package follows the Completion track in the supplied rubric. The work order is course report, research article, then Q2 submission readiness.
 
-## Chỉnh sửa trên Overleaf
+## Edit on Overleaf
 
-1. Tạo **New Project → Upload Project**, chọn ZIP nguồn bàn giao.
-2. Trong **Settings**, đặt **Main document: main.tex** và **Compiler: XeLaTeX**.
-3. Recompile để tạo báo cáo. Bibliography dùng BibTeX, Overleaf tự chạy các lượt cần thiết.
-4. Chọn slides.tex làm Main document để tạo bản trình chiếu 10 slide.
-5. Dùng **Share** để mời thành viên; cả nhóm sửa cùng project. Không cần khóa API hoặc chạy AgentDojo để biên dịch.
+1. Create New Project > Upload Project and upload the source ZIP.
+2. In Settings, set Main document to main.tex and Compiler to XeLaTeX.
+3. Recompile the report. Overleaf runs BibTeX as needed.
+4. Select slides.tex as the main document to compile the 10-slide Vietnamese presentation.
+5. Use Share to invite the group. Compilation requires no API key or AgentDojo runtime.
 
-### Lỗi fontspec requires either XeTeX or LuaTeX
+### Error: fontspec requires either XeTeX or LuaTeX
 
-Lỗi này xuất hiện khi project đang dùng pdfLaTeX. Trong Overleaf mở **Settings**
-(biểu tượng bánh răng), tìm **Compiler**, chọn **XeLaTeX**, rồi **Recompile**.
-Nếu cần, chọn **Recompile from scratch** trong menu cạnh nút Recompile.
-Dòng chú thích đầu file “TeX program = xelatex” không thay đổi thiết lập compiler
-của project Overleaf. Áp dụng cùng thiết lập khi biên dịch slides.tex.
+This error occurs when the Overleaf project uses pdfLaTeX. Open Settings, find Compiler, select XeLaTeX, and click Recompile. If needed, use Recompile from scratch in the menu next to the Recompile button. The TeX editor hint in main.tex does not override the project compiler. Apply the same setting when compiling slides.tex.
 
-File latexmkrc đi kèm đặt XeLaTeX làm mặc định cho latexmk; không thay thế việc
-kiểm tra Compiler trên Overleaf, nơi tùy chọn project có thể ghi đè mặc định.
-Không cần xóa fontspec hoặc thay font để sửa lỗi chọn sai compiler này.
+The included latexmkrc selects XeLaTeX as the latexmk default. It does not replace checking the Overleaf project setting, which can override that default. Do not remove fontspec or change fonts to fix a compiler-selection error.
 
-## Các file cần sửa
+## Files to edit
 
-| File | Nội dung |
+| File | Content |
 |---|---|
-| main.tex | Tiêu đề, tác giả, học phần, tóm tắt, thứ tự các phần |
-| sections/01_problem.tex | Vấn đề, mục tiêu, mô hình đe dọa |
-| sections/02_background.tex | Kiến thức nền tảng |
-| sections/03_related.tex | Nghiên cứu liên quan |
-| sections/04_solution.tex | Giải pháp, quyền truy cập, F/M |
-| sections/05_evaluation.tex | Triển khai, kết quả và kế hoạch đánh giá |
-| sections/06_conclusion.tex | Hạn chế, kết luận |
-| references.bib | Danh mục tài liệu tham khảo |
-| slides.tex | Nội dung trình chiếu và ghi chú người nói |
+| main.tex | Title, authors, abstract, section order |
+| sections/01_problem.tex | Problem, objectives, threat model |
+| sections/02_background.tex | Background |
+| sections/03_related.tex | Related work |
+| sections/04_solution.tex | Solution, authorization, F/M |
+| sections/05_evaluation.tex | Implementation, evidence, evaluation plan |
+| sections/06_conclusion.tex | Limitations and conclusion |
+| references.bib | Bibliography |
+| slides.tex | Vietnamese slide content and speaker notes |
 
-Không chỉnh llncs.cls và splncs04.bst khi sửa nội dung. Có thể chia phần theo thành viên nhưng nhóm tự xác nhận phân công; bộ này không gán công việc hay thành tích cho cá nhân.
+Do not edit llncs.cls or splncs04.bst when revising the report. The group can divide sections among members; this package does not assign individual contributions.
 
-## Biên dịch trên máy
+## Compile locally
 
-Cài TeX Live hoặc MiKTeX có XeLaTeX, BibTeX và các gói trong phần đầu main.tex.
+Install TeX Live or MiKTeX with XeLaTeX, BibTeX, and the packages used in main.tex.
 
     xelatex main.tex
     bibtex main
@@ -49,37 +43,37 @@ Cài TeX Live hoặc MiKTeX có XeLaTeX, BibTeX và các gói trong phần đầ
     xelatex slides.tex
     xelatex slides.tex
 
-Hoặc dùng Tectonic (tự chạy bibliography/lượt tham chiếu; tải dependency khi chạy lần đầu):
+Or use Tectonic, which runs bibliography and reference passes automatically and downloads dependencies on first use:
 
     tectonic main.tex
     tectonic slides.tex
 
-Font TeX Gyre Termes/Heros và Latin Modern Mono giúp nhóm biên dịch giống nhau trên Windows, Linux và Overleaf. File UTF-8. Các ký tự đặc biệt trong văn bản cần escape; thêm citation bằng lệnh cite và đề mục bằng section. Không chèn ngắt trang thủ công chỉ để sửa một màn hình hiển thị.
+TeX Gyre Termes/Heros and Latin Modern Mono provide consistent fonts across operating systems and Overleaf. Sources use UTF-8. Escape LaTeX special characters in prose; add citations with the cite command and sections with the section command. Avoid manual page breaks to correct a single local rendering.
 
-## Mẫu và độ tương đồng
+## Template and fidelity
 
-Mẫu người dùng: Template-1-cột.docm, SHA-256: 257ec3d1c458f8b8c7438edb35ff3ace39d62bece9aad3009f272782902005bb. File Word gốc không sửa hoặc chạy macro.
+User-supplied template: Template-1-cột.docm, SHA-256 257ec3d1c458f8b8c7438edb35ff3ace39d62bece9aad3009f272782902005bb. The original Word macro document was not modified or executed.
 
-LaTeX dùng lớp LNCS 2.26 (25/02/2025) từ CTAN, bố cục một cột, khối tiêu đề/tác giả/tóm tắt/từ khóa, đánh số đề mục và danh mục trích dẫn. Đây là chuyển đổi bố cục sang LaTeX, **không phải bản sao từng pixel của Word**: font TeX Gyre Termes thay Times New Roman; ngắt dòng và phân trang có thể khác. Nội dung minh họa, trường/ORCID/email và tuyên bố lợi ích mẫu không được chép thành thông tin của nhóm.
+The LaTeX source uses LNCS class 2.26 (25 February 2025) from CTAN, with a one-column layout, title/author/abstract/keyword block, numbered sections, and references. This is a structural conversion, not a pixel-identical Word replica: TeX Gyre Termes replaces Times New Roman, so line breaks and pagination may differ. Sample ORCID/email fields and example disclosures were not attributed to the group.
 
-Nguồn lớp: https://mirrors.ctan.org/macros/latex/contrib/llncs.zip . Xem LLNCS-LICENSE.md cho CC BY 4.0 và ghi công Springer. Hai file lớp/style được giữ nguyên.
+Class source: https://mirrors.ctan.org/macros/latex/contrib/llncs.zip. See LLNCS-LICENSE.md for CC BY 4.0 and Springer attribution. The class and bibliography style files are unchanged.
 
-## Phạm vi bằng chứng
+## Evidence scope
 
-- Bảng bốn ô F/M là **source-conformance**, không phải benchmark LLM.
-- Fake provider kiểm tra tích hợp; chưa chứng minh hiệu quả phòng thủ.
-- 144 test là số đã ghi tại snapshot nghiên cứu e678ea2; chưa bao phủ mọi WIP sau đó.
-- Không suy ra ASR, độ tin cậy thống kê, tính mới hoặc Q2 readiness từ các kiểm tra này.
-- Tên và thông tin nhóm lấy từ báo cáo hiện có; nhóm nên kiểm tra trước khi nộp. Bổ sung trường/lớp/giảng viên/email khi có thông tin xác nhận.
+- The four-cell F/M table is source conformance, not an LLM benchmark.
+- The fake provider checks integration; it does not show defense efficacy.
+- The 144-test count is recorded for research snapshot e678ea2; it does not cover later research work in progress.
+- These checks do not establish ASR, statistical confidence, novelty, or Q2 readiness.
+- Group names were taken from the existing course report. Verify names and add course or instructor details only when confirmed.
 
-## Tái lập kiểm tra kỹ thuật nếu cần
+## Reproduce technical checks if needed
 
-Trong repository nghiên cứu, chạy PowerShell với môi trường pinned đã cài sẵn:
+From the research repository, run PowerShell with the pinned environment installed:
 
     $env:PYTHONUTF8 = "0"
     $env:PYTHONIOENCODING = "utf-8"
-    $python = "./tmp/agentdojo-source/.venv31213/Scripts/python.exe"
-    & $python -B -m experiments.agentdojo_file_scope_preflight --output qa/course_source_check.json
+    $python = ".\tmp\agentdojo-source\.venv31213\Scripts\python.exe"
+    & $python -B -m experiments.agentdojo_file_scope_preflight --output qa\course_source_check.json
     & $python -B -m unittest experiments.test_agentdojo_file_scope_defense -v
 
-ZIP LaTeX chỉ chứa báo cáo/trình bày và không đóng gói runtime thí nghiệm. Lệnh trên không phải điều kiện để biên dịch hoặc chỉnh sửa báo cáo.
+The LaTeX ZIP contains report and presentation sources but no experiment runtime. These commands are not needed to compile or edit the report.

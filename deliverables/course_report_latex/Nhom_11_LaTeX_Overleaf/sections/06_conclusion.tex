@@ -1,0 +1,6 @@
+\section{Limitations and Conclusion}
+The implementation shows how to place task-scoped authorization before tool execution, migrate a resource argument explicitly, and measure utility with an independent scorer. This is a concrete solution component for the course project; it is not a complete empirical study of prompt-injection resistance.
+
+The main limitations are one source task, one group-designed migration, a deterministic action sequence, and a fake provider. The design does not test paraphrases, partial leakage, tools outside the sandbox, or multiple models. Timestamp variation in append operations may also change the post-state hash even when utility is the same. Test counts must not be generalized into real-world system safety rates.
+
+The next technical step is to complete the plan--record--oracle binding and obtain independent review. Real-model data should then be collected under a frozen design. The current conclusion concerns the feasibility of the testing method and a checked implementation slice; claims about security effectiveness require additional evidence.
